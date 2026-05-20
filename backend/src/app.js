@@ -20,7 +20,14 @@ import { errorHandler } from "./middleware/errorHandler.js";
 const app = express();
 app.set("trust proxy", 1);
 app.use(helmet());
-app.use(cors({ origin: env.frontendOrigin, credentials: true }));
+const allowedOrigins = [...new Set([env.frontendOrigin, "http://localhost:8080", "http://127.0.0.1:8080"].filter(Boolean))];
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true
+}));
 app.use(morgan("dev"));
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());

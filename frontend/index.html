@@ -465,14 +465,19 @@ footer{background:var(--brown);color:#fff;padding:48px 20px 24px}
 }
 .footer-brand .logo{font-size:22px;margin-bottom:12px}
 .footer-brand p{color:rgba(255,255,255,.65);font-size:13.5px;line-height:1.8;margin-bottom:16px}
-.social-links{display:flex;gap:10px}
+.social-links{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .social-link{
-  width:36px;height:36px;border-radius:8px;
+  min-width:36px;height:36px;border-radius:8px;
   background:rgba(255,255,255,.1);
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;transition:.2s;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:16px;transition:.2s;color:#fff;text-decoration:none;
 }
 .social-link:hover{background:var(--gold)}
+.facebook-link{background:#1877F2;padding:0 12px;gap:8px;font-weight:700}
+.facebook-link:hover{background:#0F63D8}
+.fb-logo{font-family:Arial,sans-serif;font-size:22px;font-weight:800;line-height:1}
+.social-text{font-size:12.5px}
+.social-muted{opacity:.82}
 footer h4{font-size:14px;font-weight:600;color:var(--gold-light);margin-bottom:16px}
 footer ul{list-style:none}
 footer ul li{margin-bottom:8px}
@@ -1067,10 +1072,10 @@ input,select,textarea{font-size:16px}
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-card" onclick="navigate('detail',1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('detail',1)}" role="button" tabindex="0" aria-label="কালোজিরা বিস্তারিত দেখুন"><div class="hero-card-emoji">🌿</div><h3>কালোজিরা</h3><p>Nigella Seeds</p><div class="price">৳১৮০</div></div>
-        <div class="hero-card" onclick="navigate('detail',2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('detail',2)}" role="button" tabindex="0" aria-label="চিয়া সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌱</div><h3>চিয়া সিড</h3><p>Chia Seeds</p><div class="price">৳২৮০</div></div>
-        <div class="hero-card" onclick="navigate('detail',3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('detail',3)}" role="button" tabindex="0" aria-label="ফ্ল্যাক্স সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌻</div><h3>ফ্ল্যাক্স সিড</h3><p>Flax Seeds</p><div class="price">৳২২০</div></div>
-        <div class="hero-card" onclick="navigate('detail',7)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('detail',7)}" role="button" tabindex="0" aria-label="মরিঙ্গা পাউডার বিস্তারিত দেখুন"><div class="hero-card-emoji">🍃</div><h3>মরিঙ্গা পাউডার</h3><p>Moringa Powder</p><div class="price">৳৩৮০</div></div>
+        <div class="hero-card" onclick="navigateHeroProduct('black-seeds-kalonjira',1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('black-seeds-kalonjira',1)}" role="button" tabindex="0" aria-label="কালোজিরা বিস্তারিত দেখুন"><div class="hero-card-emoji">🌿</div><h3>কালোজিরা</h3><p>Nigella Seeds</p><div class="price">৳১৮০</div></div>
+        <div class="hero-card" onclick="navigateHeroProduct('chia-seeds',2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('chia-seeds',2)}" role="button" tabindex="0" aria-label="চিয়া সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌱</div><h3>চিয়া সিড</h3><p>Chia Seeds</p><div class="price">৳২৮০</div></div>
+        <div class="hero-card" onclick="navigateHeroProduct('flax-seeds',3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('flax-seeds',3)}" role="button" tabindex="0" aria-label="ফ্ল্যাক্স সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌻</div><h3>ফ্ল্যাক্স সিড</h3><p>Flax Seeds</p><div class="price">৳২২০</div></div>
+        <div class="hero-card" onclick="navigateHeroProduct('moringa-powder',7)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('moringa-powder',7)}" role="button" tabindex="0" aria-label="মরিঙ্গা পাউডার বিস্তারিত দেখুন"><div class="hero-card-emoji">🍃</div><h3>মরিঙ্গা পাউডার</h3><p>Moringa Powder</p><div class="price">৳৩৮০</div></div>
       </div>
     </div>
   </section>
@@ -1402,7 +1407,7 @@ input,select,textarea{font-size:16px}
       <p>আমাদের টিম সকাল ৯টা থেকে রাত ৯টা পর্যন্ত সেবায় প্রস্তুত।</p>
       <div class="contact-item"><span class="contact-icon">📞</span><div><h4>ফোন নম্বর</h4><p>01700-000000</p></div></div>
       <div class="contact-item"><span class="contact-icon">💬</span><div><h4>WhatsApp</h4><p>01700-000000 (বার্তা পাঠান)</p></div></div>
-      <div class="contact-item"><span class="contact-icon">📘</span><div><h4>Facebook Page</h4><p>facebook.com/PureOriginsBD</p></div></div>
+      <div class="contact-item"><span class="contact-icon">📘</span><div><h4>Facebook Page</h4><p><a href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">facebook.com/PureOriginsBD</a></p></div></div>
       <div class="contact-item"><span class="contact-icon">📧</span><div><h4>ইমেইল</h4><p>support@pureorigins.com</p></div></div>
       <div class="contact-item"><span class="contact-icon">🕐</span><div><h4>সেবার সময়</h4><p>শনি–বৃহস্পতি: সকাল ৯টা – রাত ৯টা</p></div></div>
     </div>
@@ -1439,10 +1444,10 @@ input,select,textarea{font-size:16px}
       <div class="logo">🌿 বীজ<span>ঘর</span></div>
       <p>বাংলাদেশের বিশ্বস্ত হেলথ সিড ও সুপারফুড শপ। প্রকৃতির সেরা উপহার আপনার দোরগোড়ায়।</p>
       <div class="social-links">
-        <div class="social-link">📘</div>
-        <div class="social-link">📸</div>
-        <div class="social-link">▶️</div>
-        <div class="social-link">💬</div>
+        <a class="social-link facebook-link" href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook Page"><span class="fb-logo">f</span><span class="social-text">Facebook</span></a>
+        <div class="social-link social-muted">📸</div>
+        <div class="social-link social-muted">▶️</div>
+        <div class="social-link social-muted">💬</div>
       </div>
     </div>
     <div>
@@ -1564,6 +1569,85 @@ const faqs = [
 // ═══════════════════════════════════════════
 //  CART
 // ═══════════════════════════════════════════
+const API_BASE = window.PUREORIGINS_API_BASE || "http://localhost:5000/api";
+
+async function apiRequest(path, options = {}) {
+  const headers = { ...(options.headers || {}) };
+  if (options.body && !headers["Content-Type"]) headers["Content-Type"] = "application/json";
+  const response = await fetch(`${API_BASE}${path}`, {
+    credentials: "include",
+    ...options,
+    headers,
+    body: options.body && typeof options.body !== "string" ? JSON.stringify(options.body) : options.body
+  });
+  let data = {};
+  try { data = await response.json(); } catch { data = {}; }
+  if (!response.ok) throw new Error(data.message || "Request failed");
+  return data;
+}
+
+const productEmojiBySlug = {
+  "black-seeds-kalonjira": "\u{1F33F}",
+  "black-seeds": "\u{1F33F}",
+  "chia-seeds": "\u{1F331}",
+  "flax-seeds": "\u{1F33B}",
+  "pumpkin-seeds": "\u{1F383}",
+  "sunflower-seeds": "\u{1F338}",
+  "beetroot-powder": "\u{1F534}",
+  "moringa-powder": "\u{1F343}",
+  "pure-honey": "\u{1F36F}"
+};
+
+function apiProductToUi(product) {
+  const variants = Array.isArray(product.variants) ? product.variants : [];
+  return {
+    id: product._id,
+    slug: product.slug,
+    name: product.nameBn || product.nameEn,
+    enName: product.nameEn || product.nameBn,
+    emoji: productEmojiBySlug[product.slug] || "\u{1F33F}",
+    category: product.category?.slug || product.category || "seeds",
+    price: Number(product.price || 0),
+    oldPrice: Number(product.oldPrice || product.price || 0),
+    discount: Number(product.discountPercent || 0),
+    badge: product.badge || "Premium",
+    stock: Number(product.stockQuantity || 0),
+    rating: Number(product.ratingAvg || 4.8),
+    reviews: Number(product.reviewsCount || 0),
+    weight: variants.length ? variants.map(variant => variant.weight) : ["\u09E7\u09E6\u09E6\u0997\u09CD\u09B0\u09BE\u09AE"],
+    benefit: product.shortDescription || product.description || "Premium natural wellness product",
+    desc: product.description || product.shortDescription || "Premium natural wellness product",
+    ingredients: Array.isArray(product.ingredients) ? product.ingredients.join(", ") : (product.ingredients || "Pure natural ingredients"),
+    benefits: Array.isArray(product.benefits) ? product.benefits : [],
+    usage: Array.isArray(product.usageInstructions) ? product.usageInstructions.join(" ") : (product.usageInstructions || "Use as part of your daily routine.")
+  };
+}
+
+async function loadProductsFromApi() {
+  try {
+    const data = await apiRequest("/products");
+    if (Array.isArray(data.products) && data.products.length) {
+      products.splice(0, products.length, ...data.products.map(apiProductToUi));
+      renderStorefront();
+    }
+  } catch (error) {
+    console.warn("Product API unavailable; using local fallback products.", error);
+  }
+}
+
+function mapPaymentMethod(method) {
+  const value = String(method || "cod").toLowerCase();
+  if (value === "bkash") return "bKash";
+  if (value === "nagad") return "Nagad";
+  if (value === "rocket" || value === "sslcommerz") return "SSLCommerz";
+  return "COD";
+}
+
+function navigateHeroProduct(slug, fallbackId) {
+  const product = products.find(item => item.slug === slug) || getProduct(fallbackId);
+  if (product) navigate("detail", product.id);
+}
+
 let cart = JSON.parse(localStorage.getItem('pureorigins_cart') || '[]');
 let selectedPayment = 'cod';
 
@@ -1578,7 +1662,7 @@ function addToCart(product,weight,qty=1){
   const key = product.id + '-' + weight;
   const existing = cart.find(i=>i.key===key);
   if(existing){existing.qty+=qty;}
-  else{cart.push({key,id:product.id,name:product.name,emoji:product.emoji,weight,price:product.price,qty});}
+  else{cart.push({key,id:product.id,productId:product.id,slug:product.slug,name:product.name,emoji:product.emoji,weight,price:product.price,qty});}
   saveCart();updateCartCount();
   showToast('✅ ' + product.name + ' কার্টে যোগ হয়েছে!');
 }
@@ -1603,7 +1687,7 @@ function getDelivery(){return getCartTotal()>=800?0:80}
 function productCard(p,showAdd=true){
   const badgeHtml = p.badge?`<div class="product-badge ${p.badge==='নতুন'||p.badge==='সুপারফুড'?'new':''}">${p.badge}</div>`:'';
   const discHtml = p.discount?`<div class="product-badge" style="top:12px;right:12px;left:auto;background:var(--red)">-${p.discount}%</div>`:'';
-  return `<div class="product-card" onclick="navigate('detail',${p.id})" role="button" tabindex="0" aria-label="${p.name} বিস্তারিত দেখুন">
+  return `<div class="product-card" onclick="navigate('detail','${p.id}')" role="button" tabindex="0" aria-label="${p.name} বিস্তারিত দেখুন">
     <div class="product-img">${p.emoji}${badgeHtml}${discHtml}</div>
     <div class="product-body">
       <div class="bn-name">${p.name}</div>
@@ -1614,14 +1698,14 @@ function productCard(p,showAdd=true){
         ${p.oldPrice?`<span class="price-old">৳${p.oldPrice}</span><span class="price-save">৳${p.oldPrice-p.price} সাশ্রয়</span>`:''}
       </div>
       <div class="product-actions">
-        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addToCart(getProduct(${p.id}),'${p.weight[0]}')">🛒 কার্টে যোগ</button>`:''}
-        <button class="btn-view" onclick="event.stopPropagation();navigate('detail',${p.id})">বিবরণ →</button>
+        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addToCart(getProduct('${p.id}'),'${p.weight[0]}')">🛒 কার্টে যোগ</button>`:''}
+        <button class="btn-view" onclick="event.stopPropagation();navigate('detail','${p.id}')">বিবরণ →</button>
       </div>
     </div>
   </div>`;
 }
 
-function getProduct(id){return products.find(p=>p.id===id)}
+function getProduct(id){return products.find(p=>String(p.id)===String(id))}
 
 function comboCard(c){
   const save = c.oldPrice-c.price;
@@ -1795,25 +1879,47 @@ function selectPayment(el,method){
   selectedPayment=method;
 }
 
-function placeOrder(){
-  const name=document.getElementById('co-name')?.value.trim();
-  const phone=document.getElementById('co-phone')?.value.trim();
-  const address=document.getElementById('co-address')?.value.trim();
-  const district=document.getElementById('co-district')?.value;
-  if(!name||!phone||!address||!district){showToast('❌ দয়া করে সব তথ্য পূরণ করুন');return;}
-  if(cart.length===0){showToast('❌ কার্ট খালি');return;}
-  const orderNo='#BG-'+String(Math.floor(Math.random()*90000)+10000);
-  document.getElementById('conf-orderno').textContent=orderNo;
-  document.getElementById('conf-payment').textContent=
-    selectedPayment==='cod'?'Cash on Delivery':selectedPayment==='bkash'?'bKash':selectedPayment==='nagad'?'Nagad':'Rocket';
-  document.getElementById('conf-address').textContent=address+', '+district;
-  cart=[];saveCart();updateCartCount();
-  navigate('confirm');
+async function placeOrder(){
+  const name=document.getElementById('checkoutName').value.trim();
+  const phone=document.getElementById('checkoutPhone').value.trim();
+  const address=document.getElementById('checkoutAddress').value.trim();
+  const district=document.getElementById('checkoutDistrict').value;
+  if(!cart.length){showToast('Cart is empty');return}
+  if(!name||!phone||!address||!district){showToast('Please complete delivery information');return}
+  const paymentMethod=document.querySelector('.payment-option.active')?.dataset.payment||'cod';
+  const orderItems=cart.map(item=>({product:item.productId||item.id,variantWeight:item.weight,quantity:item.qty})).filter(item=>item.product);
+  if(orderItems.length!==cart.length){showToast('Some cart items are not available. Please refresh and try again.');return}
+  const payload={
+    customerName:name,
+    customerPhone:phone,
+    shippingAddress:address,
+    district,
+    upazila:document.getElementById('checkoutArea').value.trim(),
+    paymentMethod:mapPaymentMethod(paymentMethod),
+    notes:document.getElementById('checkoutNote').value.trim(),
+    items:orderItems
+  };
+  try{
+    const data=await apiRequest('/orders',{method:'POST',body:payload});
+    if(data.payment?.redirectUrl){
+      window.location.href=data.payment.redirectUrl;
+      return;
+    }
+    const order=data.order;
+    document.getElementById('confirmationOrderId').textContent='#'+String(order._id||'').slice(-8).toUpperCase();
+    document.getElementById('confirmationPayment').textContent=payload.paymentMethod==='COD'?'\u0995\u09CD\u09AF\u09BE\u09B6 \u0985\u09A8 \u09A1\u09C7\u09B2\u09BF\u09AD\u09BE\u09B0\u09BF':payload.paymentMethod;
+    document.getElementById('confirmationAddress').textContent=address+', '+district;
+    cart=[];
+    saveCart();
+    updateCartCount();
+    renderCheckoutSummary();
+    navigate('confirm');
+    showToast('Order created successfully');
+  }catch(error){
+    showToast(error.message||'Order could not be created');
+  }
 }
 
-// ═══════════════════════════════════════════
-//  PRODUCT DETAIL
-// ═══════════════════════════════════════════
 function renderDetail(id){
   const p=getProduct(id);if(!p)return;
   document.getElementById('detail-breadcrumb').innerHTML=
@@ -1962,7 +2068,7 @@ function showToast(msg){
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
-(function init(){
+function renderStorefront(){
   // Home products (top 8)
   const homeProds=document.getElementById('home-products');
   if(homeProds)homeProds.innerHTML=[...products].sort((a,b)=>b.reviews-a.reviews).slice(0,8).map(p=>productCard(p)).join('');
@@ -1977,6 +2083,11 @@ function showToast(msg){
   renderShop();
   // Cart count
   updateCartCount();
+}
+
+(function init(){
+  renderStorefront();
+  loadProductsFromApi();
 })();
 </script>
 </body>

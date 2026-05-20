@@ -15,6 +15,16 @@ export async function listProductReviews(req, res) {
   res.json({ reviews });
 }
 
+export async function adminListReviews(req, res) {
+  const { status } = req.query;
+  const filter = status ? { status } : {};
+  const reviews = await Review.find(filter)
+    .populate("product", "nameBn nameEn slug")
+    .populate("user", "name phone email")
+    .sort({ createdAt: -1 });
+  res.json({ reviews });
+}
+
 export async function adminReviewAction(req, res) {
   const review = await Review.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
   if (!review) return res.status(404).json({ message: "Review not found" });

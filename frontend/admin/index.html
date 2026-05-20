@@ -1,1 +1,192 @@
-<!doctype html><html lang="bn"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Admin Dashboard</title><link rel="stylesheet" href="../css/style.css"/></head><body><main class="section"><h1>PureOrigins Admin</h1><form id="adminLogin" class="card"><input name="phoneOrEmail" placeholder="Admin email/phone" required/><input name="password" type="password" placeholder="Password" required/><button>Login</button></form><div class="row"><button id="loadOrders">Orders</button><button id="loadSales">Sales Report</button></div><pre id="out"></pre></main><script type="module" src="./admin.js"></script></body></html>
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PureOrigins Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="./admin.css"/>
+</head>
+<body>
+  <main class="admin-shell">
+    <section id="loginView" class="login-view">
+      <div class="login-card">
+        <p class="eyebrow">PureOrigins Admin</p>
+        <h1>নিরাপদ ড্যাশবোর্ড</h1>
+        <p class="muted">শুধু অ্যাডমিন ইউজার লগইন করলে পণ্য, অর্ডার, কুপন ও রিপোর্ট ম্যানেজ করতে পারবে।</p>
+        <form id="adminLogin" class="form-stack">
+          <label>ইমেইল/ফোন
+            <input name="phoneOrEmail" placeholder="Admin email or phone" autocomplete="username" required/>
+          </label>
+          <label>পাসওয়ার্ড
+            <input name="password" type="password" placeholder="Password" autocomplete="current-password" required/>
+          </label>
+          <button class="primary-btn">Login</button>
+        </form>
+        <p id="loginMessage" class="message"></p>
+      </div>
+    </section>
+
+    <section id="adminView" class="dashboard hidden">
+      <aside class="sidebar">
+        <div class="brand"><span>🌿</span><strong>PureOrigins</strong><small>Admin</small></div>
+        <nav class="nav-tabs" aria-label="Admin screens">
+          <button class="nav-tab active" data-screen="dashboard">Dashboard</button>
+          <button class="nav-tab" data-screen="products">Products</button>
+          <button class="nav-tab" data-screen="orders">Orders</button>
+          <button class="nav-tab" data-screen="coupons">Coupons</button>
+          <button class="nav-tab" data-screen="reviews">Reviews</button>
+          <button class="nav-tab" data-screen="banners">Banners</button>
+          <button class="nav-tab" data-screen="reports">Reports</button>
+          <button class="nav-tab" data-screen="customers">Customers</button>
+        </nav>
+        <button id="logoutBtn" class="ghost-btn">Logout</button>
+      </aside>
+
+      <section class="content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Production admin</p>
+            <h1 id="screenTitle">Dashboard</h1>
+          </div>
+          <div class="admin-user">
+            <span id="adminName">Admin</span>
+            <small id="adminRole">role: admin</small>
+          </div>
+        </header>
+
+        <div id="statusMessage" class="message"></div>
+
+        <section id="screen-dashboard" class="screen active">
+          <div id="summaryCards" class="metric-grid"></div>
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Recent Orders</h2>
+              <button class="secondary-btn" data-jump="orders">Manage orders</button>
+            </div>
+            <div id="recentOrders"></div>
+          </div>
+        </section>
+
+        <section id="screen-products" class="screen">
+          <div class="split">
+            <form id="productForm" class="panel form-grid">
+              <div class="panel-head full">
+                <h2 id="productFormTitle">Add Product</h2>
+                <button type="button" id="resetProductForm" class="ghost-btn">Clear</button>
+              </div>
+              <input type="hidden" name="id"/>
+              <label>বাংলা নাম<input name="nameBn" required/></label>
+              <label>English name<input name="nameEn" required/></label>
+              <label>Slug<input name="slug" placeholder="auto-generated-if-empty"/></label>
+              <label>Category<select name="category" required></select></label>
+              <label>Price<input name="price" type="number" min="0" required/></label>
+              <label>Old price<input name="oldPrice" type="number" min="0"/></label>
+              <label>Badge<input name="badge"/></label>
+              <label>Stock<input name="stockQuantity" type="number" min="0" required/></label>
+              <label>Low stock alert<input name="lowStockThreshold" type="number" min="0" value="10"/></label>
+              <label>Active<select name="isActive"><option value="true">Active</option><option value="false">Inactive</option></select></label>
+              <label class="full">Short description<input name="shortDescription"/></label>
+              <label class="full">Description<textarea name="description" rows="3" required></textarea></label>
+              <label class="full">Benefits, comma separated<input name="benefits"/></label>
+              <label class="full">Ingredients, comma separated<input name="ingredients"/></label>
+              <label class="full">Usage instructions, comma separated<input name="usageInstructions"/></label>
+              <label class="full">Tags, comma separated<input name="tags"/></label>
+              <label class="full">Image URLs, one per line<textarea name="images" id="productImages" rows="3"></textarea></label>
+              <label class="full">Variants, one per line: weight, unit price, stock, sku<textarea name="variants" rows="4" placeholder="১০০গ্রাম, 180, 30, BLACK-100"></textarea></label>
+              <div class="upload-row full">
+                <input id="productImageUpload" type="file" multiple accept="image/*"/>
+                <button type="button" id="uploadImagesBtn" class="secondary-btn">Upload images</button>
+              </div>
+              <button class="primary-btn full">Save product</button>
+            </form>
+            <div class="panel">
+              <div class="panel-head">
+                <h2>Product table</h2>
+                <input id="productSearch" class="small-input" placeholder="Search product"/>
+              </div>
+              <div id="productsTable"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="screen-orders" class="screen">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Order management</h2>
+              <input id="orderSearch" class="small-input" placeholder="Search name or phone"/>
+            </div>
+            <div id="ordersTable"></div>
+          </div>
+        </section>
+
+        <section id="screen-coupons" class="screen">
+          <div class="split">
+            <form id="couponForm" class="panel form-grid">
+              <div class="panel-head full"><h2 id="couponFormTitle">Create coupon</h2><button type="button" id="resetCouponForm" class="ghost-btn">Clear</button></div>
+              <input type="hidden" name="id"/>
+              <label>Code<input name="code" required/></label>
+              <label>Type<select name="type"><option value="percent">Percent</option><option value="flat">Flat</option></select></label>
+              <label>Value<input name="value" type="number" min="0" required/></label>
+              <label>Expiry<input name="expiryDate" type="date" required/></label>
+              <label>Usage limit<input name="usageLimit" type="number" min="0" value="0"/></label>
+              <label>Per user limit<input name="perUserUsageLimit" type="number" min="1" value="1"/></label>
+              <label>Minimum order<input name="minimumOrderAmount" type="number" min="0" value="0"/></label>
+              <label>Active<select name="isActive"><option value="true">Active</option><option value="false">Inactive</option></select></label>
+              <button class="primary-btn full">Save coupon</button>
+            </form>
+            <div class="panel"><h2>Coupons</h2><div id="couponsTable"></div></div>
+          </div>
+        </section>
+
+        <section id="screen-reviews" class="screen">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Review moderation</h2>
+              <select id="reviewFilter" class="small-input"><option value="">All</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+            </div>
+            <div id="reviewsTable"></div>
+          </div>
+        </section>
+
+        <section id="screen-banners" class="screen">
+          <div class="split">
+            <form id="bannerForm" class="panel form-grid">
+              <div class="panel-head full"><h2 id="bannerFormTitle">Create banner</h2><button type="button" id="resetBannerForm" class="ghost-btn">Clear</button></div>
+              <input type="hidden" name="id"/>
+              <label>Title<input name="title" required/></label>
+              <label>Sort order<input name="sortOrder" type="number" value="100"/></label>
+              <label class="full">Subtitle<input name="subtitle"/></label>
+              <label class="full">Image URL<input name="imageUrl"/></label>
+              <label>CTA text<input name="ctaText"/></label>
+              <label>CTA URL<input name="ctaUrl"/></label>
+              <label>Starts at<input name="startsAt" type="datetime-local"/></label>
+              <label>Ends at<input name="endsAt" type="datetime-local"/></label>
+              <label>Active<select name="isActive"><option value="true">Active</option><option value="false">Inactive</option></select></label>
+              <button class="primary-btn full">Save banner</button>
+            </form>
+            <div class="panel"><h2>Banners</h2><div id="bannersTable"></div></div>
+          </div>
+        </section>
+
+        <section id="screen-reports" class="screen">
+          <div id="reportCards" class="metric-grid"></div>
+          <div class="split">
+            <div class="panel"><h2>Sales chart</h2><div id="salesChart" class="chart"></div></div>
+            <div class="panel"><h2>Low stock</h2><div id="stockTable"></div></div>
+          </div>
+        </section>
+
+        <section id="screen-customers" class="screen">
+          <div id="customerCards" class="metric-grid"></div>
+          <div class="panel">
+            <h2>Customer activity</h2>
+            <div id="customerInsights"></div>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>

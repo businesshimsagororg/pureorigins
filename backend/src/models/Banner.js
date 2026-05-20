@@ -6,6 +6,7 @@ const bannerSchema = new mongoose.Schema({
   imageUrl: String,
   ctaText: String,
   ctaUrl: String,
+  sortOrder: { type: Number, default: 100 },
   startsAt: Date,
   endsAt: Date,
   isActive: { type: Boolean, default: true }

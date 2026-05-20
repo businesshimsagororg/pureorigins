@@ -28,6 +28,22 @@ export async function listProducts(req, res) {
   res.json({ products });
 }
 
+export async function adminListProducts(req, res) {
+  const { q, status } = req.query;
+  const filter = {};
+  if (status === "active") filter.isActive = true;
+  if (status === "inactive") filter.isActive = false;
+  if (q) filter.$or = [
+    { nameBn: { $regex: q, $options: "i" } },
+    { nameEn: { $regex: q, $options: "i" } },
+    { slug: { $regex: q, $options: "i" } },
+    { tags: { $in: [new RegExp(q, "i")] } }
+  ];
+
+  const products = await Product.find(filter).populate("category", "nameBn nameEn slug").sort({ createdAt: -1 });
+  res.json({ products });
+}
+
 export async function getProductBySlug(req, res) {
   const product = await Product.findOne({ slug: req.params.slug, isActive: true }).populate("category", "nameBn nameEn slug");
   if (!product) return res.status(404).json({ message: "Product not found" });
