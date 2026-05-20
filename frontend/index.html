@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>বীজঘর – প্রিমিয়াম হেলথ সিড ও সুপারফুড | বাংলাদেশ</title>
+<title>PureOrigins - প্রিমিয়াম হেলথ সিড ও সুপারফুড | বাংলাদেশ</title>
 <meta name="description" content="বাংলাদেশের সেরা অর্গানিক সুপারফুড ও হেলথ সিড শপ। কালোজিরা, চিয়া সিড, মরিঙ্গা পাউডার ও আরও পণ্য হোম ডেলিভারিতে পান। COD সুবিধা।"/>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"/>
 <style>
 :root {
   --forest: #1B4332;
@@ -134,7 +134,7 @@ nav{
   min-height:60vh;
   display:flex;align-items:flex-start;
   position:relative;overflow:hidden;
-  padding:26px 20px 18px;
+  padding:28px 20px 20px;
 }
 .hero::before{
   content:'';position:absolute;inset:0;
@@ -163,7 +163,7 @@ nav{
 .hero h1 span{color:var(--gold-light)}
 .hero-subtitle{
   font-size:17px;color:rgba(255,255,255,.8);
-  margin-bottom:22px;line-height:1.7;
+  margin-bottom:32px;line-height:1.8;
 }
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
 .btn-primary{
@@ -185,6 +185,8 @@ nav{
 .hero-visual{
   display:grid;grid-template-columns:1fr 1fr;gap:16px;
   position:relative;
+  align-items:stretch;
+  grid-auto-rows:1fr;
 }
 .hero-card{
   background:rgba(255,255,255,.08);
@@ -193,10 +195,10 @@ nav{
   border-radius:16px;padding:20px;
   text-align:center;
   transition:transform .3s;
+  height:100%;
+  cursor:pointer;
 }
 .hero-card:hover{transform:translateY(-4px)}
-.hero-card:first-child{transform:translateY(20px)}
-.hero-card:nth-child(3){transform:translateY(-10px)}
 .hero-card-emoji{font-size:36px;margin-bottom:10px}
 .hero-card h3{color:var(--white);font-size:14px;font-weight:600;margin-bottom:4px}
 .hero-card p{color:rgba(255,255,255,.65);font-size:12px}
@@ -205,7 +207,7 @@ nav{
 /* ── TRUST STRIP ── */
 .trust-strip{
   background:var(--forest);
-  padding:10px 20px;
+  padding:16px 20px;
 }
 .trust-strip-inner{
   max-width:1200px;margin:0 auto;
@@ -242,7 +244,7 @@ nav{
 }
 .cat-card{
   background:var(--white);border:1.5px solid var(--border);
-  border-radius:14px;padding:18px 14px;
+  border-radius:14px;padding:24px 16px;
   text-align:center;cursor:pointer;
   transition:all .25s;
 }
@@ -255,12 +257,11 @@ nav{
 .products-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-  gap:16px;
+  gap:20px;
 }
 .product-card{
   background:var(--white);border-radius:16px;
-  border:1px solid var(--border);
-  overflow:hidden;
+  overflow:hidden;border:1px solid var(--border);
   transition:all .25s;
   position:relative;
   cursor:pointer;
@@ -278,7 +279,7 @@ nav{
   padding:3px 8px;border-radius:5px;
 }
 .product-badge.new{background:var(--forest)}
-.product-body{padding:14px}
+.product-body{padding:16px}
 .product-body h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
 .product-body .bn-name{font-size:16px;font-weight:700;color:var(--forest);margin-bottom:6px}
 .product-body .benefit{font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5}
@@ -312,7 +313,6 @@ nav{
   background:var(--white);border-radius:14px;
   border:1px solid var(--border);
 }
-.why-card{padding:20px 16px}
 .why-icon{font-size:36px;margin-bottom:12px}
 .why-card h3{font-size:15px;font-weight:600;color:var(--forest);margin-bottom:6px}
 .why-card p{font-size:13px;color:var(--text-muted);line-height:1.6}
@@ -324,7 +324,7 @@ nav{
   background:rgba(255,255,255,.1);
   backdrop-filter:blur(8px);
   border:1px solid rgba(255,255,255,.2);
-  border-radius:16px;padding:18px;
+  border-radius:16px;padding:24px;
   transition:.25s;
 }
 .combo-card:hover{background:rgba(255,255,255,.15);transform:translateY(-4px)}
@@ -350,11 +350,36 @@ nav{
 .btn-combo:hover{background:var(--gold-light);color:var(--brown)}
 
 /* ── REVIEWS ── */
-.reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.reviews-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.reviews-controls{display:flex;gap:8px;align-items:center}
+.slider-btn{
+  border:1px solid var(--border);
+  background:var(--white);
+  color:var(--forest);
+  border-radius:10px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+.slider-btn:hover{border-color:var(--forest);box-shadow:0 6px 16px rgba(27,67,50,.08)}
+.reviews-slider{
+  display:grid;
+  grid-auto-flow:column;
+  grid-auto-columns:minmax(280px,1fr);
+  gap:20px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  padding:2px 2px 8px;
+  scrollbar-width:none;
+  overscroll-behavior-inline:contain;
+}
+.reviews-slider::-webkit-scrollbar{display:none}
+.reviews-slider.rtl{direction:rtl}
 .review-card{
   background:var(--white);border-radius:14px;
   border:1px solid var(--border);
-  padding:16px;position:relative;
+  padding:22px;position:relative;
 }
 .review-card::before{
   content:'"';
@@ -380,7 +405,7 @@ nav{
 .benefit-item{
   display:flex;gap:14px;
   background:var(--white);border-radius:12px;
-  padding:14px;border:1px solid var(--border);
+  padding:18px;border:1px solid var(--border);
 }
 .benefit-icon{font-size:28px;flex-shrink:0}
 .benefit-item h4{font-size:14.5px;font-weight:600;color:var(--forest);margin-bottom:4px}
@@ -653,9 +678,6 @@ footer ul a:hover{color:var(--white)}
 .payment-option .method-desc{font-size:12px;color:var(--text-muted)}
 .payment-method-icon{font-size:22px}
 .checkout-summary{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:24px;position:sticky;top:100px}
-/* Checkout page spacing tighter */
-#page-checkout .section-sm{padding-top:22px;padding-bottom:28px}
-#page-checkout .checkout-layout{padding:18px 0 0}
 
 /* ── ABOUT PAGE ── */
 .about-hero{
@@ -797,10 +819,179 @@ footer ul a:hover{color:var(--white)}
   .nav-links{display:none}
   .hamburger{display:flex}
   .cat-grid{grid-template-columns:repeat(2,1fr)}
-  .hero{min-height:56vh;padding:24px 16px 18px}
+  .hero{min-height:70vh}
   .footer-grid{grid-template-columns:1fr}
   .trust-strip-inner{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}
   .form-row{grid-template-columns:1fr}
+}
+
+/* Mobile-first final tuning */
+html,body{max-width:100%;overflow-x:hidden}
+button,a,.product-card,.cat-card,.combo-card{touch-action:manipulation}
+input,select,textarea{font-size:16px}
+
+@media(max-width:768px){
+  body{font-size:15px}
+  .topbar{
+    display:flex;overflow-x:auto;white-space:nowrap;text-align:left;
+    gap:12px;padding:8px 12px;scrollbar-width:none;
+  }
+  .topbar::-webkit-scrollbar{display:none}
+  .topbar span{margin:0;flex:0 0 auto}
+  .nav-inner{padding:10px 12px;gap:8px}
+  .logo{font-size:22px;gap:6px;min-width:0;white-space:nowrap}
+  .logo-leaf{font-size:20px}
+  .nav-right{gap:8px}
+  .cart-btn{
+    position:relative;min-width:42px;height:40px;padding:0 10px;
+    justify-content:center;font-size:0;border-radius:10px;
+  }
+  .cart-btn::before{content:'🛒';font-size:17px}
+  .cart-count{top:-6px;right:-6px}
+  .hamburger{
+    display:flex;align-items:center;justify-content:center;
+    width:40px;height:40px;border:1px solid var(--border);
+    border-radius:10px;background:var(--white);
+  }
+  .mobile-nav{padding:10px 12px}
+  .mobile-nav.open{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .mobile-nav a{
+    border:1px solid var(--border);border-radius:10px;
+    background:var(--cream);padding:10px;font-size:14px;
+  }
+  .hero{min-height:auto;padding:22px 16px 26px}
+  .hero-content{display:block}
+  .hero-badge{font-size:11.5px;padding:5px 10px;margin-bottom:14px}
+  .hero h1{font-size:32px;line-height:1.16;margin-bottom:12px}
+  .hero-subtitle{font-size:14.5px;line-height:1.75;margin-bottom:18px}
+  .hero-actions{display:grid;grid-template-columns:1fr;gap:10px}
+  .btn-primary,.btn-outline,.btn-white{
+    width:100%;justify-content:center;text-align:center;
+    padding:13px 16px;font-size:14.5px;border-radius:11px;
+  }
+  .hero-visual{
+    display:grid;
+    grid-template-columns:none;
+    grid-auto-flow:column;
+    grid-auto-columns:132px;
+    gap:10px;
+    overflow-x:auto;
+    margin-top:20px;
+    padding:2px 2px 6px;
+    scrollbar-width:none;
+  }
+  .hero-visual::-webkit-scrollbar{display:none}
+  .hero-card{
+    min-height:142px;
+    padding:14px 10px;
+    border-radius:14px;
+  }
+  .hero-card:hover{transform:none}
+  .hero-card-emoji{font-size:30px;margin-bottom:8px}
+  .hero-card h3{font-size:13px}
+  .hero-card p{font-size:11px}
+  .hero-card .price{font-size:14px}
+  .hero-stats{gap:10px;margin-top:20px;justify-content:space-between}
+  .stat{
+    flex:1;background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.12);border-radius:12px;
+    padding:10px 6px;
+  }
+  .stat-num{font-size:22px}
+  .stat-lbl{font-size:11px}
+  .trust-strip{padding:12px}
+  .trust-strip-inner{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;
+    justify-content:stretch;overflow:visible;flex-wrap:initial;
+  }
+  .trust-item{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);
+    border-radius:10px;padding:9px 10px;font-size:12px;justify-content:flex-start;
+  }
+  .section,.section-sm{padding:28px 14px}
+  .section-head{margin-bottom:18px}
+  .section-head h2{font-size:26px;line-height:1.22}
+  .section-head p{font-size:14px;line-height:1.7}
+  .cat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .cat-card{padding:16px 10px;border-radius:12px}
+  .cat-emoji{font-size:30px;margin-bottom:8px}
+  .products-grid{grid-template-columns:1fr;gap:14px}
+  .product-card{border-radius:14px}
+  .product-card:hover{transform:none}
+  .product-img{height:160px;font-size:58px}
+  .product-body{padding:18px}
+  .bn-name{font-size:16px}
+  .price-now{font-size:21px}
+  .product-actions{display:grid;grid-template-columns:1fr 104px;gap:10px}
+  .btn-cart,.btn-view{min-height:48px;font-size:14px;border-radius:10px}
+  .why-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .why-card{padding:16px 10px;border-radius:12px}
+  .why-icon{font-size:28px}
+  .combo-grid{grid-template-columns:1fr;gap:14px}
+  .combo-card{padding:18px;border-radius:14px}
+  .reviews-toolbar{align-items:flex-start;flex-direction:column;margin-bottom:12px}
+  .reviews-controls{width:100%;justify-content:flex-end}
+  .slider-btn{width:44px;height:40px;padding:0;border-radius:10px}
+  .reviews-slider{grid-auto-columns:86%;gap:12px;padding-bottom:4px}
+  .review-card{padding:20px 16px;min-height:250px}
+  .review-text{font-size:14px;line-height:1.75}
+  .benefits-grid{grid-template-columns:1fr;gap:12px}
+  .benefit-item{padding:16px;border-radius:12px}
+  .detail-grid{grid-template-columns:1fr;gap:20px;padding:20px 14px}
+  .detail-img-main{height:260px;font-size:86px;border-radius:16px}
+  .detail-thumbs{overflow-x:auto;padding-bottom:6px}
+  .thumb{width:60px;height:60px;font-size:24px}
+  .detail-info h1{font-size:24px;line-height:1.25}
+  .detail-actions{display:grid;grid-template-columns:1fr;gap:10px}
+  .btn-buy,.btn-add{min-height:48px}
+  .detail-meta{padding:14px}
+  .tabs{overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:10px 14px;flex:0 0 auto}
+  #page-cart .container,#page-checkout .container{padding:0!important}
+  .cart-layout,.checkout-layout{grid-template-columns:1fr;gap:18px;padding:20px 14px}
+  .cart-summary,.checkout-summary{position:static;padding:18px;border-radius:14px}
+  .cart-table{border-radius:14px}
+  .cart-row{grid-template-columns:54px 1fr;gap:12px;padding:14px}
+  .cart-row-head{display:none}
+  .cart-img{width:54px;height:54px;font-size:24px}
+  .cart-row>div:nth-child(3),.cart-row>div:nth-child(4){grid-column:2}
+  .cart-row>div:nth-child(4){justify-content:space-between!important}
+  .coupon-input{display:grid;grid-template-columns:1fr auto;gap:8px}
+  .checkout-form{padding:18px;border-radius:14px}
+  .form-row{grid-template-columns:1fr;gap:12px}
+  .payment-option{padding:12px}
+  .summary-row{font-size:14px}
+  .about-hero{padding:34px 16px}
+  .about-story,.contact-grid{grid-template-columns:1fr;gap:18px;padding:28px 14px}
+  .about-visual,.contact-info,.contact-form{padding:22px;border-radius:16px}
+  .values-grid{grid-template-columns:1fr;gap:12px}
+  .value-card{padding:18px;border-radius:12px}
+  .cta-banner{padding:42px 16px}
+  footer{padding:34px 16px 20px}
+  .footer-grid{grid-template-columns:1fr;gap:24px;margin-bottom:28px}
+  .toast{
+    left:14px;right:14px;bottom:78px;width:auto;text-align:center;
+    transform:translateY(20px);
+  }
+  .toast.show{transform:translateY(0)}
+  #chatBtn{
+    right:14px!important;bottom:14px!important;
+    width:54px!important;height:54px!important;font-size:24px!important;
+  }
+}
+
+@media(max-width:420px){
+  .logo{font-size:20px}
+  .hero h1{font-size:30px}
+  .hero-visual{grid-auto-columns:124px}
+  .section-head h2{font-size:24px}
+  .product-actions{grid-template-columns:1fr}
+  .btn-view{min-height:44px}
+  .why-grid,.trust-strip-inner{grid-template-columns:1fr}
+  .reviews-slider{grid-auto-columns:88%}
+  .cart-row{grid-template-columns:48px 1fr}
+  .cart-img{width:48px;height:48px}
 }
 </style>
 </head>
@@ -820,7 +1011,7 @@ footer ul a:hover{color:var(--white)}
 <nav>
   <div class="nav-inner">
     <div class="logo" onclick="navigate('home')">
-      <span class="logo-leaf">🌿</span>বীজ<span>ঘর</span>
+      <span class="logo-leaf">🌿</span>PureOrigins
     </div>
     <ul class="nav-links">
       <li><a href="#" onclick="navigate('home')" id="nav-home" class="active">হোম</a></li>
@@ -876,10 +1067,10 @@ footer ul a:hover{color:var(--white)}
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-card"><div class="hero-card-emoji">🌿</div><h3>কালোজিরা</h3><p>Nigella Seeds</p><div class="price">৳১৮০</div></div>
-        <div class="hero-card"><div class="hero-card-emoji">🌱</div><h3>চিয়া সিড</h3><p>Chia Seeds</p><div class="price">৳২৮০</div></div>
-        <div class="hero-card"><div class="hero-card-emoji">🌻</div><h3>ফ্ল্যাক্স সিড</h3><p>Flax Seeds</p><div class="price">৳২২০</div></div>
-        <div class="hero-card"><div class="hero-card-emoji">🍃</div><h3>মরিঙ্গা পাউডার</h3><p>Moringa Powder</p><div class="price">৳৩৫০</div></div>
+        <div class="hero-card" onclick="navigate('detail',1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('detail',1)}" role="button" tabindex="0" aria-label="কালোজিরা বিস্তারিত দেখুন"><div class="hero-card-emoji">🌿</div><h3>কালোজিরা</h3><p>Nigella Seeds</p><div class="price">৳১৮০</div></div>
+        <div class="hero-card" onclick="navigate('detail',2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('detail',2)}" role="button" tabindex="0" aria-label="চিয়া সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌱</div><h3>চিয়া সিড</h3><p>Chia Seeds</p><div class="price">৳২৮০</div></div>
+        <div class="hero-card" onclick="navigate('detail',3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('detail',3)}" role="button" tabindex="0" aria-label="ফ্ল্যাক্স সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌻</div><h3>ফ্ল্যাক্স সিড</h3><p>Flax Seeds</p><div class="price">৳২২০</div></div>
+        <div class="hero-card" onclick="navigate('detail',7)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('detail',7)}" role="button" tabindex="0" aria-label="মরিঙ্গা পাউডার বিস্তারিত দেখুন"><div class="hero-card-emoji">🍃</div><h3>মরিঙ্গা পাউডার</h3><p>Moringa Powder</p><div class="price">৳৩৮০</div></div>
       </div>
     </div>
   </section>
@@ -890,7 +1081,7 @@ footer ul a:hover{color:var(--white)}
       <div class="trust-item"><span class="icon">💵</span>ক্যাশ অন ডেলিভারি</div>
       <div class="trust-item"><span class="icon">✅</span>১০০% অথেন্টিক পণ্য</div>
       <div class="trust-item"><span class="icon">🚚</span>দ্রুত হোম ডেলিভারি</div>
-      <div class="trust-item"><span class="icon">🔒</span>নিরাপদ অর্ডার</div>
+            <div class="trust-item"><span class="icon">🔒</span>নিরাপদ অর্ডার</div>
       <div class="trust-item"><span class="icon">↩️</span>রিটার্ন পলিসি</div>
     </div>
   </div>
@@ -934,7 +1125,7 @@ footer ul a:hover{color:var(--white)}
       <div class="section-head">
         <div class="tag-line">কেন আমরা</div>
         <h2>কেন আমাদের উপর বিশ্বাস করবেন?</h2>
-        <p>বীজঘর বেছে নেওয়ার কারণগুলো</p>
+        <p>PureOrigins বেছে নেওয়ার কারণগুলো</p>
       </div>
       <div class="why-grid">
         <div class="why-card"><div class="why-icon">🌱</div><h3>সরাসরি উৎস থেকে</h3><p>কোনো মধ্যস্বত্বভোগী ছাড়াই সরাসরি কৃষক থেকে সংগ্রহ করা হয়।</p></div>
@@ -942,8 +1133,7 @@ footer ul a:hover{color:var(--white)}
         <div class="why-card"><div class="why-icon">🧹</div><h3>পরিচ্ছন্ন প্যাকেজিং</h3><p>হাইজিনিক ও ফুড-গ্রেড প্যাকেজিং ব্যবহার করা হয়।</p></div>
         <div class="why-card"><div class="why-icon">👨‍👩‍👧‍👦</div><h3>পরিবার-নিরাপদ</h3><p>শিশু থেকে বৃদ্ধ — পরিবারের সবার জন্য নিরাপদ।</p></div>
         <div class="why-card"><div class="why-icon">💵</div><h3>সৎ মূল্য</h3><p>কোনো লুকানো চার্জ নেই। যা দেখবেন তাই পাবেন।</p></div>
-        <div class="why-card"><div class="why-icon">📞</div><h3>বাংলা সাপোর্ট</h3><p>বাংলায় কথা বলে সমস্যা সমাধান করুন।</p></div>
-      </div>
+              </div>
     </div>
   </section>
 
@@ -986,7 +1176,14 @@ footer ul a:hover{color:var(--white)}
         <h2>আমাদের গ্রাহকরা কী বলেন?</h2>
         <p>বাস্তব অভিজ্ঞতা থেকে আসা সত্যিকারের রিভিউ</p>
       </div>
-      <div class="reviews-grid" id="reviews-container"></div>
+      <div class="reviews-toolbar">
+        <div class="tag-line">স্লাইড করে রিভিউ পড়ুন</div>
+        <div class="reviews-controls">
+          <button class="slider-btn" type="button" onclick="slideReviews(-1)">←</button>
+          <button class="slider-btn" type="button" onclick="slideReviews(1)">→</button>
+        </div>
+      </div>
+      <div class="reviews-slider" id="reviews-container"></div>
     </div>
   </section>
 
@@ -1008,7 +1205,7 @@ footer ul a:hover{color:var(--white)}
   <section class="cta-banner">
     <div class="container">
       <h2>আজই আপনার স্বাস্থ্যকর অভ্যাস শুরু করুন</h2>
-      <p>হাজার হাজার পরিবার ইতিমধ্যে বীজঘরকে বিশ্বাস করছে। আপনিও যোগ দিন।</p>
+      <p>হাজার হাজার পরিবার ইতিমধ্যে PureOriginsকে বিশ্বাস করছে। আপনিও যোগ দিন।</p>
       <button class="btn-white" onclick="navigate('shop')">এখনই কেনাকাটা শুরু করুন 🛒</button>
     </div>
   </section>
@@ -1161,14 +1358,14 @@ footer ul a:hover{color:var(--white)}
 <div class="page" id="page-about">
   <div class="about-hero">
     <div class="tag-line">আমাদের গল্প</div>
-    <h1>বীজঘর — প্রকৃতির সাথে সুস্থ জীবনযাপন</h1>
-    <p>আমরা বিশ্বাস করি যে সুস্বাস্থ্যের শুরু হয় সঠিক খাবার থেকে। সেই বিশ্বাস থেকেই জন্ম নিয়েছে বীজঘর।</p>
+    <h1>PureOrigins — প্রকৃতির সাথে সুস্থ জীবনযাপন</h1>
+    <p>আমরা বিশ্বাস করি যে সুস্বাস্থ্যের শুরু হয় সঠিক খাবার থেকে। সেই বিশ্বাস থেকেই জন্ম নিয়েছে PureOrigins।</p>
   </div>
   <div class="about-story">
     <div class="about-story-text">
       <div class="tag-line">আমাদের যাত্রা</div>
-      <h2>কীভাবে শুরু হলো বীজঘর?</h2>
-      <p>২০২২ সালে, একটি স্বাস্থ্য-সচেতন পরিবারের চাহিদা মেটাতে গিয়ে আমরা উপলব্ধি করলাম যে বাজারে মানসম্পন্ন, বিশুদ্ধ ও সাশ্রয়ী হেলথ সিড পাওয়া কতটা কঠিন। সেখান থেকেই জন্ম নিল বীজঘর।</p>
+      <h2>কীভাবে শুরু হলো PureOrigins?</h2>
+      <p>২০২২ সালে, একটি স্বাস্থ্য-সচেতন পরিবারের চাহিদা মেটাতে গিয়ে আমরা উপলব্ধি করলাম যে বাজারে মানসম্পন্ন, বিশুদ্ধ ও সাশ্রয়ী হেলথ সিড পাওয়া কতটা কঠিন। সেখান থেকেই জন্ম নিল PureOrigins।</p>
       <p>আমাদের লক্ষ্য একটাই — বাংলাদেশের প্রতিটি পরিবারের কাছে প্রিমিয়াম মানের, সম্পূর্ণ প্রাকৃতিক ও কার্যকর স্বাস্থ্য পণ্য সাশ্রয়ী মূল্যে পৌঁছে দেওয়া।</p>
       <p>আমরা সরাসরি কৃষক ও বিশ্বস্ত সরবরাহকারীদের কাছ থেকে পণ্য সংগ্রহ করি। প্রতিটি পণ্য পরীক্ষিত, পরিষ্কার ও হাইজিনিকভাবে প্যাকেজ করা হয়।</p>
     </div>
@@ -1205,8 +1402,8 @@ footer ul a:hover{color:var(--white)}
       <p>আমাদের টিম সকাল ৯টা থেকে রাত ৯টা পর্যন্ত সেবায় প্রস্তুত।</p>
       <div class="contact-item"><span class="contact-icon">📞</span><div><h4>ফোন নম্বর</h4><p>01700-000000</p></div></div>
       <div class="contact-item"><span class="contact-icon">💬</span><div><h4>WhatsApp</h4><p>01700-000000 (বার্তা পাঠান)</p></div></div>
-      <div class="contact-item"><span class="contact-icon">📘</span><div><h4>Facebook Page</h4><p>facebook.com/BijghorBD</p></div></div>
-      <div class="contact-item"><span class="contact-icon">📧</span><div><h4>ইমেইল</h4><p>support@bijghor.com</p></div></div>
+      <div class="contact-item"><span class="contact-icon">📘</span><div><h4>Facebook Page</h4><p>facebook.com/PureOriginsBD</p></div></div>
+      <div class="contact-item"><span class="contact-icon">📧</span><div><h4>ইমেইল</h4><p>support@pureorigins.com</p></div></div>
       <div class="contact-item"><span class="contact-icon">🕐</span><div><h4>সেবার সময়</h4><p>শনি–বৃহস্পতি: সকাল ৯টা – রাত ৯টা</p></div></div>
     </div>
     <div class="contact-form">
@@ -1271,12 +1468,12 @@ footer ul a:hover{color:var(--white)}
       <h4>যোগাযোগ</h4>
       <p><span>📞</span> 01700-000000</p>
       <p><span>💬</span> WhatsApp: 01700-000000</p>
-      <p><span>📧</span> support@bijghor.com</p>
+      <p><span>📧</span> support@pureorigins.com</p>
       <p><span>🕐</span> শনি–বৃহস্পতি: ৯AM–৯PM</p>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© ২০২৪ বীজঘর। সকল স্বত্ব সংরক্ষিত।</p>
+    <p>© ২০২৪ PureOrigins। সকল স্বত্ব সংরক্ষিত।</p>
     <div class="payment-icons">
       <div class="payment-icon">COD</div>
       <div class="payment-icon">bKash</div>
@@ -1295,7 +1492,7 @@ footer ul a:hover{color:var(--white)}
 // ═══════════════════════════════════════════
 const products = [
   {id:1,emoji:'🌿',name:'কালোজিরা',enName:'Black Seeds (Kalonjira)',benefit:'রোগ প্রতিরোধ ক্ষমতা বৃদ্ধিতে সহায়ক',price:180,oldPrice:220,discount:18,category:'seeds',weight:['১০০গ্রাম','২৫০গ্রাম','৫০০গ্রাম'],stock:'in',badge:'বেস্ট সেলার',rating:4.9,reviews:312,
-    desc:'বীজঘরের কালোজিরা সরাসরি বিশ্বস্ত কৃষকের কাছ থেকে সংগ্রহ করা। পরিষ্কার ও হাইজিনিকভাবে প্যাকেজ করা এই কালোজিরা দৈনন্দিন খাদ্যতালিকায় যোগ করুন।',
+    desc:'PureOriginsের কালোজিরা সরাসরি বিশ্বস্ত কৃষকের কাছ থেকে সংগ্রহ করা। পরিষ্কার ও হাইজিনিকভাবে প্যাকেজ করা এই কালোজিরা দৈনন্দিন খাদ্যতালিকায় যোগ করুন।',
     ingredients:['Nigella sativa বীজ (১০০%)'],
     benefits:['রোগ প্রতিরোধ ক্ষমতা সহায়ক','অ্যান্টিঅক্সিডেন্ট সমৃদ্ধ','হজমে সহায়ক','ত্বকের যত্নে ব্যবহারযোগ্য'],
     usage:'প্রতিদিন সকালে ১ চা চামচ কালোজিরা মধু বা পানির সাথে খান।'},
@@ -1347,11 +1544,11 @@ const combos = [
 
 const reviews = [
   {name:'রাহেলা বেগম',loc:'ঢাকা',stars:5,text:'কালোজিরা ও মরিঙ্গা পাউডার ব্যবহার শুরু করার পর থেকে অনেক ভালো অনুভব করছি। পণ্যের মান সত্যিই প্রিমিয়াম। পরিবার নিয়ে নিয়মিত অর্ডার করব।'},
-  {name:'মোহাম্মদ রাকিব',loc:'চট্টগ্রাম',stars:5,text:'চিয়া সিড দিয়ে প্রতিদিন সকালে ডিটক্স ওয়াটার বানাই। মান দেখে অবাক হয়েছি। ডেলিভারিও অনেক দ্রুত ছিল। বীজঘরকে ধন্যবাদ!'},
+  {name:'মোহাম্মদ রাকিব',loc:'চট্টগ্রাম',stars:5,text:'চিয়া সিড দিয়ে প্রতিদিন সকালে ডিটক্স ওয়াটার বানাই। মান দেখে অবাক হয়েছি। ডেলিভারিও অনেক দ্রুত ছিল। PureOriginsকে ধন্যবাদ!'},
   {name:'সুমাইয়া ইসলাম',loc:'সিলেট',stars:5,text:'ফ্যামিলি প্যাকটা নিয়েছিলাম — একদম ঠিক পরিমাণে সব কিছু। প্যাকেজিং খুব সুন্দর ছিল। মধুটা একদম খাঁটি বুঝতে পারলাম।'},
   {name:'তানভীর হোসেন',loc:'রাজশাহী',stars:4,text:'ফ্ল্যাক্স সিড ও পাম্পকিন সিডের কম্বো নিয়েছিলাম। জিম করার পর খাই — এনার্জি ভালো থাকে। আবার অর্ডার দিয়েছি।'},
   {name:'নাজমা খাতুন',loc:'খুলনা',stars:5,text:'COD সুবিধা থাকায় অর্ডার দিতে ভয় পাইনি। পণ্য এসেছে সুন্দর প্যাকেটে। বিটরুট পাউডার দারুণ! সবাইকে রেকমেন্ড করি।'},
-  {name:'আরিফুল ইসলাম',loc:'গাজীপুর',stars:5,text:'বীজঘরের পণ্যের মান অন্য যেকোনো শপের চেয়ে ভালো। মরিঙ্গা পাউডার শুরু করার পর থেকে অনেক এনার্জেটিক অনুভব করছি।'},
+  {name:'আরিফুল ইসলাম',loc:'গাজীপুর',stars:5,text:'PureOriginsের পণ্যের মান অন্য যেকোনো শপের চেয়ে ভালো। মরিঙ্গা পাউডার শুরু করার পর থেকে অনেক এনার্জেটিক অনুভব করছি।'},
 ];
 
 const faqs = [
@@ -1367,10 +1564,10 @@ const faqs = [
 // ═══════════════════════════════════════════
 //  CART
 // ═══════════════════════════════════════════
-let cart = JSON.parse(localStorage.getItem('bijghor_cart') || '[]');
+let cart = JSON.parse(localStorage.getItem('pureorigins_cart') || '[]');
 let selectedPayment = 'cod';
 
-function saveCart(){localStorage.setItem('bijghor_cart',JSON.stringify(cart))}
+function saveCart(){localStorage.setItem('pureorigins_cart',JSON.stringify(cart))}
 
 function updateCartCount(){
   const total = cart.reduce((s,i)=>s+i.qty,0);
@@ -1453,7 +1650,9 @@ function addComboToCart(cid){
 }
 
 function renderReviews(){
-  document.getElementById('reviews-container').innerHTML = reviews.map(r=>`
+  const container = document.getElementById('reviews-container');
+  if(!container)return;
+  container.innerHTML = reviews.map(r=>`
     <div class="review-card">
       <div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
       <p class="review-text">${r.text}</p>
@@ -1462,6 +1661,47 @@ function renderReviews(){
         <div><div class="reviewer-name">${r.name}</div><div class="reviewer-loc">📍 ${r.loc}</div></div>
       </div>
     </div>`).join('');
+  setupReviewSlider();
+}
+
+let reviewsRtl = false;
+function setupReviewSlider(){
+  const slider = document.getElementById('reviews-container');
+  if(!slider)return;
+  if(!slider.dataset.reviewSliderReady){
+    slider.addEventListener('touchstart',stopReviewsAutoScroll,{passive:true});
+    slider.addEventListener('touchend',startReviewsAutoScroll,{passive:true});
+    slider.dataset.reviewSliderReady='1';
+  }
+  startReviewsAutoScroll();
+}
+let reviewsAutoTimer = null;
+function stopReviewsAutoScroll(){
+  if(reviewsAutoTimer)clearInterval(reviewsAutoTimer);
+  reviewsAutoTimer = null;
+}
+function startReviewsAutoScroll(){
+  const slider = document.getElementById('reviews-container');
+  if(!slider)return;
+  stopReviewsAutoScroll();
+  reviewsAutoTimer = setInterval(()=>{
+    if(!document.body.contains(slider)){stopReviewsAutoScroll();return;}
+    const maxScroll = slider.scrollWidth - slider.clientWidth;
+    if(maxScroll<=0)return;
+    if(slider.scrollLeft >= maxScroll-2){
+      slider.scrollTo({left:0,behavior:'smooth'});
+      return;
+    }
+    slider.scrollBy({left:1,behavior:'auto'});
+  },24);
+}
+function slideReviews(direction){
+  const slider = document.getElementById('reviews-container');
+  if(!slider)return;
+  stopReviewsAutoScroll();
+  const step = Math.max(280,Math.round(slider.clientWidth*.85));
+  slider.scrollBy({left:direction*step,behavior:'smooth'});
+  setTimeout(startReviewsAutoScroll,2200);
 }
 
 function renderFaqBlock(containerId,limit=null){
