@@ -1,0 +1,16 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+:root{--forest:#1B4332;--beige:#FDFCF5;--gold:#C4972F;--black:#141414;--card:#fff;--muted:#6B6156}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Hind Siliguri",sans-serif;background:var(--beige);color:var(--black)}
+.top{background:var(--forest);color:#e8c96b;padding:8px 16px;text-align:center;font-size:13px}
+.nav{display:flex;justify-content:space-between;padding:14px 20px;background:#fff;border-bottom:1px solid #e7dec7;position:sticky;top:0}
+.brand{font-size:28px;font-weight:700}.brand span{color:var(--gold)}.links a{margin-left:14px}
+.hero{padding:56px 20px;background:linear-gradient(135deg,#0f2d20,#1B4332);color:#fff}.hero h1{font-size:40px;margin:0}.hero span{color:#e8c96b}
+.section{padding:26px 20px;max-width:1100px;margin:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card,.product{background:var(--card);border:1px solid #eadfca;border-radius:12px;padding:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.product button,button{background:var(--forest);color:#fff;border:none;border-radius:8px;padding:8px 12px}
+input,select,textarea{width:100%;padding:8px;border:1px solid #d9ccb4;border-radius:8px;margin-bottom:8px}
+.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:768px){.auth-grid{grid-template-columns:1fr}.hero h1{font-size:30px}}
