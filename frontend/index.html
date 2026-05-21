@@ -1569,7 +1569,8 @@ const faqs = [
 // ═══════════════════════════════════════════
 //  CART
 // ═══════════════════════════════════════════
-const API_BASE = window.PUREORIGINS_API_BASE || "http://localhost:5000/api";
+const isLocalFrontend = ["127.0.0.1", "localhost", ""].includes(location.hostname);
+const API_BASE = window.PUREORIGINS_API_BASE || (isLocalFrontend ? "http://localhost:5000/api" : "https://pureorigins.onrender.com/api");
 
 async function apiRequest(path, options = {}) {
   const headers = { ...(options.headers || {}) };

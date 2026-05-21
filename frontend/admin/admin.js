@@ -1,5 +1,5 @@
-const localApiHost = ["127.0.0.1", "localhost", ""].includes(location.hostname) ? "localhost" : location.hostname;
-const API = `${location.protocol}//${localApiHost}:5000/api`;
+const isLocalFrontend = ["127.0.0.1", "localhost", ""].includes(location.hostname);
+const API = isLocalFrontend ? "http://localhost:5000/api" : "https://pureorigins.onrender.com/api";
 const state = {
   user: null,
   products: [],
