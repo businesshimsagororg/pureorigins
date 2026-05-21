@@ -4,6 +4,7 @@ import Coupon from "../models/Coupon.js";
 import Product from "../models/Product.js";
 import InventoryMovement from "../models/InventoryMovement.js";
 import User from "../models/User.js";
+import AbandonedCart from "../models/AbandonedCart.js";
 import { calcCouponDiscount, deliveryChargeByDistrict } from "../utils/pricing.js";
 import { initiatePayment } from "../services/paymentService.js";
 import { notifyOrderPlaced, notifyOrderStatus } from "../services/notificationService.js";
@@ -47,6 +48,7 @@ export async function createOrder(req, res) {
     paymentMethod = "COD",
     couponCode,
     notes,
+    abandonedCartSessionId,
     items = []
   } = req.body;
 
@@ -106,6 +108,17 @@ export async function createOrder(req, res) {
     cart.items = [];
     cart.couponCode = undefined;
     await cart.save();
+  }
+
+  const recoveredFilters = [];
+  if (req.auth?.sub) recoveredFilters.push({ user: req.auth.sub });
+  if (customerPhone) recoveredFilters.push({ phone: customerPhone });
+  if (abandonedCartSessionId) recoveredFilters.push({ sessionId: abandonedCartSessionId });
+  if (recoveredFilters.length) {
+    await AbandonedCart.updateMany(
+      { recovered: false, $or: recoveredFilters },
+      { $set: { recovered: true, reminderSentAt: new Date(), lastActiveAt: new Date() } }
+    );
   }
 
   const user = req.auth?.sub ? await User.findById(req.auth.sub).select("email") : null;

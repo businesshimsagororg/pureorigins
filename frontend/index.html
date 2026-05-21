@@ -1650,8 +1650,48 @@ function navigateHeroProduct(slug, fallbackId) {
 
 let cart = JSON.parse(localStorage.getItem('pureorigins_cart') || '[]');
 let selectedPayment = 'cod';
+const abandonedCartSessionId = localStorage.getItem('pureorigins_cart_session') || ((window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `cart-${Date.now()}-${Math.random().toString(16).slice(2)}`);
+localStorage.setItem('pureorigins_cart_session', abandonedCartSessionId);
+let abandonedCartTimer = null;
 
-function saveCart(){localStorage.setItem('pureorigins_cart',JSON.stringify(cart))}
+function getFieldValue(...ids){
+  for(const id of ids){
+    const el=document.getElementById(id);
+    if(el)return el.value.trim();
+  }
+  return '';
+}
+
+function cartItemsForApi(){
+  return cart
+    .map(item=>({product:item.productId||item.id,variantWeight:item.weight,quantity:item.qty}))
+    .filter(item=>/^[a-f0-9]{24}$/i.test(String(item.product)));
+}
+
+function scheduleAbandonedCartSync(){
+  if(abandonedCartTimer)clearTimeout(abandonedCartTimer);
+  abandonedCartTimer=setTimeout(syncAbandonedCart,600);
+}
+
+async function syncAbandonedCart(){
+  const items=cartItemsForApi();
+  if(!items.length)return;
+  try{
+    await apiRequest('/cart/abandoned',{
+      method:'POST',
+      body:{
+        sessionId:abandonedCartSessionId,
+        phone:getFieldValue('co-phone','checkoutPhone'),
+        email:getFieldValue('co-email','checkoutEmail'),
+        items
+      }
+    });
+  }catch(error){
+    console.warn('Abandoned cart sync failed',error);
+  }
+}
+
+function saveCart(){localStorage.setItem('pureorigins_cart',JSON.stringify(cart));scheduleAbandonedCartSync()}
 
 function updateCartCount(){
   const total = cart.reduce((s,i)=>s+i.qty,0);
@@ -1880,10 +1920,10 @@ function selectPayment(el,method){
 }
 
 async function placeOrder(){
-  const name=document.getElementById('checkoutName').value.trim();
-  const phone=document.getElementById('checkoutPhone').value.trim();
-  const address=document.getElementById('checkoutAddress').value.trim();
-  const district=document.getElementById('checkoutDistrict').value;
+  const name=getFieldValue('co-name','checkoutName');
+  const phone=getFieldValue('co-phone','checkoutPhone');
+  const address=getFieldValue('co-address','checkoutAddress');
+  const district=getFieldValue('co-district','checkoutDistrict');
   if(!cart.length){showToast('Cart is empty');return}
   if(!name||!phone||!address||!district){showToast('Please complete delivery information');return}
   const paymentMethod=document.querySelector('.payment-option.active')?.dataset.payment||'cod';
@@ -1894,9 +1934,10 @@ async function placeOrder(){
     customerPhone:phone,
     shippingAddress:address,
     district,
-    upazila:document.getElementById('checkoutArea').value.trim(),
+    upazila:getFieldValue('co-upazila','checkoutArea'),
     paymentMethod:mapPaymentMethod(paymentMethod),
-    notes:document.getElementById('checkoutNote').value.trim(),
+    notes:getFieldValue('co-note','checkoutNote'),
+    abandonedCartSessionId,
     items:orderItems
   };
   try{
@@ -2088,6 +2129,10 @@ function renderStorefront(){
 (function init(){
   renderStorefront();
   loadProductsFromApi();
+  ['co-phone','co-email','checkoutPhone','checkoutEmail'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('input',scheduleAbandonedCartSync);
+  });
 })();
 </script>
 </body>

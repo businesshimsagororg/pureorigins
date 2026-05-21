@@ -3,20 +3,20 @@ import { sendSMS } from "./smsService.js";
 import { sendEmail } from "./emailService.js";
 
 export async function notifyOrderPlaced({ customerPhone, customerEmail, orderId, total }) {
-  const smsText = `????? ?????? (${orderId}) ????? ??? ?????? ???: ?${total}. ??????? - PureOrigins`;
+  const smsText = `আপনার PureOrigins অর্ডার (${orderId}) গ্রহণ করা হয়েছে। মোট: ৳${total}. ধন্যবাদ।`;
   const sms = await sendSMS({ to: customerPhone, message: smsText });
   await Notification.create({ type: "sms", recipient: customerPhone, subject: "Order placed", message: smsText, status: sms.ok ? "sent" : "failed" });
 
   if (customerEmail) {
     const subject = `PureOrigins Order Confirmation #${orderId}`;
-    const html = `<p>Thank you for your order.</p><p>Order: ${orderId}</p><p>Total: ?${total}</p>`;
+    const html = `<p>Thank you for your order.</p><p>Order: ${orderId}</p><p>Total: ৳${total}</p>`;
     const email = await sendEmail({ to: customerEmail, subject, html });
     await Notification.create({ type: "email", recipient: customerEmail, subject, message: `Order ${orderId}`, status: email.ok ? "sent" : "failed" });
   }
 }
 
 export async function notifyOrderStatus({ customerPhone, customerEmail, orderId, status }) {
-  const smsText = `?????? ${orderId} ?????: ${status}`;
+  const smsText = `আপনার PureOrigins অর্ডার ${orderId} এখন: ${status}`;
   const sms = await sendSMS({ to: customerPhone, message: smsText });
   await Notification.create({ type: "sms", recipient: customerPhone, subject: "Order status", message: smsText, status: sms.ok ? "sent" : "failed" });
 

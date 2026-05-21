@@ -1,4 +1,5 @@
-const API = `${location.protocol}//${location.hostname || "localhost"}:5000/api`;
+const localApiHost = ["127.0.0.1", "localhost", ""].includes(location.hostname) ? "localhost" : location.hostname;
+const API = `${location.protocol}//${localApiHost}:5000/api`;
 const state = {
   user: null,
   products: [],
@@ -116,7 +117,13 @@ function statusPill(value, active = true) {
 }
 
 async function loadProducts() {
-  const { products } = await req("/products/admin/products");
+  let products = [];
+  try {
+    ({ products } = await req("/products/admin/products"));
+  } catch (error) {
+    ({ products } = await req("/products"));
+    setMessage("Backend is running an older build, so product list is using public API fallback.", "error");
+  }
   state.products = products;
   const map = new Map();
   products.forEach(product => {
@@ -347,7 +354,13 @@ function editCoupon(id) {
 
 async function loadReviews() {
   const status = $("#reviewFilter")?.value || "";
-  const { reviews } = await req(`/reviews/admin/reviews${status ? `?status=${status}` : ""}`);
+  let reviews = [];
+  try {
+    ({ reviews } = await req(`/reviews/admin/reviews${status ? `?status=${status}` : ""}`));
+  } catch (error) {
+    reviews = [];
+    setMessage("Review admin API is not available until the backend is restarted with the latest code.", "error");
+  }
   state.reviews = reviews;
   renderReviews();
 }

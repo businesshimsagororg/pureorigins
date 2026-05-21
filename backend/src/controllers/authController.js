@@ -5,12 +5,22 @@ import Admin from "../models/Admin.js";
 import { signToken } from "../middleware/auth.js";
 import { env } from "../config/env.js";
 
-function setAuthCookie(res, token) {
-  res.cookie("accessToken", token, {
+function cookieOptions(req) {
+  const host = req.hostname || "";
+  const isLocalHost = host === "localhost" || host === "127.0.0.1" || host === "::1";
+  const domain = env.cookieDomain && !isLocalHost ? env.cookieDomain : undefined;
+
+  return {
     httpOnly: true,
     sameSite: env.cookieSameSite,
     secure: env.cookieSecure,
-    domain: env.cookieDomain || undefined,
+    domain
+  };
+}
+
+function setAuthCookie(req, res, token) {
+  res.cookie("accessToken", token, {
+    ...cookieOptions(req),
     maxAge: 7 * 24 * 3600 * 1000
   });
 }
@@ -24,7 +34,7 @@ export async function register(req, res) {
   const passwordHash = await bcrypt.hash(password, 10);
   const user = await User.create({ name, phone, email, passwordHash });
   const token = signToken(user);
-  setAuthCookie(res, token);
+  setAuthCookie(req, res, token);
   res.status(201).json({ user: { id: user._id, name: user.name, role: user.role } });
 }
 
@@ -35,17 +45,12 @@ export async function login(req, res) {
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) return res.status(401).json({ message: "Invalid credentials" });
   const token = signToken(user);
-  setAuthCookie(res, token);
+  setAuthCookie(req, res, token);
   res.json({ user: { id: user._id, name: user.name, role: user.role } });
 }
 
 export async function logout(req, res) {
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    sameSite: env.cookieSameSite,
-    secure: env.cookieSecure,
-    domain: env.cookieDomain || undefined
-  });
+  res.clearCookie("accessToken", cookieOptions(req));
   res.json({ message: "Logged out" });
 }
 
