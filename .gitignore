@@ -1,0 +1,8 @@
+backend/node_modules/
+backend/.env
+backend/uploads/
+node_modules/
+.env
+uploads/
+.DS_Store
+Thumbs.db
