@@ -737,6 +737,11 @@ footer ul a:hover{color:var(--white)}
 .confirm-icon{font-size:72px;margin-bottom:24px}
 .confirm-page h1{font-family:var(--font-en);font-size:32px;font-weight:700;color:var(--forest);margin-bottom:12px}
 .confirm-page p{font-size:15px;color:var(--text-muted);line-height:1.8;margin-bottom:8px}
+.policy-card{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:28px;box-shadow:0 8px 28px var(--shadow);max-width:900px;margin:0 auto}
+.policy-card h2{font-family:var(--font-en);font-size:30px;color:var(--forest);margin-bottom:12px}
+.policy-card h3{font-size:18px;color:var(--forest);margin:22px 0 8px}
+.policy-card p,.policy-card li{color:var(--text-muted);font-size:15px;line-height:1.8}
+.policy-card ul{padding-left:22px;margin:10px 0}
 .order-box{
   background:var(--cream-dark);border-radius:16px;
   padding:24px;margin:28px 0;text-align:left;
@@ -1019,12 +1024,12 @@ input,select,textarea{font-size:16px}
       <span class="logo-leaf">🌿</span>PureOrigins
     </div>
     <ul class="nav-links">
-      <li><a href="#" onclick="navigate('home')" id="nav-home" class="active">হোম</a></li>
-      <li><a href="#" onclick="navigate('shop')" id="nav-shop">পণ্যসমূহ</a></li>
-      <li><a href="#" onclick="navigate('combos')" id="nav-combos">কম্বো অফার</a></li>
-      <li><a href="#" onclick="navigate('about')" id="nav-about">আমাদের সম্পর্কে</a></li>
-      <li><a href="#" onclick="navigate('faq')" id="nav-faq">FAQ</a></li>
-      <li><a href="#" onclick="navigate('contact')" id="nav-contact">যোগাযোগ</a></li>
+      <li><a href="#home" onclick="navigate('home');return false;" id="nav-home" class="active">হোম</a></li>
+      <li><a href="#shop" onclick="navigate('shop');return false;" id="nav-shop">পণ্যসমূহ</a></li>
+      <li><a href="#combos" onclick="navigate('combos');return false;" id="nav-combos">কম্বো অফার</a></li>
+      <li><a href="#about" onclick="navigate('about');return false;" id="nav-about">আমাদের সম্পর্কে</a></li>
+      <li><a href="#faq" onclick="navigate('faq');return false;" id="nav-faq">FAQ</a></li>
+      <li><a href="#contact" onclick="navigate('contact');return false;" id="nav-contact">যোগাযোগ</a></li>
     </ul>
     <div class="nav-right">
       <button class="cart-btn" onclick="navigate('cart')">
@@ -1036,12 +1041,12 @@ input,select,textarea{font-size:16px}
     </div>
   </div>
   <div class="mobile-nav" id="mobileNav">
-    <a href="#" onclick="navigate('home');toggleMobile()">🏠 হোম</a>
-    <a href="#" onclick="navigate('shop');toggleMobile()">🛍️ পণ্যসমূহ</a>
-    <a href="#" onclick="navigate('combos');toggleMobile()">🎁 কম্বো অফার</a>
-    <a href="#" onclick="navigate('about');toggleMobile()">ℹ️ আমাদের সম্পর্কে</a>
-    <a href="#" onclick="navigate('faq');toggleMobile()">❓ FAQ</a>
-    <a href="#" onclick="navigate('contact');toggleMobile()">📞 যোগাযোগ</a>
+    <a href="#home" onclick="navigate('home');toggleMobile();return false;">🏠 হোম</a>
+    <a href="#shop" onclick="navigate('shop');toggleMobile();return false;">🛍️ পণ্যসমূহ</a>
+    <a href="#combos" onclick="navigate('combos');toggleMobile();return false;">🎁 কম্বো অফার</a>
+    <a href="#about" onclick="navigate('about');toggleMobile();return false;">ℹ️ আমাদের সম্পর্কে</a>
+    <a href="#faq" onclick="navigate('faq');toggleMobile();return false;">❓ FAQ</a>
+    <a href="#contact" onclick="navigate('contact');toggleMobile();return false;">📞 যোগাযোগ</a>
   </div>
 </nav>
 
@@ -1050,7 +1055,7 @@ input,select,textarea{font-size:16px}
 
   <!-- OFFER BANNER -->
   <div class="banner-offer">
-    🎉 প্রথম অর্ডারে <span>১৫% ছাড়</span> পাচ্ছেন! কোড ব্যবহার করুন: <span>BIJGHOR15</span>
+    🎉 প্রথম অর্ডারে <span>১৫% ছাড়</span> পাচ্ছেন! কোড ব্যবহার করুন: <span>PURE15</span>
   </div>
 
   <!-- HERO -->
@@ -1348,7 +1353,7 @@ input,select,textarea{font-size:16px}
     <p>আপনার অর্ডার আমরা পেয়েছি। শীঘ্রই আমাদের টিম আপনাকে কল করে নিশ্চিত করবে।</p>
     <div class="order-box">
       <h3>অর্ডার বিবরণী</h3>
-      <div class="order-detail"><span>অর্ডার নম্বর</span><span id="conf-orderno" style="font-weight:700;color:var(--forest)">#BG-00001</span></div>
+      <div class="order-detail"><span>অর্ডার নম্বর</span><span id="conf-orderno" style="font-weight:700;color:var(--forest)">-</span></div>
       <div class="order-detail"><span>পেমেন্ট পদ্ধতি</span><span id="conf-payment">Cash on Delivery</span></div>
       <div class="order-detail"><span>আনুমানিক ডেলিভারি</span><span>৩–৭ কার্যদিবস</span></div>
       <div class="order-detail"><span>ডেলিভারি ঠিকানা</span><span id="conf-address">—</span></div>
@@ -1437,11 +1442,25 @@ input,select,textarea{font-size:16px}
   </section>
 </div>
 
+
+<!-- POLICY PAGE -->
+<div class="page" id="page-policy">
+  <div class="shop-header">
+    <h1 id="policy-title">PureOrigins Policy</h1>
+    <p id="policy-subtitle">Clear store policies for safe shopping.</p>
+  </div>
+  <section class="section-sm">
+    <div class="container">
+      <div class="policy-card" id="policy-content"></div>
+    </div>
+  </section>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <div class="logo">🌿 বীজ<span>ঘর</span></div>
+      <div class="logo">Pure<span>Origins</span></div>
       <p>বাংলাদেশের বিশ্বস্ত হেলথ সিড ও সুপারফুড শপ। প্রকৃতির সেরা উপহার আপনার দোরগোড়ায়।</p>
       <div class="social-links">
         <a class="social-link facebook-link" href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook Page"><span class="fb-logo">f</span><span class="social-text">Facebook</span></a>
@@ -1453,20 +1472,20 @@ input,select,textarea{font-size:16px}
     <div>
       <h4>দ্রুত লিংক</h4>
       <ul>
-        <li><a href="#" onclick="navigate('home')">হোম</a></li>
-        <li><a href="#" onclick="navigate('shop')">পণ্যসমূহ</a></li>
-        <li><a href="#" onclick="navigate('combos')">কম্বো অফার</a></li>
-        <li><a href="#" onclick="navigate('about')">আমাদের সম্পর্কে</a></li>
-        <li><a href="#" onclick="navigate('faq')">FAQ</a></li>
+        <li><a href="#home" onclick="navigate('home');return false;">হোম</a></li>
+        <li><a href="#shop" onclick="navigate('shop');return false;">পণ্যসমূহ</a></li>
+        <li><a href="#combos" onclick="navigate('combos');return false;">কম্বো অফার</a></li>
+        <li><a href="#about" onclick="navigate('about');return false;">আমাদের সম্পর্কে</a></li>
+        <li><a href="#faq" onclick="navigate('faq');return false;">FAQ</a></li>
       </ul>
     </div>
     <div>
       <h4>পলিসি</h4>
       <ul>
-        <li><a href="#">রিটার্ন পলিসি</a></li>
-        <li><a href="#">প্রাইভেসি পলিসি</a></li>
-        <li><a href="#">ডেলিভারি পলিসি</a></li>
-        <li><a href="#">শর্তাবলী</a></li>
+        <li><a href="#policy-return" onclick="navigate('policy','return');return false;">রিটার্ন পলিসি</a></li>
+        <li><a href="#policy-privacy" onclick="navigate('policy','privacy');return false;">প্রাইভেসি পলিসি</a></li>
+        <li><a href="#policy-delivery" onclick="navigate('policy','delivery');return false;">ডেলিভারি পলিসি</a></li>
+        <li><a href="#policy-terms" onclick="navigate('policy','terms');return false;">শর্তাবলী</a></li>
       </ul>
     </div>
     <div class="footer-contact">
@@ -1478,7 +1497,7 @@ input,select,textarea{font-size:16px}
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© ২০২৪ PureOrigins। সকল স্বত্ব সংরক্ষিত।</p>
+    <p>(c) <span id="copyright-year">2026</span> PureOrigins. All rights reserved.</p>
     <div class="payment-icons">
       <div class="payment-icon">COD</div>
       <div class="payment-icon">bKash</div>
@@ -1618,7 +1637,7 @@ function apiProductToUi(product) {
     weight: variants.length ? variants.map(variant => variant.weight) : ["\u09E7\u09E6\u09E6\u0997\u09CD\u09B0\u09BE\u09AE"],
     benefit: product.shortDescription || product.description || "Premium natural wellness product",
     desc: product.description || product.shortDescription || "Premium natural wellness product",
-    ingredients: Array.isArray(product.ingredients) ? product.ingredients.join(", ") : (product.ingredients || "Pure natural ingredients"),
+    ingredients: Array.isArray(product.ingredients) ? product.ingredients : [product.ingredients || "Pure natural ingredients"],
     benefits: Array.isArray(product.benefits) ? product.benefits : [],
     usage: Array.isArray(product.usageInstructions) ? product.usageInstructions.join(" ") : (product.usageInstructions || "Use as part of your daily routine.")
   };
@@ -1650,6 +1669,7 @@ function navigateHeroProduct(slug, fallbackId) {
 }
 
 let cart = JSON.parse(localStorage.getItem('pureorigins_cart') || '[]');
+let hasConfirmedOrder = false;
 let selectedPayment = 'cod';
 const abandonedCartSessionId = localStorage.getItem('pureorigins_cart_session') || ((window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `cart-${Date.now()}-${Math.random().toString(16).slice(2)}`);
 localStorage.setItem('pureorigins_cart_session', abandonedCartSessionId);
@@ -1725,10 +1745,14 @@ function getDelivery(){return getCartTotal()>=800?0:80}
 // ═══════════════════════════════════════════
 //  RENDER HELPERS
 // ═══════════════════════════════════════════
+function jsString(value){return JSON.stringify(String(value ?? ''));}
+
 function productCard(p,showAdd=true){
+  const idJson = jsString(p.id);
+  const weightJson = jsString((p.weight && p.weight[0]) || '');
   const badgeHtml = p.badge?`<div class="product-badge ${p.badge==='নতুন'||p.badge==='সুপারফুড'?'new':''}">${p.badge}</div>`:'';
   const discHtml = p.discount?`<div class="product-badge" style="top:12px;right:12px;left:auto;background:var(--red)">-${p.discount}%</div>`:'';
-  return `<div class="product-card" onclick="navigate('detail','${p.id}')" role="button" tabindex="0" aria-label="${p.name} বিস্তারিত দেখুন">
+  return `<div class="product-card" onclick="navigate('detail',${idJson})" role="button" tabindex="0" aria-label="${p.name} বিস্তারিত দেখুন">
     <div class="product-img">${p.emoji}${badgeHtml}${discHtml}</div>
     <div class="product-body">
       <div class="bn-name">${p.name}</div>
@@ -1739,8 +1763,8 @@ function productCard(p,showAdd=true){
         ${p.oldPrice?`<span class="price-old">৳${p.oldPrice}</span><span class="price-save">৳${p.oldPrice-p.price} সাশ্রয়</span>`:''}
       </div>
       <div class="product-actions">
-        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addToCart(getProduct('${p.id}'),'${p.weight[0]}')">🛒 কার্টে যোগ</button>`:''}
-        <button class="btn-view" onclick="event.stopPropagation();navigate('detail','${p.id}')">বিবরণ →</button>
+        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addToCart(getProduct(${idJson}),${weightJson})">🛒 কার্টে যোগ</button>`:''}
+        <button class="btn-view" onclick="event.stopPropagation();navigate('detail',${idJson})">বিবরণ →</button>
       </div>
     </div>
   </div>`;
@@ -1846,6 +1870,24 @@ function toggleFaq(id){
   document.getElementById(id).classList.toggle('open');
 }
 
+
+const policyPages = {
+  return: {title:'Return Policy', subtitle:'PureOrigins return and exchange support.', html:'<h2>Return Policy</h2><p>If you receive a damaged, wrong, or quality-problem product, contact PureOrigins within 48 hours with photos or video.</p><h3>Accepted cases</h3><ul><li>Wrong product delivered.</li><li>Package arrived damaged or opened.</li><li>Product quality issue reported quickly with proof.</li></ul><h3>Not accepted</h3><p>Used products, late complaints, or customer ordering mistakes are reviewed case by case.</p>'},
+  privacy: {title:'Privacy Policy', subtitle:'How PureOrigins protects customer information.', html:'<h2>Privacy Policy</h2><p>We use your name, phone, address, and order details only to confirm orders, deliver products, provide support, and improve store safety.</p><h3>Data use</h3><ul><li>Order confirmation and delivery.</li><li>Customer support and order updates.</li><li>Website improvement and fraud prevention.</li></ul><p>PureOrigins does not sell customer information.</p>'},
+  delivery: {title:'Delivery Policy', subtitle:'Delivery timing and charge information.', html:'<h2>Delivery Policy</h2><p>We deliver across Bangladesh through trusted delivery partners.</p><h3>Estimated time</h3><ul><li>Inside Dhaka: usually 1-3 business days.</li><li>Outside Dhaka: usually 3-7 business days.</li></ul><h3>Delivery charge</h3><p>Delivery charge depends on location and order value. Final total is shown during checkout.</p>'},
+  terms: {title:'Terms & Conditions', subtitle:'Terms for using PureOrigins.', html:'<h2>Terms & Conditions</h2><p>By ordering from PureOrigins, you agree to our order, delivery, return, and payment policies.</p><h3>Order rules</h3><ul><li>Stock and prices may change.</li><li>Wrong delivery information can delay delivery.</li><li>COD orders may require phone confirmation.</li></ul><p>For any question, contact PureOrigins customer support.</p>'}
+};
+
+function renderPolicy(type){
+  const policy = policyPages[type] || policyPages.return;
+  const title = document.getElementById('policy-title');
+  const subtitle = document.getElementById('policy-subtitle');
+  const content = document.getElementById('policy-content');
+  if(title)title.textContent = policy.title;
+  if(subtitle)subtitle.textContent = policy.subtitle;
+  if(content)content.innerHTML = policy.html;
+}
+
 function renderCart(){
   const items = document.getElementById('cart-items');
   const summary = document.getElementById('cart-summary-box');
@@ -1895,7 +1937,7 @@ function renderCart(){
 
 function applyCoupon(){
   const code=document.getElementById('coupon-code')?.value.trim().toUpperCase();
-  if(code==='BIJGHOR15'){showToast('🎉 কুপন প্রয়োগ হয়েছে! ১৫% ছাড় পাচ্ছেন');}
+  if(code==='PURE15'){showToast('🎉 কুপন প্রয়োগ হয়েছে! ১৫% ছাড় পাচ্ছেন');}
   else{showToast('❌ কুপন কোড সঠিক নয়');}
 }
 
@@ -1948,9 +1990,10 @@ async function placeOrder(){
       return;
     }
     const order=data.order;
-    document.getElementById('confirmationOrderId').textContent='#'+String(order._id||'').slice(-8).toUpperCase();
-    document.getElementById('confirmationPayment').textContent=payload.paymentMethod==='COD'?'\u0995\u09CD\u09AF\u09BE\u09B6 \u0985\u09A8 \u09A1\u09C7\u09B2\u09BF\u09AD\u09BE\u09B0\u09BF':payload.paymentMethod;
-    document.getElementById('confirmationAddress').textContent=address+', '+district;
+    hasConfirmedOrder = true;
+    document.getElementById('conf-orderno').textContent='#PO-'+String(order._id||'').slice(-8).toUpperCase();
+    document.getElementById('conf-payment').textContent=payload.paymentMethod==='COD'?'\u0995\u09CD\u09AF\u09BE\u09B6 \u0985\u09A8 \u09A1\u09C7\u09B2\u09BF\u09AD\u09BE\u09B0\u09BF':payload.paymentMethod;
+    document.getElementById('conf-address').textContent=address+', '+district;
     cart=[];
     saveCart();
     updateCartCount();
@@ -2081,6 +2124,7 @@ function filterProducts(){
 //  NAVIGATION
 // ═══════════════════════════════════════════
 function navigate(page,data=null){
+  if(page==='confirm' && !hasConfirmedOrder){page='home';data=null;}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
   const pageEl=document.getElementById('page-'+page);
@@ -2094,7 +2138,9 @@ function navigate(page,data=null){
   if(page==='checkout'){if(cart.length===0){showToast('কার্ট খালি!');navigate('shop');return;}renderCheckoutSummary();}
   if(page==='combos'){document.getElementById('combos-page').innerHTML=combos.map(comboCard).join('');}
   if(page==='faq'){renderFaqBlock('full-faq');}
+  if(page==='policy'){renderPolicy(data || 'return');}
 }
+
 
 function toggleMobile(){document.getElementById('mobileNav').classList.toggle('open');}
 
@@ -2111,6 +2157,8 @@ function showToast(msg){
 //  INIT
 // ═══════════════════════════════════════════
 function renderStorefront(){
+  const yearEl=document.getElementById('copyright-year');
+  if(yearEl)yearEl.textContent=new Date().getFullYear();
   // Home products (top 8)
   const homeProds=document.getElementById('home-products');
   if(homeProds)homeProds.innerHTML=[...products].sort((a,b)=>b.reviews-a.reviews).slice(0,8).map(p=>productCard(p)).join('');
