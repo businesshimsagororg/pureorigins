@@ -1720,6 +1720,7 @@ function updateCartCount(){
 }
 
 function addToCart(product,weight,qty=1){
+  if(!product){showToast('Product is not available. Please refresh and try again.');return}
   const key = product.id + '-' + weight;
   const existing = cart.find(i=>i.key===key);
   if(existing){existing.qty+=qty;}
@@ -1745,14 +1746,28 @@ function getDelivery(){return getCartTotal()>=800?0:80}
 // ═══════════════════════════════════════════
 //  RENDER HELPERS
 // ═══════════════════════════════════════════
-function jsString(value){return JSON.stringify(String(value ?? ''));}
+function escapeAttr(value){return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));}
+function openProductCard(card){
+  const id = card?.dataset?.productId;
+  if(id)navigate('detail',id);
+}
+function openProductFromButton(button){
+  openProductCard(button.closest('.product-card'));
+}
+function addCardProductToCart(button){
+  const card = button.closest('.product-card');
+  const id = card?.dataset?.productId;
+  const weight = card?.dataset?.weight || '';
+  addToCart(getProduct(id),weight);
+}
 
 function productCard(p,showAdd=true){
-  const idJson = jsString(p.id);
-  const weightJson = jsString((p.weight && p.weight[0]) || '');
+  const idAttr = escapeAttr(p.id);
+  const weightAttr = escapeAttr((p.weight && p.weight[0]) || '');
+  const nameAttr = escapeAttr(p.name);
   const badgeHtml = p.badge?`<div class="product-badge ${p.badge==='নতুন'||p.badge==='সুপারফুড'?'new':''}">${p.badge}</div>`:'';
   const discHtml = p.discount?`<div class="product-badge" style="top:12px;right:12px;left:auto;background:var(--red)">-${p.discount}%</div>`:'';
-  return `<div class="product-card" onclick="navigate('detail',${idJson})" role="button" tabindex="0" aria-label="${p.name} বিস্তারিত দেখুন">
+  return `<div class="product-card" data-product-id="${idAttr}" data-weight="${weightAttr}" onclick="openProductCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProductCard(this)}" role="button" tabindex="0" aria-label="${nameAttr} বিস্তারিত দেখুন">
     <div class="product-img">${p.emoji}${badgeHtml}${discHtml}</div>
     <div class="product-body">
       <div class="bn-name">${p.name}</div>
@@ -1763,8 +1778,8 @@ function productCard(p,showAdd=true){
         ${p.oldPrice?`<span class="price-old">৳${p.oldPrice}</span><span class="price-save">৳${p.oldPrice-p.price} সাশ্রয়</span>`:''}
       </div>
       <div class="product-actions">
-        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addToCart(getProduct(${idJson}),${weightJson})">🛒 কার্টে যোগ</button>`:''}
-        <button class="btn-view" onclick="event.stopPropagation();navigate('detail',${idJson})">বিবরণ →</button>
+        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">🛒 কার্টে যোগ</button>`:''}
+        <button class="btn-view" onclick="event.stopPropagation();openProductFromButton(this)">বিবরণ →</button>
       </div>
     </div>
   </div>`;
