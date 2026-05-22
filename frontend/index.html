@@ -41,6 +41,8 @@ img{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
 button{cursor:pointer;font-family:var(--font-bn)}
 input,select,textarea{font-family:var(--font-bn)}
+.svg-icon{width:1em;height:1em;display:inline-block;vertical-align:-.15em;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.btn-cart,.btn-buy-card,.btn-checkout,.cart-btn{gap:7px;align-items:center;justify-content:center}
 
 /* ── PAGE SYSTEM ── */
 .page{display:none;min-height:80vh;animation:fadeIn .4s ease}
@@ -205,6 +207,11 @@ nav{
 .hero-card h3{color:var(--white);font-size:14px;font-weight:600;margin-bottom:4px}
 .hero-card p{color:rgba(255,255,255,.65);font-size:12px}
 .hero-card .price{color:var(--gold-light);font-size:16px;font-weight:700;margin-top:8px}
+.hero-card-cart{
+  margin-top:10px;background:var(--gold);color:var(--white);
+  border:none;border-radius:8px;padding:8px 12px;
+  font-size:12.5px;font-weight:700;width:100%;
+}
 
 /* ── TRUST STRIP ── */
 .trust-strip{
@@ -290,6 +297,7 @@ nav{
 .price-old{font-size:13px;color:var(--text-muted);text-decoration:line-through}
 .price-save{font-size:11px;color:var(--red);font-weight:600}
 .product-actions{display:flex;gap:8px}
+.product-actions.has-buy{display:grid;grid-template-columns:1fr 1fr 92px}
 .btn-cart{
   flex:1;background:var(--forest);color:#fff;
   border:none;border-radius:8px;
@@ -304,6 +312,11 @@ nav{
   font-size:13px;transition:.2s;
 }
 .btn-view:hover{border-color:var(--forest)}
+.btn-buy-card{
+  background:var(--gold);color:var(--white);
+  border:none;border-radius:8px;
+  padding:10px;font-size:13px;font-weight:700;
+}
 
 /* ── WHY US ── */
 .why-grid{
@@ -475,10 +488,11 @@ footer{background:var(--brown);color:#fff;padding:48px 20px 24px}
   font-size:16px;transition:.2s;color:#fff;text-decoration:none;
 }
 .social-link:hover{background:var(--gold)}
-.facebook-link{background:#1877F2;padding:0 12px;gap:8px;font-weight:700}
+.facebook-link{background:#1877F2;padding:0 14px;gap:7px;font-weight:700;min-width:118px;width:auto;border-radius:999px}
 .facebook-link:hover{background:#0F63D8}
-.fb-logo{font-family:Arial,sans-serif;font-size:22px;font-weight:800;line-height:1}
-.social-text{font-size:12.5px}
+.fb-logo{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px}
+.fb-logo::before{content:'f';font-family:Arial,sans-serif;font-size:20px;font-weight:800;line-height:1}
+.social-text{font-size:12.5px;white-space:nowrap}
 .social-muted{opacity:.82}
 footer h4{font-size:14px;font-weight:600;color:var(--gold-light);margin-bottom:16px}
 footer ul{list-style:none}
@@ -700,6 +714,8 @@ footer ul a:hover{color:var(--white)}
 }
 .payment-instructions.show{display:block}
 .payment-instructions strong{color:var(--forest)}
+.manual-location-input{display:none;margin-top:8px}
+.manual-location-input.show{display:block}
 .field-error{display:none;color:var(--red);font-size:12px;margin-top:5px}
 .field-error.show{display:block}
 .input-error{border-color:var(--red)!important;background:#fff8f6!important}
@@ -896,7 +912,7 @@ input,select,textarea{font-size:16px}
     position:fixed;top:18px;right:62px;min-width:42px;height:40px;padding:0 10px;
     justify-content:center;font-size:0;border-radius:10px;
   }
-  .cart-btn::before{content:'🛒';font-size:17px}
+  .cart-btn::before{content:'Cart';font-size:11px;font-weight:800;letter-spacing:.2px}
   .cart-count{top:-6px;right:-6px}
   .hamburger{
     display:flex;align-items:center;justify-content:center;
@@ -972,7 +988,8 @@ input,select,textarea{font-size:16px}
   .product-body{padding:18px}
   .bn-name{font-size:16px}
   .price-now{font-size:21px}
-  .product-actions{display:grid;grid-template-columns:1fr 104px;gap:10px}
+.product-actions{display:grid;grid-template-columns:1fr 104px;gap:10px}
+.product-actions.has-buy{grid-template-columns:1fr 1fr 96px}
   .btn-cart,.btn-view{min-height:48px;font-size:14px;border-radius:10px}
   .why-grid{grid-template-columns:1fr 1fr;gap:10px}
   .why-card{padding:16px 10px;border-radius:12px}
@@ -1045,6 +1062,7 @@ input,select,textarea{font-size:16px}
   .hero-visual{grid-auto-columns:124px}
   .section-head h2{font-size:24px}
   .product-actions{grid-template-columns:1fr}
+  .product-actions.has-buy{grid-template-columns:1fr}
   .btn-view{min-height:44px}
   .why-grid,.trust-strip-inner{grid-template-columns:1fr}
   .reviews-slider{grid-auto-columns:88%}
@@ -1082,7 +1100,7 @@ input,select,textarea{font-size:16px}
     </ul>
     <div class="nav-right">
       <button class="cart-btn" onclick="navigate('cart')">
-        🛒 কার্ট <span class="cart-count" id="cartCount">0</span>
+        <span class="cart-label">কার্ট</span> <span class="cart-count" id="cartCount">0</span>
       </button>
       <button class="hamburger" id="hamburger" onclick="toggleMobile()">
         <span></span><span></span><span></span>
@@ -1127,10 +1145,10 @@ input,select,textarea{font-size:16px}
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-card" onclick="navigateHeroProduct('black-seeds-kalonjira',1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('black-seeds-kalonjira',1)}" role="button" tabindex="0" aria-label="কালোজিরা বিস্তারিত দেখুন"><div class="hero-card-emoji">🌿</div><h3>কালোজিরা</h3><p>Nigella Seeds</p><div class="price">৳১৮০</div></div>
-        <div class="hero-card" onclick="navigateHeroProduct('chia-seeds',2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('chia-seeds',2)}" role="button" tabindex="0" aria-label="চিয়া সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌱</div><h3>চিয়া সিড</h3><p>Chia Seeds</p><div class="price">৳২৮০</div></div>
-        <div class="hero-card" onclick="navigateHeroProduct('flax-seeds',3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('flax-seeds',3)}" role="button" tabindex="0" aria-label="ফ্ল্যাক্স সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌻</div><h3>ফ্ল্যাক্স সিড</h3><p>Flax Seeds</p><div class="price">৳২২০</div></div>
-        <div class="hero-card" onclick="navigateHeroProduct('moringa-powder',7)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('moringa-powder',7)}" role="button" tabindex="0" aria-label="মরিঙ্গা পাউডার বিস্তারিত দেখুন"><div class="hero-card-emoji">🍃</div><h3>মরিঙ্গা পাউডার</h3><p>Moringa Powder</p><div class="price">৳৩৮০</div></div>
+        <div class="hero-card" onclick="navigateHeroProduct('black-seeds-kalonjira',1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('black-seeds-kalonjira',1)}" role="button" tabindex="0" aria-label="কালোজিরা বিস্তারিত দেখুন"><div class="hero-card-emoji">🌿</div><h3>কালোজিরা</h3><p>Nigella Seeds</p><div class="price">৳১৮০</div><button class="hero-card-cart" onclick="event.stopPropagation();addHeroProductToCart('black-seeds-kalonjira',1)">কার্টে যোগ</button></div>
+        <div class="hero-card" onclick="navigateHeroProduct('chia-seeds',2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('chia-seeds',2)}" role="button" tabindex="0" aria-label="চিয়া সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌱</div><h3>চিয়া সিড</h3><p>Chia Seeds</p><div class="price">৳২৮০</div><button class="hero-card-cart" onclick="event.stopPropagation();addHeroProductToCart('chia-seeds',2)">কার্টে যোগ</button></div>
+        <div class="hero-card" onclick="navigateHeroProduct('flax-seeds',3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('flax-seeds',3)}" role="button" tabindex="0" aria-label="ফ্ল্যাক্স সিড বিস্তারিত দেখুন"><div class="hero-card-emoji">🌻</div><h3>ফ্ল্যাক্স সিড</h3><p>Flax Seeds</p><div class="price">৳২২০</div><button class="hero-card-cart" onclick="event.stopPropagation();addHeroProductToCart('flax-seeds',3)">কার্টে যোগ</button></div>
+        <div class="hero-card" onclick="navigateHeroProduct('moringa-powder',7)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigateHeroProduct('moringa-powder',7)}" role="button" tabindex="0" aria-label="মরিঙ্গা পাউডার বিস্তারিত দেখুন"><div class="hero-card-emoji">🍃</div><h3>মরিঙ্গা পাউডার</h3><p>Moringa Powder</p><div class="price">৳৩৮০</div><button class="hero-card-cart" onclick="event.stopPropagation();addHeroProductToCart('moringa-powder',7)">কার্টে যোগ</button></div>
       </div>
     </div>
   </section>
@@ -1359,17 +1377,24 @@ input,select,textarea{font-size:16px}
           <div class="form-group"><label>জেলা *</label>
             <select id="co-district" onchange="updateUpazilaOptions()">
               <option value="">জেলা বেছে নিন</option>
-              <option>ঢাকা</option><option>চট্টগ্রাম</option><option>সিলেট</option>
-              <option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option>
-              <option>রংপুর</option><option>ময়মনসিংহ</option><option>কুমিল্লা</option>
-              <option>গাজীপুর</option><option>নারায়ণগঞ্জ</option><option>অন্যান্য</option>
+              <option>ঢাকা</option><option>ফরিদপুর</option><option>গাজীপুর</option><option>গোপালগঞ্জ</option><option>কিশোরগঞ্জ</option><option>মাদারীপুর</option><option>মানিকগঞ্জ</option><option>মুন্সিগঞ্জ</option><option>নারায়ণগঞ্জ</option><option>নরসিংদী</option><option>রাজবাড়ী</option><option>শরীয়তপুর</option><option>টাঙ্গাইল</option>
+              <option>চট্টগ্রাম</option><option>বান্দরবান</option><option>ব্রাহ্মণবাড়িয়া</option><option>চাঁদপুর</option><option>কক্সবাজার</option><option>কুমিল্লা</option><option>ফেনী</option><option>খাগড়াছড়ি</option><option>লক্ষ্মীপুর</option><option>নোয়াখালী</option><option>রাঙ্গামাটি</option>
+              <option>রাজশাহী</option><option>বগুড়া</option><option>জয়পুরহাট</option><option>নওগাঁ</option><option>নাটোর</option><option>চাঁপাইনবাবগঞ্জ</option><option>পাবনা</option><option>সিরাজগঞ্জ</option>
+              <option>খুলনা</option><option>বাগেরহাট</option><option>চুয়াডাঙ্গা</option><option>যশোর</option><option>ঝিনাইদহ</option><option>কুষ্টিয়া</option><option>মাগুরা</option><option>মেহেরপুর</option><option>নড়াইল</option><option>সাতক্ষীরা</option>
+              <option>বরিশাল</option><option>বরগুনা</option><option>ভোলা</option><option>ঝালকাঠি</option><option>পটুয়াখালী</option><option>পিরোজপুর</option>
+              <option>সিলেট</option><option>হবিগঞ্জ</option><option>মৌলভীবাজার</option><option>সুনামগঞ্জ</option>
+              <option>রংপুর</option><option>দিনাজপুর</option><option>গাইবান্ধা</option><option>কুড়িগ্রাম</option><option>লালমনিরহাট</option><option>নীলফামারী</option><option>পঞ্চগড়</option><option>ঠাকুরগাঁও</option>
+              <option>ময়মনসিংহ</option><option>জামালপুর</option><option>নেত্রকোনা</option><option>শেরপুর</option>
+              <option>অন্যান্য</option>
             </select>
+            <input type="text" id="co-district-other" class="manual-location-input" placeholder="আপনার জেলার নাম লিখুন"/>
             <div class="field-error" id="co-district-error"></div>
           </div>
           <div class="form-group"><label>উপজেলা *</label>
-            <select id="co-upazila" disabled>
+            <select id="co-upazila" onchange="document.getElementById('co-upazila-other')?.classList.toggle('show',this.value==='অন্যান্য')" disabled>
               <option value="">আগে জেলা বেছে নিন</option>
             </select>
+            <input type="text" id="co-upazila-other" class="manual-location-input" placeholder="আপনার উপজেলা/থানার নাম লিখুন"/>
             <div class="field-error" id="co-upazila-error"></div>
           </div>
         </div>
@@ -1573,7 +1598,7 @@ input,select,textarea{font-size:16px}
       <div class="logo">Pure<span>Origins</span></div>
       <p>বাংলাদেশের বিশ্বস্ত হেলথ সিড ও সুপারফুড শপ। প্রকৃতির সেরা উপহার আপনার দোরগোড়ায়।</p>
       <div class="social-links">
-        <a class="social-link facebook-link" href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook Page"><span class="fb-logo">f</span><span class="social-text">Facebook</span></a>
+        <a class="social-link facebook-link" href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook Page"><span class="fb-logo" aria-hidden="true"></span><span class="social-text">Facebook Page</span></a>
         <div class="social-link social-muted">📸</div>
         <div class="social-link social-muted">▶️</div>
         <div class="social-link social-muted">💬</div>
@@ -1774,9 +1799,16 @@ function mapPaymentMethod(method) {
   return "COD";
 }
 
+function findHeroProduct(slug, fallbackId){
+  return products.find(item => item.slug === slug) || getProduct(fallbackId);
+}
 function navigateHeroProduct(slug, fallbackId) {
-  const product = products.find(item => item.slug === slug) || getProduct(fallbackId);
+  const product = findHeroProduct(slug, fallbackId);
   if (product) navigate("detail", product.id);
+}
+function addHeroProductToCart(slug, fallbackId){
+  const product = findHeroProduct(slug, fallbackId);
+  if(product)addToCart(product, product.weight?.[0] || '');
 }
 
 let cart = JSON.parse(localStorage.getItem('pureorigins_cart') || '[]');
@@ -1866,11 +1898,28 @@ function openProductCard(card){
 function openProductFromButton(button){
   openProductCard(button.closest('.product-card'));
 }
+function uiIcon(name){
+  const icons={
+    cart:'<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.4L22 8H7"/></svg>',
+    bolt:'<svg class="svg-icon" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-13h-7l1-7Z"/></svg>',
+    arrow:'<svg class="svg-icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>'
+  };
+  return icons[name] || '';
+}
 function addCardProductToCart(button){
   const card = button.closest('.product-card');
   const id = card?.dataset?.productId;
   const weight = card?.dataset?.weight || '';
   addToCart(getProduct(id),weight);
+}
+function buyCardProduct(button){
+  const card = button.closest('.product-card');
+  const id = card?.dataset?.productId;
+  const weight = card?.dataset?.weight || '';
+  const beforeCount = cart.reduce((sum,item)=>sum+item.qty,0);
+  addToCart(getProduct(id),weight);
+  const afterCount = cart.reduce((sum,item)=>sum+item.qty,0);
+  if(afterCount>beforeCount)navigate('checkout');
 }
 
 function productCard(p,showAdd=true){
@@ -1889,9 +1938,9 @@ function productCard(p,showAdd=true){
         <span class="price-now">৳${p.price}</span>
         ${p.oldPrice?`<span class="price-old">৳${p.oldPrice}</span><span class="price-save">৳${p.oldPrice-p.price} সাশ্রয়</span>`:''}
       </div>
-      <div class="product-actions">
-        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">🛒 কার্টে যোগ</button>`:''}
-        <button class="btn-view" onclick="event.stopPropagation();openProductFromButton(this)">বিবরণ →</button>
+      <div class="product-actions ${showAdd?'has-buy':''}">
+        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">${uiIcon('cart')} কার্টে যোগ</button><button class="btn-buy-card" onclick="event.stopPropagation();buyCardProduct(this)">${uiIcon('bolt')} এখনই কিনুন</button>`:''}
+        <button class="btn-view" onclick="event.stopPropagation();openProductFromButton(this)">বিবরণ ${uiIcon('arrow')}</button>
       </div>
     </div>
   </div>`;
@@ -1928,7 +1977,8 @@ function addComboToCart(cid){
 function renderReviews(){
   const container = document.getElementById('reviews-container');
   if(!container)return;
-  container.innerHTML = reviews.map(r=>`
+  const data = reviews.filter(r=>r && r.name && r.text);
+  container.innerHTML = (data.length ? data : [{name:'PureOrigins Customer',loc:'Bangladesh',stars:5,text:'পণ্যের মান, প্যাকেজিং ও ডেলিভারি ভালো ছিল। আবার অর্ডার করব।'}]).map(r=>`
     <div class="review-card">
       <div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
       <p class="review-text">${r.text}</p>
@@ -1981,7 +2031,9 @@ function slideReviews(direction){
 }
 
 function renderFaqBlock(containerId,limit=null){
-  const data = limit?faqs.slice(0,limit):faqs;
+  const source = faqs.filter(f=>f && f.q && f.a);
+  const fallbackFaqs = [{q:'কীভাবে অর্ডার করব?',a:'পণ্য কার্টে যোগ করে চেকআউটে নাম, ফোন ও ঠিকানা দিন। অর্ডার হলে আমাদের টিম ফোনে নিশ্চিত করবে।'}];
+  const data = limit?(source.length?source:fallbackFaqs).slice(0,limit):(source.length?source:fallbackFaqs);
   const el = document.getElementById(containerId);
   if(!el)return;
   el.innerHTML = data.map((f,i)=>`
@@ -1999,10 +2051,10 @@ function toggleFaq(id){
 
 
 const policyPages = {
-  return: {title:'Return Policy', subtitle:'PureOrigins return and exchange support.', html:'<h2>Return Policy</h2><p>If you receive a damaged, wrong, or quality-problem product, contact PureOrigins within 48 hours with photos or video.</p><h3>Accepted cases</h3><ul><li>Wrong product delivered.</li><li>Package arrived damaged or opened.</li><li>Product quality issue reported quickly with proof.</li></ul><h3>Not accepted</h3><p>Used products, late complaints, or customer ordering mistakes are reviewed case by case.</p>'},
-  privacy: {title:'Privacy Policy', subtitle:'How PureOrigins protects customer information.', html:'<h2>Privacy Policy</h2><p>We use your name, phone, address, and order details only to confirm orders, deliver products, provide support, and improve store safety.</p><h3>Data use</h3><ul><li>Order confirmation and delivery.</li><li>Customer support and order updates.</li><li>Website improvement and fraud prevention.</li></ul><p>PureOrigins does not sell customer information.</p>'},
-  delivery: {title:'Delivery Policy', subtitle:'Delivery timing and charge information.', html:'<h2>Delivery Policy</h2><p>We deliver across Bangladesh through trusted delivery partners.</p><h3>Estimated time</h3><ul><li>Inside Dhaka: usually 1-3 business days.</li><li>Outside Dhaka: usually 3-7 business days.</li></ul><h3>Delivery charge</h3><p>Delivery charge depends on location and order value. Final total is shown during checkout.</p>'},
-  terms: {title:'Terms & Conditions', subtitle:'Terms for using PureOrigins.', html:'<h2>Terms & Conditions</h2><p>By ordering from PureOrigins, you agree to our order, delivery, return, and payment policies.</p><h3>Order rules</h3><ul><li>Stock and prices may change.</li><li>Wrong delivery information can delay delivery.</li><li>COD orders may require phone confirmation.</li></ul><p>For any question, contact PureOrigins customer support.</p>'}
+  return: {title:'রিটার্ন পলিসি', subtitle:'ক্ষতিগ্রস্ত, ভুল বা মান-সংক্রান্ত সমস্যায় সহায়তা।', html:'<h2>রিটার্ন পলিসি</h2><p>পণ্য হাতে পাওয়ার ৪৮ ঘন্টার মধ্যে ক্ষতিগ্রস্ত প্যাকেট, ভুল পণ্য বা মান-সংক্রান্ত সমস্যা জানালে PureOrigins বিষয়টি যাচাই করে সমাধান করবে।</p><h3>যে ক্ষেত্রে গ্রহণযোগ্য</h3><ul><li>ভুল পণ্য ডেলিভারি হয়েছে।</li><li>প্যাকেট খোলা বা ক্ষতিগ্রস্ত অবস্থায় পেয়েছেন।</li><li>পণ্যের মান নিয়ে গ্রহণযোগ্য প্রমাণসহ অভিযোগ করেছেন।</li></ul><h3>যে ক্ষেত্রে গ্রহণযোগ্য নয়</h3><p>ব্যবহৃত পণ্য, দেরিতে অভিযোগ, অথবা গ্রাহকের ভুল অর্ডার কেসভেদে পর্যালোচনা করা হবে।</p>'},
+  privacy: {title:'প্রাইভেসি পলিসি', subtitle:'গ্রাহকের তথ্য কীভাবে সুরক্ষিত রাখা হয়।', html:'<h2>প্রাইভেসি পলিসি</h2><p>আমরা আপনার নাম, ফোন নম্বর, ঠিকানা ও অর্ডার তথ্য শুধুমাত্র অর্ডার কনফার্ম, ডেলিভারি, সাপোর্ট এবং নিরাপত্তার কাজে ব্যবহার করি।</p><h3>তথ্য ব্যবহার</h3><ul><li>অর্ডার কনফার্মেশন ও ডেলিভারি।</li><li>অর্ডার স্ট্যাটাস ও কাস্টমার সাপোর্ট।</li><li>সাইট উন্নয়ন ও প্রতারণা প্রতিরোধ।</li></ul><p>PureOrigins গ্রাহকের ব্যক্তিগত তথ্য বিক্রি করে না।</p>'},
+  delivery: {title:'ডেলিভারি পলিসি', subtitle:'ডেলিভারি সময়, চার্জ ও কভারেজ।', html:'<h2>ডেলিভারি পলিসি</h2><p>আমরা বাংলাদেশের সকল জেলায় বিশ্বস্ত কুরিয়ার পার্টনারের মাধ্যমে পণ্য পাঠাই।</p><h3>আনুমানিক সময়</h3><ul><li>ঢাকার ভিতরে: সাধারণত ১-৩ কার্যদিবস।</li><li>ঢাকার বাইরে: সাধারণত ৩-৭ কার্যদিবস।</li></ul><h3>ডেলিভারি চার্জ</h3><p>লোকেশন ও অর্ডার ভ্যালুর উপর চার্জ নির্ভর করে। চেকআউটে ফাইনাল মোট দেখানো হবে।</p>'},
+  terms: {title:'শর্তাবলী', subtitle:'PureOrigins ব্যবহারের নিয়মাবলী।', html:'<h2>শর্তাবলী</h2><p>PureOrigins থেকে অর্ডার করলে আপনি আমাদের অর্ডার, ডেলিভারি, রিটার্ন এবং পেমেন্ট নীতিমালার সাথে সম্মত হচ্ছেন।</p><h3>অর্ডার নিয়ম</h3><ul><li>স্টক ও মূল্য পরিবর্তন হতে পারে।</li><li>ভুল ঠিকানা দিলে ডেলিভারি বিলম্ব হতে পারে।</li><li>COD অর্ডার ফোনে কনফার্ম করা হতে পারে।</li></ul><p>কোনো প্রশ্ন থাকলে কাস্টমার সাপোর্টে যোগাযোগ করুন।</p>'}
 };
 
 function renderPolicy(type){
@@ -2106,10 +2158,16 @@ const walletPayments = {
 function updateUpazilaOptions(){
   const district=document.getElementById('co-district')?.value||'';
   const upazila=document.getElementById('co-upazila');
+  const districtOther=document.getElementById('co-district-other');
+  const upazilaOther=document.getElementById('co-upazila-other');
   if(!upazila)return;
   const options=upazilasByDistrict[district]||[];
-  upazila.disabled=!district;
-  upazila.innerHTML=district
+  const manualDistrict = district === 'অন্যান্য';
+  const manualUpazila = Boolean(district) && (!options.length || manualDistrict);
+  if(districtOther)districtOther.classList.toggle('show',manualDistrict);
+  if(upazilaOther)upazilaOther.classList.toggle('show',manualUpazila || upazila.value === 'অন্যান্য');
+  upazila.disabled=!district || manualUpazila;
+  upazila.innerHTML=district && !manualUpazila
     ? '<option value="">উপজেলা বেছে নিন</option>'+options.map(item=>`<option>${item}</option>`).join('')
     : '<option value="">আগে জেলা বেছে নিন</option>';
 }
@@ -2122,17 +2180,21 @@ function setFieldError(id,message){
 }
 
 function clearCheckoutErrors(){
-  ["co-name","co-phone","co-address","co-district","co-upazila","co-transaction"].forEach(id=>setFieldError(id,''));
+  ["co-name","co-phone","co-address","co-district","co-district-other","co-upazila","co-upazila-other","co-transaction"].forEach(id=>setFieldError(id,''));
 }
 
 function validateCheckoutForm(){
   clearCheckoutErrors();
+  const selectedDistrict=getFieldValue('co-district','checkoutDistrict');
+  const manualDistrict=getFieldValue('co-district-other');
+  const selectedUpazila=getFieldValue('co-upazila','checkoutArea');
+  const manualUpazila=getFieldValue('co-upazila-other');
   const data={
     name:getFieldValue('co-name','checkoutName'),
     phone:getFieldValue('co-phone','checkoutPhone'),
     address:getFieldValue('co-address','checkoutAddress'),
-    district:getFieldValue('co-district','checkoutDistrict'),
-    upazila:getFieldValue('co-upazila','checkoutArea'),
+    district:selectedDistrict === 'অন্যান্য' ? manualDistrict : selectedDistrict,
+    upazila:selectedUpazila === 'অন্যান্য' || !selectedUpazila ? manualUpazila || selectedUpazila : selectedUpazila,
     transactionRef:getFieldValue('co-transaction')
   };
   let ok=true;
@@ -2140,7 +2202,9 @@ function validateCheckoutForm(){
   if(!/^01[3-9]\d{8}$/.test(data.phone)){setFieldError('co-phone','সঠিক ১১ ডিজিটের বাংলাদেশি মোবাইল নম্বর লিখুন');ok=false;}
   if(data.address.length<8){setFieldError('co-address','সম্পূর্ণ ঠিকানা লিখুন');ok=false;}
   if(!data.district){setFieldError('co-district','জেলা বেছে নিন');ok=false;}
+  if(selectedDistrict === 'অন্যান্য' && manualDistrict.length<2){setFieldError('co-district-other','জেলার নাম লিখুন');ok=false;}
   if(!data.upazila){setFieldError('co-upazila','উপজেলা বেছে নিন');ok=false;}
+  if((selectedDistrict === 'অন্যান্য' || !upazilasByDistrict[selectedDistrict]) && manualUpazila.length<2){setFieldError('co-upazila-other','উপজেলা/থানার নাম লিখুন');ok=false;}
   if(selectedPayment!=='cod' && data.transactionRef.length<4){setFieldError('co-transaction','পেমেন্ট করার পর Transaction ID লিখুন');ok=false;}
   return ok?data:null;
 }
@@ -2207,9 +2271,9 @@ function setConfirmError(message=''){
   error.classList.toggle('show',Boolean(message));
 }
 
-function saveOrderReference(orderId, token){
+function saveOrderReference(orderId, token, order=null){
   if(!orderId)return;
-  const reference = {orderId:String(orderId), token:token || '', sessionId:abandonedCartSessionId, savedAt:Date.now()};
+  const reference = {orderId:String(orderId), token:token || '', sessionId:abandonedCartSessionId, order, savedAt:Date.now()};
   localStorage.setItem(ORDER_REFERENCE_KEY, JSON.stringify(reference));
   if(history.replaceState) history.replaceState(null, '', `#order-${reference.orderId}`);
 }
@@ -2255,11 +2319,13 @@ function renderOrderConfirmation(order){
 }
 
 async function restoreSavedOrder(){
+  if(!/^#order-[a-f0-9]{24}$/i.test(String(location.hash || '')))return;
   const reference = readSavedOrderReference();
   if(!reference?.orderId)return;
   hasConfirmedOrder = true;
   navigate('confirm');
-  setConfirmLoading(true);
+  if(reference.order)renderOrderConfirmation(reference.order);
+  else setConfirmLoading(true);
   setConfirmError('');
   try{
     const order = await fetchOrderByReference(reference);
@@ -2376,7 +2442,7 @@ async function placeOrder(){
     }
     const order=data.order;
     hasConfirmedOrder = true;
-    saveOrderReference(data.orderAccess?.orderId || order._id, data.orderAccess?.token);
+    saveOrderReference(data.orderAccess?.orderId || order._id, data.orderAccess?.token, order);
     renderOrderConfirmation(order);
     cart=[];
     saveCart();
@@ -2536,6 +2602,15 @@ function navigate(page,data=null){
   if(page==='policy'){renderPolicy(data || 'return');}
 }
 
+function routeFromHash(){
+  const hash = String(location.hash || '').replace(/^#/,'');
+  if(!hash || /^order-/i.test(hash))return false;
+  if(hash.startsWith('policy-')){navigate('policy', hash.replace('policy-',''));return true;}
+  const allowed = ['home','shop','combos','about','faq','contact','cart','checkout','account'];
+  if(allowed.includes(hash)){navigate(hash);return true;}
+  return false;
+}
+
 
 function toggleMobile(){document.getElementById('mobileNav').classList.toggle('open');}
 
@@ -2577,7 +2652,7 @@ function renderStorefront(){
     const el=document.getElementById(id);
     if(el)el.addEventListener('input',scheduleAbandonedCartSync);
   });
-  restoreSavedOrder();
+  if(!routeFromHash())restoreSavedOrder();
 })();
 </script>
 </body>
