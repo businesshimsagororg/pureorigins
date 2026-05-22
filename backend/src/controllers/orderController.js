@@ -33,7 +33,8 @@ function normalizePaymentMethod(method = "COD") {
   const value = String(method).trim().toLowerCase();
   if (value === "bkash") return "bKash";
   if (value === "nagad") return "Nagad";
-  if (value === "sslcommerz" || value === "ssl" || value === "rocket") return "SSLCommerz";
+  if (value === "rocket") return "Rocket";
+  if (value === "sslcommerz" || value === "ssl") return "SSLCommerz";
   return "COD";
 }
 
@@ -46,6 +47,7 @@ export async function createOrder(req, res) {
     district,
     upazila,
     paymentMethod = "COD",
+    transactionRef,
     couponCode,
     notes,
     abandonedCartSessionId,
@@ -80,6 +82,7 @@ export async function createOrder(req, res) {
     upazila,
     paymentMethod: normalizedPaymentMethod,
     paymentStatus: normalizedPaymentMethod === "COD" ? "unpaid" : "pending",
+    transactionRef,
     deliveryCharge,
     couponCode: coupon?.code,
     couponDiscount,

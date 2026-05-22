@@ -13,6 +13,13 @@ export async function notifyOrderPlaced({ customerPhone, customerEmail, orderId,
     const email = await sendEmail({ to: customerEmail, subject, html });
     await Notification.create({ type: "email", recipient: customerEmail, subject, message: `Order ${orderId}`, status: email.ok ? "sent" : "failed" });
   }
+
+  if (process.env.ADMIN_EMAIL) {
+    const subject = `New PureOrigins order #${orderId}`;
+    const html = `<p>A new order has been placed.</p><p>Order: ${orderId}</p><p>Customer phone: ${customerPhone}</p><p>Total: BDT ${total}</p>`;
+    const adminEmail = await sendEmail({ to: process.env.ADMIN_EMAIL, subject, html });
+    await Notification.create({ type: "email", recipient: process.env.ADMIN_EMAIL, subject, message: `New order ${orderId}`, status: adminEmail.ok ? "sent" : "failed" });
+  }
 }
 
 export async function notifyOrderStatus({ customerPhone, customerEmail, orderId, status }) {

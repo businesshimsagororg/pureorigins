@@ -682,6 +682,20 @@ footer ul a:hover{color:var(--white)}
 .payment-option .method-name{font-size:14px;font-weight:600;color:var(--forest)}
 .payment-option .method-desc{font-size:12px;color:var(--text-muted)}
 .payment-method-icon{font-size:22px}
+.payment-instructions{
+  display:none;
+  background:var(--cream-dark);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px;
+  margin-top:12px;
+  color:var(--brown);
+}
+.payment-instructions.show{display:block}
+.payment-instructions strong{color:var(--forest)}
+.field-error{display:none;color:var(--red);font-size:12px;margin-top:5px}
+.field-error.show{display:block}
+.input-error{border-color:var(--red)!important;background:#fff8f6!important}
 .checkout-summary{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:24px;position:sticky;top:100px}
 
 /* ── ABOUT PAGE ── */
@@ -1301,41 +1315,55 @@ input,select,textarea{font-size:16px}
       <div class="checkout-form">
         <h2>ডেলিভারি তথ্য</h2>
         <div class="form-row">
-          <div class="form-group"><label>আপনার নাম *</label><input type="text" placeholder="পূর্ণ নাম লিখুন" id="co-name"/></div>
-          <div class="form-group"><label>মোবাইল নম্বর *</label><input type="tel" placeholder="01XXXXXXXXX" id="co-phone"/></div>
+          <div class="form-group"><label>আপনার নাম *</label><input type="text" placeholder="পূর্ণ নাম লিখুন" id="co-name"/><div class="field-error" id="co-name-error"></div></div>
+          <div class="form-group"><label>মোবাইল নম্বর *</label><input type="tel" placeholder="01XXXXXXXXX" id="co-phone" maxlength="11"/><div class="field-error" id="co-phone-error"></div></div>
         </div>
-        <div class="form-group"><label>সম্পূর্ণ ঠিকানা *</label><input type="text" placeholder="বাসা/রোড/এলাকার নাম" id="co-address"/></div>
+        <div class="form-group"><label>সম্পূর্ণ ঠিকানা *</label><input type="text" placeholder="বাসা/রোড/এলাকার নাম" id="co-address"/><div class="field-error" id="co-address-error"></div></div>
         <div class="form-row">
           <div class="form-group"><label>জেলা *</label>
-            <select id="co-district">
+            <select id="co-district" onchange="updateUpazilaOptions()">
               <option value="">জেলা বেছে নিন</option>
               <option>ঢাকা</option><option>চট্টগ্রাম</option><option>সিলেট</option>
               <option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option>
               <option>রংপুর</option><option>ময়মনসিংহ</option><option>কুমিল্লা</option>
               <option>গাজীপুর</option><option>নারায়ণগঞ্জ</option><option>অন্যান্য</option>
             </select>
+            <div class="field-error" id="co-district-error"></div>
           </div>
-          <div class="form-group"><label>উপজেলা *</label><input type="text" placeholder="উপজেলার নাম" id="co-upazila"/></div>
+          <div class="form-group"><label>উপজেলা *</label>
+            <select id="co-upazila" disabled>
+              <option value="">আগে জেলা বেছে নিন</option>
+            </select>
+            <div class="field-error" id="co-upazila-error"></div>
+          </div>
         </div>
         <div class="form-group"><label>অর্ডার নোট (ঐচ্ছিক)</label><textarea rows="3" placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন..." id="co-note"></textarea></div>
         
         <h2 style="margin:24px 0 16px">পেমেন্ট পদ্ধতি</h2>
         <div class="payment-options">
-          <div class="payment-option active" onclick="selectPayment(this,'cod')">
+          <div class="payment-option active" data-payment="cod" onclick="selectPayment(this,'cod')">
             <input type="radio" name="payment" checked/><span class="payment-method-icon">💵</span>
             <div><div class="method-name">Cash on Delivery (COD)</div><div class="method-desc">পণ্য পেয়ে ক্যাশে পরিশোধ করুন</div></div>
           </div>
-          <div class="payment-option" onclick="selectPayment(this,'bkash')">
+          <div class="payment-option" data-payment="bkash" onclick="selectPayment(this,'bkash')">
             <input type="radio" name="payment"/><span class="payment-method-icon">📱</span>
             <div><div class="method-name">bKash</div><div class="method-desc">বিকাশে পেমেন্ট করুন</div></div>
           </div>
-          <div class="payment-option" onclick="selectPayment(this,'nagad')">
+          <div class="payment-option" data-payment="nagad" onclick="selectPayment(this,'nagad')">
             <input type="radio" name="payment"/><span class="payment-method-icon">📲</span>
             <div><div class="method-name">Nagad</div><div class="method-desc">নগদে পেমেন্ট করুন</div></div>
           </div>
-          <div class="payment-option" onclick="selectPayment(this,'rocket')">
+          <div class="payment-option" data-payment="rocket" onclick="selectPayment(this,'rocket')">
             <input type="radio" name="payment"/><span class="payment-method-icon">🚀</span>
             <div><div class="method-name">Rocket</div><div class="method-desc">রকেটে পেমেন্ট করুন</div></div>
+          </div>
+        </div>
+        <div class="payment-instructions" id="payment-instructions">
+          <div id="payment-instruction-text"></div>
+          <div class="form-group" style="margin-top:10px">
+            <label>Transaction ID *</label>
+            <input type="text" id="co-transaction" placeholder="যেমন: TXN123456"/>
+            <div class="field-error" id="co-transaction-error"></div>
           </div>
         </div>
         <button class="btn-primary" style="width:100%;margin-top:24px;padding:15px;font-size:16px" onclick="placeOrder()">অর্ডার নিশ্চিত করুন ✓</button>
@@ -1659,7 +1687,8 @@ function mapPaymentMethod(method) {
   const value = String(method || "cod").toLowerCase();
   if (value === "bkash") return "bKash";
   if (value === "nagad") return "Nagad";
-  if (value === "rocket" || value === "sslcommerz") return "SSLCommerz";
+  if (value === "rocket") return "Rocket";
+  if (value === "sslcommerz") return "SSLCommerz";
   return "COD";
 }
 
@@ -1970,21 +1999,93 @@ function renderCheckoutSummary(){
     </div>`;
 }
 
+const upazilasByDistrict = {
+  "ঢাকা":["ধানমন্ডি","মিরপুর","গুলশান","উত্তরা","মোহাম্মদপুর","যাত্রাবাড়ী","অন্যান্য"],
+  "চট্টগ্রাম":["পাহাড়তলী","পাঁচলাইশ","হালিশহর","চকবাজার","সীতাকুণ্ড","পটিয়া","অন্যান্য"],
+  "সিলেট":["সদর","জৈন্তাপুর","গোলাপগঞ্জ","বিয়ানীবাজার","অন্যান্য"],
+  "রাজশাহী":["সদর","পবা","চারঘাট","বাঘা","অন্যান্য"],
+  "খুলনা":["সদর","দৌলতপুর","সোনাডাঙ্গা","ডুমুরিয়া","অন্যান্য"],
+  "বরিশাল":["সদর","বাকেরগঞ্জ","বানারীপাড়া","গৌরনদী","অন্যান্য"],
+  "রংপুর":["সদর","মিঠাপুকুর","পীরগঞ্জ","তারাগঞ্জ","অন্যান্য"],
+  "ময়মনসিংহ":["সদর","ত্রিশাল","ভালুকা","গফরগাঁও","অন্যান্য"],
+  "কুমিল্লা":["সদর","দাউদকান্দি","লাকসাম","চৌদ্দগ্রাম","অন্যান্য"],
+  "গাজীপুর":["সদর","কালিয়াকৈর","কালীগঞ্জ","শ্রীপুর","অন্যান্য"],
+  "নারায়ণগঞ্জ":["সদর","সিদ্ধিরগঞ্জ","রূপগঞ্জ","সোনারগাঁও","অন্যান্য"],
+  "অন্যান্য":["সদর","অন্যান্য"]
+};
+
+const walletPayments = {
+  bkash:{label:"bKash",number:"01700-000000"},
+  nagad:{label:"Nagad",number:"01700-000000"},
+  rocket:{label:"Rocket",number:"01700-000000"}
+};
+
+function updateUpazilaOptions(){
+  const district=document.getElementById('co-district')?.value||'';
+  const upazila=document.getElementById('co-upazila');
+  if(!upazila)return;
+  const options=upazilasByDistrict[district]||[];
+  upazila.disabled=!district;
+  upazila.innerHTML=district
+    ? '<option value="">উপজেলা বেছে নিন</option>'+options.map(item=>`<option>${item}</option>`).join('')
+    : '<option value="">আগে জেলা বেছে নিন</option>';
+}
+
+function setFieldError(id,message){
+  const field=document.getElementById(id);
+  const error=document.getElementById(`${id}-error`);
+  if(field)field.classList.toggle('input-error',Boolean(message));
+  if(error){error.textContent=message||'';error.classList.toggle('show',Boolean(message));}
+}
+
+function clearCheckoutErrors(){
+  ["co-name","co-phone","co-address","co-district","co-upazila","co-transaction"].forEach(id=>setFieldError(id,''));
+}
+
+function validateCheckoutForm(){
+  clearCheckoutErrors();
+  const data={
+    name:getFieldValue('co-name','checkoutName'),
+    phone:getFieldValue('co-phone','checkoutPhone'),
+    address:getFieldValue('co-address','checkoutAddress'),
+    district:getFieldValue('co-district','checkoutDistrict'),
+    upazila:getFieldValue('co-upazila','checkoutArea'),
+    transactionRef:getFieldValue('co-transaction')
+  };
+  let ok=true;
+  if(data.name.length<2){setFieldError('co-name','নাম লিখুন');ok=false;}
+  if(!/^01[3-9]\d{8}$/.test(data.phone)){setFieldError('co-phone','সঠিক ১১ ডিজিটের বাংলাদেশি মোবাইল নম্বর লিখুন');ok=false;}
+  if(data.address.length<8){setFieldError('co-address','সম্পূর্ণ ঠিকানা লিখুন');ok=false;}
+  if(!data.district){setFieldError('co-district','জেলা বেছে নিন');ok=false;}
+  if(!data.upazila){setFieldError('co-upazila','উপজেলা বেছে নিন');ok=false;}
+  if(selectedPayment!=='cod' && data.transactionRef.length<4){setFieldError('co-transaction','পেমেন্ট করার পর Transaction ID লিখুন');ok=false;}
+  return ok?data:null;
+}
+
 function selectPayment(el,method){
   document.querySelectorAll('.payment-option').forEach(o=>o.classList.remove('active'));
   el.classList.add('active');
   el.querySelector('input').checked=true;
   selectedPayment=method;
+  const box=document.getElementById('payment-instructions');
+  const text=document.getElementById('payment-instruction-text');
+  if(!box||!text)return;
+  const wallet=walletPayments[method];
+  if(wallet){
+    text.innerHTML=`<strong>${wallet.label} payment:</strong> Send money to <strong>${wallet.number}</strong>, then enter your Transaction ID below.`;
+    box.classList.add('show');
+  }else{
+    box.classList.remove('show');
+    setFieldError('co-transaction','');
+  }
 }
 
 async function placeOrder(){
-  const name=getFieldValue('co-name','checkoutName');
-  const phone=getFieldValue('co-phone','checkoutPhone');
-  const address=getFieldValue('co-address','checkoutAddress');
-  const district=getFieldValue('co-district','checkoutDistrict');
   if(!cart.length){showToast('Cart is empty');return}
-  if(!name||!phone||!address||!district){showToast('Please complete delivery information');return}
-  const paymentMethod=document.querySelector('.payment-option.active')?.dataset.payment||'cod';
+  const form=validateCheckoutForm();
+  if(!form){showToast('অনুগ্রহ করে ফর্মের ভুলগুলো ঠিক করুন');return}
+  const {name,phone,address,district,upazila,transactionRef}=form;
+  const paymentMethod=selectedPayment||document.querySelector('.payment-option.active')?.dataset.payment||'cod';
   const orderItems=cart.map(item=>({product:item.productId||item.id,variantWeight:item.weight,quantity:item.qty})).filter(item=>item.product);
   if(orderItems.length!==cart.length){showToast('Some cart items are not available. Please refresh and try again.');return}
   const payload={
@@ -1992,9 +2093,10 @@ async function placeOrder(){
     customerPhone:phone,
     shippingAddress:address,
     district,
-    upazila:getFieldValue('co-upazila','checkoutArea'),
+    upazila,
     paymentMethod:mapPaymentMethod(paymentMethod),
-    notes:getFieldValue('co-note','checkoutNote'),
+    transactionRef,
+    notes:[getFieldValue('co-note','checkoutNote'), transactionRef ? `Transaction ID: ${transactionRef}` : ''].filter(Boolean).join('\n'),
     abandonedCartSessionId,
     items:orderItems
   };

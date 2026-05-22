@@ -2,6 +2,9 @@ import Order from "../models/Order.js";
 
 export async function initiatePayment(order) {
   if (order.paymentMethod === "COD") return { redirectUrl: null, paymentStatus: "unpaid" };
+  if (["bKash", "Nagad", "Rocket"].includes(order.paymentMethod)) {
+    return { redirectUrl: null, paymentStatus: "pending", transactionRef: order.transactionRef || null };
+  }
 
   if (!process.env.SSLCOMMERZ_STORE_ID || !process.env.SSLCOMMERZ_STORE_PASSWORD) {
     return { redirectUrl: null, paymentStatus: "pending", note: "Gateway credentials missing" };

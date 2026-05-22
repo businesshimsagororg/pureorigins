@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema({
   shippingAddress: String,
   district: String,
   upazila: String,
-  paymentMethod: { type: String, enum: ["COD", "SSLCommerz", "bKash", "Nagad"], default: "COD" },
+  paymentMethod: { type: String, enum: ["COD", "SSLCommerz", "bKash", "Nagad", "Rocket"], default: "COD" },
   paymentStatus: { type: String, enum: ["unpaid", "pending", "paid", "failed", "refunded"], default: "unpaid" },
   transactionRef: String,
   deliveryCharge: { type: Number, default: 0 },
