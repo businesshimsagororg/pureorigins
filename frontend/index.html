@@ -2122,8 +2122,12 @@ async function placeOrder(){
   }
 }
 
+let currentDetailProductId = null;
+
 function renderDetail(id){
   const p=getProduct(id);if(!p)return;
+  currentDetailProductId = p.id;
+  currentQty = 1;
   document.getElementById('detail-breadcrumb').innerHTML=
     `হোম → <span onclick="navigate('shop')" style="cursor:pointer">পণ্যসমূহ</span> → <span>${p.name}</span>`;
   document.getElementById('detail-img').textContent=p.emoji;
@@ -2161,8 +2165,8 @@ function renderDetail(id){
       <span style="font-size:13px;color:var(--text-muted)">পিস</span>
     </div>
     <div class="detail-actions">
-      <button class="btn-buy" onclick="buyNow(${p.id})">⚡ এখনই কিনুন</button>
-      <button class="btn-add" onclick="addDetailToCart(${p.id})">🛒 কার্টে যোগ করুন</button>
+      <button class="btn-buy" onclick="buyNow()">⚡ এখনই কিনুন</button>
+      <button class="btn-add" onclick="addDetailToCart()">🛒 কার্টে যোগ করুন</button>
     </div>
     <div class="detail-meta">
       <div class="meta-row"><span class="meta-icon">💵</span><span>পেমেন্ট: <strong>COD / bKash / Nagad / Rocket</strong></span></div>
@@ -2202,13 +2206,19 @@ function switchTab(el,id){
   el.classList.add('active');
   document.getElementById('tab-'+id).classList.add('active');
 }
-function addDetailToCart(pid){
+function addDetailToCart(pid=currentDetailProductId){
   const p=getProduct(pid);
+  if(!p){showToast('Product is not available. Please refresh and try again.');return}
   const wBtn=document.querySelector('#weight-opts .weight-btn.active');
   const w=wBtn?wBtn.textContent:p.weight[0];
   addToCart(p,w,currentQty);
 }
-function buyNow(pid){addDetailToCart(pid);navigate('checkout');}
+function buyNow(pid=currentDetailProductId){
+  const beforeCount=cart.reduce((sum,item)=>sum+item.qty,0);
+  addDetailToCart(pid);
+  const afterCount=cart.reduce((sum,item)=>sum+item.qty,0);
+  if(afterCount>beforeCount)navigate('checkout');
+}
 
 // ═══════════════════════════════════════════
 //  SHOP FILTER
