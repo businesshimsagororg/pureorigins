@@ -11,6 +11,8 @@ import { calcCouponDiscount, deliveryChargeByDistrict } from "../utils/pricing.j
 import { initiatePayment } from "../services/paymentService.js";
 import { notifyOrderPlaced, notifyOrderStatus } from "../services/notificationService.js";
 
+const GUEST_ORDER_SESSION_GRACE_MS = 15 * 60 * 1000;
+
 function orderPayload(order) {
   return {
     _id: order._id,
@@ -254,9 +256,10 @@ export async function getOrder(req, res) {
   const isOwner = req.auth?.sub && order.user?.toString() === req.auth.sub;
   const isAdmin = req.auth?.role === "admin";
   const hasToken = safeTokenMatch(token, order.lookupToken);
-  const hasGuestSession = sessionId && order.guestSessionId && String(sessionId) === String(order.guestSessionId);
+  const isGuestSessionFresh = order.createdAt && (Date.now() - new Date(order.createdAt).getTime()) <= GUEST_ORDER_SESSION_GRACE_MS;
+  const hasRecentGuestSession = sessionId && order.guestSessionId && String(sessionId) === String(order.guestSessionId) && isGuestSessionFresh;
 
-  if (!isOwner && !isAdmin && !hasToken && !hasGuestSession) {
+  if (!isOwner && !isAdmin && !hasToken && !hasRecentGuestSession) {
     return res.status(403).json({ message: "Order access denied" });
   }
 

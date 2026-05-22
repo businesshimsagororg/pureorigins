@@ -37,7 +37,13 @@ app.use("/uploads", express.static("uploads"));
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.get("/api/config/client", (req, res) => res.json({ ga4Id: env.ga4Id, fbPixelId: env.fbPixelId }));
 app.get("/robots.txt", (req, res) => res.type("text/plain").send("User-agent: *\nAllow: /"));
-app.get("/sitemap.xml", (req, res) => res.type("application/xml").send('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://pureorigins.bd/</loc></url></urlset>'));
+app.get("/sitemap.xml", (req, res) => {
+  const frontendUrl = (env.frontendOrigin || "https://pureorigins.vercel.app").replace(/\/+$/, "");
+  res.type("application/xml").send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>${frontendUrl}/</loc></url>
+</urlset>`);
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
