@@ -426,6 +426,80 @@ nav{
 .benefit-item h4{font-size:14.5px;font-weight:600;color:var(--forest);margin-bottom:4px}
 .benefit-item p{font-size:13px;color:var(--text-muted)}
 
+/* ── SUNNAH CORNER ── */
+.sunnah-preview{
+  background:
+    radial-gradient(circle at 10% 20%,rgba(196,151,47,.16),transparent 28%),
+    linear-gradient(135deg,#fffaf0 0%,#f5efe0 100%);
+}
+.sunnah-panel{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:20px;
+  align-items:stretch;
+}
+.sunnah-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 12px 32px rgba(27,67,50,.08);
+}
+.sunnah-card.dark{
+  background:linear-gradient(135deg,var(--forest) 0%,#0d2b1d 100%);
+  color:var(--white);
+  border-color:rgba(255,255,255,.16);
+}
+.sunnah-card h3{
+  font-family:var(--font-en);
+  font-size:26px;
+  color:var(--forest);
+  margin-bottom:10px;
+}
+.sunnah-card.dark h3{color:var(--gold-light)}
+.sunnah-card p,.sunnah-card li{
+  color:var(--text-muted);
+  font-size:14.5px;
+  line-height:1.85;
+}
+.sunnah-card.dark p,.sunnah-card.dark li{color:rgba(255,255,255,.82)}
+.sunnah-card ul{padding-left:20px;margin:12px 0}
+.sunnah-pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.sunnah-pill{
+  background:var(--cream-dark);
+  color:var(--forest);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:6px 12px;
+  font-size:12.5px;
+  font-weight:700;
+}
+.sunnah-source{
+  background:rgba(196,151,47,.12);
+  border-left:4px solid var(--gold);
+  padding:14px 16px;
+  border-radius:12px;
+  margin-top:14px;
+}
+.sunnah-source a{
+  color:var(--forest);
+  font-weight:700;
+  text-decoration:underline;
+}
+.sunnah-card.dark .sunnah-source{
+  background:rgba(255,255,255,.1);
+  border-left-color:var(--gold-light);
+}
+.sunnah-card.dark .sunnah-source a{color:var(--gold-light)}
+.sunnah-warning{
+  background:#fff6e8;
+  border:1px solid #f0d6aa;
+  color:#6f4a12;
+  border-radius:14px;
+  padding:14px 16px;
+  font-size:13.5px;
+  line-height:1.75;
+  margin-top:16px;
+}
+
 /* ── FAQ ── */
 .faq-item{
   border:1px solid var(--border);border-radius:12px;
@@ -880,6 +954,7 @@ footer ul a:hover{color:var(--white)}
   .cart-layout{grid-template-columns:1fr}
   .checkout-layout{grid-template-columns:1fr}
   .benefits-grid{grid-template-columns:1fr}
+  .sunnah-panel{grid-template-columns:1fr}
 }
 @media(max-width:640px){
   .nav-links{display:none}
@@ -1004,6 +1079,9 @@ input,select,textarea{font-size:16px}
   .review-text{font-size:14px;line-height:1.75}
   .benefits-grid{grid-template-columns:1fr;gap:12px}
   .benefit-item{padding:16px;border-radius:12px}
+  .sunnah-card{padding:18px;border-radius:14px}
+  .sunnah-card h3{font-size:23px;line-height:1.25}
+  .sunnah-card p,.sunnah-card li{font-size:13.5px;line-height:1.75}
   .detail-grid{grid-template-columns:1fr;gap:20px;padding:20px 14px}
   .detail-img-main{height:260px;font-size:86px;border-radius:16px}
   .detail-thumbs{overflow-x:auto;padding-bottom:6px}
@@ -1093,6 +1171,7 @@ input,select,textarea{font-size:16px}
       <li><a href="#home" onclick="navigate('home');return false;" id="nav-home" class="active">হোম</a></li>
       <li><a href="#shop" onclick="navigate('shop');return false;" id="nav-shop">পণ্যসমূহ</a></li>
       <li><a href="#combos" onclick="navigate('combos');return false;" id="nav-combos">কম্বো অফার</a></li>
+      <li><a href="#sunnah" onclick="navigate('sunnah');return false;" id="nav-sunnah">সুন্নাহ কর্নার</a></li>
       <li><a href="#about" onclick="navigate('about');return false;" id="nav-about">আমাদের সম্পর্কে</a></li>
       <li><a href="#faq" onclick="navigate('faq');return false;" id="nav-faq">FAQ</a></li>
       <li><a href="#contact" onclick="navigate('contact');return false;" id="nav-contact">যোগাযোগ</a></li>
@@ -1111,6 +1190,7 @@ input,select,textarea{font-size:16px}
     <a href="#home" onclick="navigate('home');toggleMobile();return false;">🏠 হোম</a>
     <a href="#shop" onclick="navigate('shop');toggleMobile();return false;">🛍️ পণ্যসমূহ</a>
     <a href="#combos" onclick="navigate('combos');toggleMobile();return false;">🎁 কম্বো অফার</a>
+    <a href="#sunnah" onclick="navigate('sunnah');toggleMobile();return false;">🌙 সুন্নাহ কর্নার</a>
     <a href="#about" onclick="navigate('about');toggleMobile();return false;">ℹ️ আমাদের সম্পর্কে</a>
     <a href="#faq" onclick="navigate('faq');toggleMobile();return false;">❓ FAQ</a>
     <a href="#contact" onclick="navigate('contact');toggleMobile();return false;">📞 যোগাযোগ</a>
@@ -1163,6 +1243,29 @@ input,select,textarea{font-size:16px}
       <div class="trust-item"><span class="icon">↩️</span>রিটার্ন পলিসি</div>
     </div>
   </div>
+
+  <!-- SUNNAH CORNER PREVIEW -->
+  <section class="section sunnah-preview">
+    <div class="container">
+      <div class="sunnah-panel">
+        <div class="sunnah-card dark">
+          <div class="tag-line" style="color:var(--gold-light)">সুন্নাহ কর্নার</div>
+          <h3>কালোজিরা ও সুন্নাহ-অনুপ্রাণিত খাবার</h3>
+          <p>কালোজিরা, খাঁটি মধু ও পরিচ্ছন্ন প্রাকৃতিক খাবার সম্পর্কে ইসলামি ঐতিহ্য, সতর্ক ব্যবহার এবং দৈনন্দিন খাদ্যাভ্যাসের সহজ গাইড এক জায়গায় পড়ুন।</p>
+          <button class="btn-primary" style="margin-top:16px" onclick="navigate('sunnah')">সুন্নাহ কর্নার দেখুন →</button>
+        </div>
+        <div class="sunnah-card">
+          <h3>বিশ্বাস + সচেতনতা</h3>
+          <p>আমরা Hadith-এর সম্মান বজায় রেখে তথ্য দিই, কিন্তু কোনো রোগের চিকিৎসার নিশ্চয়তা দিই না। অসুস্থতা, গর্ভাবস্থা বা নিয়মিত ওষুধ চললে চিকিৎসকের পরামর্শ নিন।</p>
+          <div class="sunnah-pill-row">
+            <span class="sunnah-pill">কালোজিরা</span>
+            <span class="sunnah-pill">খাঁটি মধু</span>
+            <span class="sunnah-pill">পরিমিত ব্যবহার</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- CATEGORIES -->
   <section class="section">
@@ -1496,6 +1599,60 @@ input,select,textarea{font-size:16px}
         <div class="value-card"><div class="icon">💚</div><h3>পরিবেশ বান্ধব</h3><p>পরিবেশবান্ধব প্যাকেজিং ব্যবহারে আমরা প্রতিশ্রুতিবদ্ধ।</p></div>
         <div class="value-card"><div class="icon">📞</div><h3>গ্রাহক সেবা</h3><p>বাংলায় কথা বলুন, সমস্যা সমাধান করুন।</p></div>
         <div class="value-card"><div class="icon">🔄</div><h3>ন্যায্য রিটার্ন</h3><p>পণ্যে সমস্যা হলে আমরা দায়িত্ব নিই।</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════════════ SUNNAH CORNER PAGE ════════════════ -->
+<div class="page" id="page-sunnah">
+  <div class="shop-header">
+    <h1>সুন্নাহ কর্নার</h1>
+    <p>কালোজিরা, মধু ও প্রাকৃতিক খাবার সম্পর্কে ইসলামি ঐতিহ্যভিত্তিক সচেতন তথ্য</p>
+  </div>
+  <section class="section-sm">
+    <div class="container">
+      <div class="sunnah-panel">
+        <div class="sunnah-card dark">
+          <div class="tag-line" style="color:var(--gold-light)">কালোজিরা</div>
+          <h3>Hadith-এ কালোজিরার গুরুত্ব</h3>
+          <p>সহিহ বুখারি ও সহিহ মুসলিমে কালোজিরা সম্পর্কে বর্ণনা এসেছে। অর্থের দিক থেকে Hadith-এ বলা হয়েছে, কালোজিরায় মৃত্যু ছাড়া সব রোগের জন্য শিফা রয়েছে।</p>
+          <div class="sunnah-source">
+            সূত্র:
+            <a href="https://sunnah.com/bukhari:5688" target="_blank" rel="noopener noreferrer">Sahih al-Bukhari 5688</a>
+            এবং
+            <a href="https://sunnah.com/muslim:2215a" target="_blank" rel="noopener noreferrer">Sahih Muslim 2215a</a>
+          </div>
+          <ul>
+            <li>খাবারের সাথে অল্প পরিমাণ কালোজিরা ব্যবহার করা যায়।</li>
+            <li>মধু বা গরম পানির সাথে নেওয়ার আগে নিজের শরীরের সহনশীলতা বুঝুন।</li>
+            <li>শিশু, গর্ভবতী মা, দীর্ঘমেয়াদি রোগী বা ওষুধ সেবনকারী হলে আগে চিকিৎসকের পরামর্শ নিন।</li>
+          </ul>
+        </div>
+        <div class="sunnah-card">
+          <div class="tag-line">খাঁটি মধু</div>
+          <h3>প্রাকৃতিক মিষ্টি ও উপকারী খাদ্য</h3>
+          <p>মধু আমাদের খাদ্য সংস্কৃতি ও ইসলামি ঐতিহ্যে পরিচিত একটি মূল্যবান প্রাকৃতিক খাবার। বিশুদ্ধতা, পরিমিত ব্যবহার এবং সঠিক সংরক্ষণ এখানে সবচেয়ে গুরুত্বপূর্ণ।</p>
+          <ul>
+            <li>চিনি কমাতে চা, দুধ বা নাশতায় পরিমিত মধু ব্যবহার করতে পারেন।</li>
+            <li>১ বছরের কম বয়সী শিশুকে মধু দেওয়া নিরাপদ নয়।</li>
+            <li>ডায়াবেটিস থাকলে মধু ব্যবহারের আগে চিকিৎসকের পরামর্শ জরুরি।</li>
+          </ul>
+          <button class="btn-outline" style="color:var(--forest);border-color:var(--border);margin-top:10px" onclick="navigate('shop')">সুন্নাহ-অনুপ্রাণিত পণ্য দেখুন</button>
+        </div>
+      </div>
+
+      <div class="sunnah-card" style="margin-top:20px">
+        <h3>কীভাবে নিরাপদে ব্যবহার করবেন</h3>
+        <div class="benefits-grid">
+          <div class="benefit-item"><span class="benefit-icon">১</span><div><h4>কম থেকে শুরু করুন</h4><p>নতুন কোনো খাবার শুরু করলে অল্প পরিমাণে শুরু করুন এবং শরীরের প্রতিক্রিয়া লক্ষ্য করুন।</p></div></div>
+          <div class="benefit-item"><span class="benefit-icon">২</span><div><h4>রুটিনের অংশ করুন</h4><p>একদিনে বেশি খাওয়ার বদলে পরিমিতভাবে নিয়মিত খাদ্যতালিকায় যুক্ত করা ভালো।</p></div></div>
+          <div class="benefit-item"><span class="benefit-icon">৩</span><div><h4>বিশুদ্ধতা দেখুন</h4><p>পরিষ্কার, শুকনো ও ভালোভাবে প্যাকেজ করা পণ্য ব্যবহার করুন।</p></div></div>
+          <div class="benefit-item"><span class="benefit-icon">৪</span><div><h4>চিকিৎসার বিকল্প নয়</h4><p>Hadith-এর মর্যাদা বজায় রেখে বলছি: এটি চিকিৎসকের পরামর্শ বা প্রেসক্রিপশনের বিকল্প নয়।</p></div></div>
+        </div>
+        <div class="sunnah-warning">
+          গুরুত্বপূর্ণ: PureOrigins স্বাস্থ্যকর খাদ্যাভ্যাসে সহায়ক প্রাকৃতিক পণ্য সরবরাহ করে। কোনো পণ্যকে রোগ নিরাময়ের নিশ্চয়তা হিসেবে উপস্থাপন করা হচ্ছে না।
+        </div>
       </div>
     </div>
   </section>
@@ -2606,7 +2763,7 @@ function routeFromHash(){
   const hash = String(location.hash || '').replace(/^#/,'');
   if(!hash || /^order-/i.test(hash))return false;
   if(hash.startsWith('policy-')){navigate('policy', hash.replace('policy-',''));return true;}
-  const allowed = ['home','shop','combos','about','faq','contact','cart','checkout','account'];
+  const allowed = ['home','shop','combos','sunnah','about','faq','contact','cart','checkout','account'];
   if(allowed.includes(hash)){navigate(hash);return true;}
   return false;
 }
