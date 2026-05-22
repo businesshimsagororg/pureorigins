@@ -778,6 +778,17 @@ footer ul a:hover{color:var(--white)}
 .confirm-items{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}
 .confirm-item{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--text-muted);padding:6px 0}
 .confirm-item strong{color:var(--forest)}
+.account-layout{display:grid;grid-template-columns:360px 1fr;gap:22px;max-width:1100px;margin:0 auto}
+.account-card,.orders-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 8px 28px var(--shadow)}
+.account-card h2,.orders-card h2{font-size:22px;color:var(--forest);margin-bottom:10px}
+.account-card p,.orders-card p{font-size:14px;color:var(--text-muted);margin-bottom:14px}
+.account-message{min-height:22px;font-size:13px;color:var(--forest);margin-top:10px}
+.account-message.error{color:var(--red)}
+.order-history-item{border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:12px;background:var(--cream)}
+.order-history-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:8px}
+.order-history-top strong{color:var(--forest)}
+.order-history-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:13px;color:var(--text-muted)}
+.order-history-meta span{background:var(--white);border-radius:8px;padding:8px}
 .steps-list{list-style:none;counter-reset:steps;text-align:left;margin-bottom:28px}
 .steps-list li{
   counter-increment:steps;
@@ -1008,6 +1019,9 @@ input,select,textarea{font-size:16px}
   .summary-row{font-size:14px}
   .about-hero{padding:34px 16px}
   .about-story,.contact-grid{grid-template-columns:1fr;gap:18px;padding:28px 14px}
+  .account-layout{grid-template-columns:1fr;gap:14px}
+  .account-card,.orders-card{padding:18px;border-radius:14px}
+  .order-history-meta{grid-template-columns:1fr}
   .about-visual,.contact-info,.contact-form{padding:22px;border-radius:16px}
   .values-grid{grid-template-columns:1fr;gap:12px}
   .value-card{padding:18px;border-radius:12px}
@@ -1064,6 +1078,7 @@ input,select,textarea{font-size:16px}
       <li><a href="#about" onclick="navigate('about');return false;" id="nav-about">আমাদের সম্পর্কে</a></li>
       <li><a href="#faq" onclick="navigate('faq');return false;" id="nav-faq">FAQ</a></li>
       <li><a href="#contact" onclick="navigate('contact');return false;" id="nav-contact">যোগাযোগ</a></li>
+      <li><a href="#account" onclick="navigate('account');return false;" id="nav-account">অ্যাকাউন্ট</a></li>
     </ul>
     <div class="nav-right">
       <button class="cart-btn" onclick="navigate('cart')">
@@ -1081,6 +1096,7 @@ input,select,textarea{font-size:16px}
     <a href="#about" onclick="navigate('about');toggleMobile();return false;">ℹ️ আমাদের সম্পর্কে</a>
     <a href="#faq" onclick="navigate('faq');toggleMobile();return false;">❓ FAQ</a>
     <a href="#contact" onclick="navigate('contact');toggleMobile();return false;">📞 যোগাযোগ</a>
+    <a href="#account" onclick="navigate('account');toggleMobile();return false;">👤 অ্যাকাউন্ট</a>
   </div>
 </nav>
 
@@ -1419,6 +1435,7 @@ input,select,textarea{font-size:16px}
     </div>
     <p style="font-weight:600;color:var(--forest)">📞 আমাদের টিম ২৪ ঘন্টার মধ্যে আপনার সাথে যোগাযোগ করবে।</p>
     <p style="margin-bottom:28px">কোনো প্রশ্ন থাকলে: 01700-000000</p>
+    <button class="btn-outline" style="margin-right:10px;color:var(--forest);border-color:var(--border)" onclick="navigate('account')">অ্যাকাউন্টে অর্ডার দেখুন</button>
     <button class="btn-primary" onclick="navigate('home')">হোমে ফিরে যান</button>
   </div>
 </div>
@@ -1497,6 +1514,40 @@ input,select,textarea{font-size:16px}
   <section class="section">
     <div class="container">
       <div style="max-width:780px;margin:0 auto" id="full-faq"></div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ACCOUNT PAGE -->
+<div class="page" id="page-account">
+  <div class="shop-header">
+    <h1>আমার অ্যাকাউন্ট</h1>
+    <p>ফোন নম্বর দিয়ে লগইন করে অর্ডার হিস্ট্রি ও স্ট্যাটাস দেখুন</p>
+  </div>
+  <section class="section-sm">
+    <div class="account-layout">
+      <div class="account-card">
+        <h2>ফোন লগইন</h2>
+        <p>অর্ডার দেওয়ার সময় যে মোবাইল নম্বর দিয়েছেন, সেটি লিখুন। আমরা লগইন কোড পাঠাব।</p>
+        <div class="form-group">
+          <label>মোবাইল নম্বর</label>
+          <input type="tel" id="account-phone" placeholder="01XXXXXXXXX" maxlength="11"/>
+        </div>
+        <button class="btn-primary" style="width:100%;padding:12px" onclick="requestAccountCode()">কোড পাঠান</button>
+        <div class="form-group" style="margin-top:14px">
+          <label>৬ ডিজিট কোড</label>
+          <input type="text" id="account-code" placeholder="123456" maxlength="6"/>
+        </div>
+        <button class="btn-outline" style="width:100%;color:var(--forest);border-color:var(--border)" onclick="verifyAccountCode()">লগইন করুন</button>
+        <button class="btn-outline" style="width:100%;margin-top:10px;color:var(--red);border-color:var(--border)" onclick="logoutAccount()">লগআউট</button>
+        <div class="account-message" id="account-message"></div>
+      </div>
+      <div class="orders-card">
+        <h2>অর্ডার হিস্ট্রি</h2>
+        <p id="account-user-line">লগইন করলে আপনার অর্ডারগুলো এখানে দেখা যাবে।</p>
+        <div id="account-orders"></div>
+      </div>
     </div>
   </section>
 </div>
@@ -2219,6 +2270,84 @@ async function restoreSavedOrder(){
   }
 }
 
+function setAccountMessage(message='', isError=false){
+  const el = document.getElementById('account-message');
+  if(!el)return;
+  el.textContent = message;
+  el.classList.toggle('error', Boolean(isError));
+}
+
+function orderHistoryCard(order){
+  const items = Array.isArray(order.orderItems) ? order.orderItems : [];
+  const firstItem = items[0]?.productName || 'Order item';
+  const more = items.length > 1 ? ` +${items.length - 1}` : '';
+  return `<div class="order-history-item">
+    <div class="order-history-top">
+      <div><strong>${formatOrderId(order._id)}</strong><br><span>${escapeAttr(firstItem)}${more}</span></div>
+      <span class="order-status-pill">${orderStatusLabel(order.status)}</span>
+    </div>
+    <div class="order-history-meta">
+      <span>মোট: <strong>${formatTaka(order.total)}</strong></span>
+      <span>পেমেন্ট: <strong>${paymentLabel(order.paymentMethod)}</strong></span>
+      <span>তারিখ: <strong>${order.createdAt ? new Date(order.createdAt).toLocaleDateString('bn-BD') : '-'}</strong></span>
+    </div>
+  </div>`;
+}
+
+async function loadAccount(){
+  const ordersEl = document.getElementById('account-orders');
+  const userLine = document.getElementById('account-user-line');
+  if(!ordersEl || !userLine)return;
+  ordersEl.innerHTML = '<p>অ্যাকাউন্ট তথ্য লোড হচ্ছে...</p>';
+  try{
+    const [{user}, {orders}] = await Promise.all([
+      apiRequest('/auth/me'),
+      apiRequest('/orders/me')
+    ]);
+    userLine.textContent = `${user.name || 'Customer'} (${user.phone || ''})`;
+    ordersEl.innerHTML = orders.length
+      ? orders.map(orderHistoryCard).join('')
+      : '<p>এখনও কোনো অর্ডার পাওয়া যায়নি।</p>';
+    const phoneInput = document.getElementById('account-phone');
+    if(phoneInput && user.phone)phoneInput.value = user.phone;
+    setAccountMessage('');
+  }catch(error){
+    userLine.textContent = 'লগইন করলে আপনার অর্ডারগুলো এখানে দেখা যাবে।';
+    ordersEl.innerHTML = '<p>আপনি এখনো লগইন করেননি। ফোন নম্বর দিয়ে কোড নিয়ে লগইন করুন।</p>';
+  }
+}
+
+async function requestAccountCode(){
+  const phone = getFieldValue('account-phone');
+  setAccountMessage('কোড পাঠানো হচ্ছে...');
+  try{
+    const data = await apiRequest('/auth/phone/request', {method:'POST', body:{phone}});
+    const devHint = data.devCode ? ` Test code: ${data.devCode}` : '';
+    setAccountMessage((data.message || 'কোড পাঠানো হয়েছে।') + devHint);
+  }catch(error){
+    setAccountMessage(error.message || 'কোড পাঠানো যায়নি।', true);
+  }
+}
+
+async function verifyAccountCode(){
+  const phone = getFieldValue('account-phone');
+  const code = getFieldValue('account-code');
+  setAccountMessage('লগইন হচ্ছে...');
+  try{
+    await apiRequest('/auth/phone/verify', {method:'POST', body:{phone, code}});
+    setAccountMessage('লগইন সফল। আপনার অর্ডার লোড হচ্ছে...');
+    await loadAccount();
+  }catch(error){
+    setAccountMessage(error.message || 'লগইন করা যায়নি।', true);
+  }
+}
+
+async function logoutAccount(){
+  await apiRequest('/auth/logout', {method:'POST'}).catch(()=>{});
+  setAccountMessage('লগআউট সম্পন্ন হয়েছে।');
+  loadAccount();
+}
+
 async function placeOrder(){
   if(!cart.length){showToast('Cart is empty');return}
   const form=validateCheckoutForm();
@@ -2403,6 +2532,7 @@ function navigate(page,data=null){
   if(page==='checkout'){if(cart.length===0){showToast('কার্ট খালি!');navigate('shop');return;}renderCheckoutSummary();}
   if(page==='combos'){document.getElementById('combos-page').innerHTML=combos.map(comboCard).join('');}
   if(page==='faq'){renderFaqBlock('full-faq');}
+  if(page==='account'){loadAccount();}
   if(page==='policy'){renderPolicy(data || 'return');}
 }
 

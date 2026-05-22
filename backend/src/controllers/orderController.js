@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
 import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
 import Coupon from "../models/Coupon.js";
@@ -70,6 +71,60 @@ function normalizePaymentMethod(method = "COD") {
   return "COD";
 }
 
+async function ensureCustomerAccount({ customerName, customerPhone, customerEmail, district, upazila, shippingAddress }) {
+  const phone = String(customerPhone || "").trim();
+  if (!/^01[3-9]\d{8}$/.test(phone)) return null;
+
+  let user = await User.findOne({ phone });
+  if (user && user.role !== "customer") return null;
+  if (!user) {
+    const emailInUse = customerEmail ? await User.exists({ email: String(customerEmail).trim().toLowerCase() }) : null;
+    const passwordHash = await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 10);
+    try {
+      user = await User.create({
+        name: customerName || phone,
+        phone,
+        email: emailInUse ? undefined : customerEmail,
+        passwordHash,
+        role: "customer",
+        addresses: [{
+          label: "Default",
+          name: customerName,
+          phone,
+          district,
+          upazila,
+          addressLine: shippingAddress,
+          isDefault: true
+        }]
+      });
+    } catch (error) {
+      if (error.code !== 11000) throw error;
+      user = await User.findOne({ phone, role: "customer" });
+    }
+  } else {
+    let changed = false;
+    if (customerName && user.name !== customerName) {
+      user.name = customerName;
+      changed = true;
+    }
+    if (customerEmail && !user.email) {
+      const emailInUse = await User.exists({ email: String(customerEmail).trim().toLowerCase(), _id: { $ne: user._id } });
+      if (!emailInUse) {
+        user.email = customerEmail;
+        changed = true;
+      }
+    }
+    const hasAddress = user.addresses.some(address => address.addressLine === shippingAddress && address.phone === phone);
+    if (shippingAddress && !hasAddress) {
+      user.addresses.push({ label: "Checkout", name: customerName, phone, district, upazila, addressLine: shippingAddress, isDefault: !user.addresses.length });
+      changed = true;
+    }
+    if (changed) await user.save();
+  }
+
+  return user?._id || null;
+}
+
 export async function createOrder(req, res) {
   const {
     customerName,
@@ -105,9 +160,10 @@ export async function createOrder(req, res) {
   const deliveryCharge = deliveryChargeByDistrict(district);
   const total = subtotal - couponDiscount + deliveryCharge;
   const lookupToken = crypto.randomBytes(24).toString("hex");
+  const customerUserId = req.auth?.sub || await ensureCustomerAccount({ customerName, customerPhone, customerEmail, district, upazila, shippingAddress });
 
   const order = await Order.create({
-    user: req.auth?.sub,
+    user: customerUserId,
     guestSessionId: abandonedCartSessionId,
     lookupToken,
     customerName,
@@ -149,7 +205,7 @@ export async function createOrder(req, res) {
   }
 
   const recoveredFilters = [];
-  if (req.auth?.sub) recoveredFilters.push({ user: req.auth.sub });
+  if (customerUserId) recoveredFilters.push({ user: customerUserId });
   if (customerPhone) recoveredFilters.push({ phone: customerPhone });
   if (abandonedCartSessionId) recoveredFilters.push({ sessionId: abandonedCartSessionId });
   if (recoveredFilters.length) {
@@ -159,7 +215,14 @@ export async function createOrder(req, res) {
     );
   }
 
-  const user = req.auth?.sub ? await User.findById(req.auth.sub).select("email") : null;
+  if (customerUserId) {
+    await Order.updateMany(
+      { customerPhone, $or: [{ user: { $exists: false } }, { user: null }] },
+      { $set: { user: customerUserId } }
+    );
+  }
+
+  const user = customerUserId ? await User.findById(customerUserId).select("email") : null;
   await notifyOrderPlaced({ customerPhone, customerEmail: user?.email || customerEmail, orderId: order._id.toString(), total });
 
   const payment = await initiatePayment(order);
