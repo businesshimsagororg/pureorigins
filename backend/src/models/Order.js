@@ -18,6 +18,8 @@ const statusLogSchema = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  guestSessionId: { type: String, index: true },
+  lookupToken: { type: String, index: true },
   customerName: String,
   customerPhone: String,
   shippingAddress: String,

@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
 import Coupon from "../models/Coupon.js";
@@ -8,6 +9,37 @@ import AbandonedCart from "../models/AbandonedCart.js";
 import { calcCouponDiscount, deliveryChargeByDistrict } from "../utils/pricing.js";
 import { initiatePayment } from "../services/paymentService.js";
 import { notifyOrderPlaced, notifyOrderStatus } from "../services/notificationService.js";
+
+function orderPayload(order) {
+  return {
+    _id: order._id,
+    customerName: order.customerName,
+    customerPhone: order.customerPhone,
+    shippingAddress: order.shippingAddress,
+    district: order.district,
+    upazila: order.upazila,
+    paymentMethod: order.paymentMethod,
+    paymentStatus: order.paymentStatus,
+    transactionRef: order.transactionRef,
+    deliveryCharge: order.deliveryCharge,
+    couponDiscount: order.couponDiscount,
+    subtotal: order.subtotal,
+    total: order.total,
+    orderItems: order.orderItems,
+    status: order.status,
+    statusHistory: order.statusHistory,
+    trackingNumber: order.trackingNumber,
+    createdAt: order.createdAt,
+    updatedAt: order.updatedAt
+  };
+}
+
+function safeTokenMatch(providedToken, storedToken) {
+  if (!providedToken || !storedToken) return false;
+  const provided = Buffer.from(String(providedToken));
+  const stored = Buffer.from(String(storedToken));
+  return provided.length === stored.length && crypto.timingSafeEqual(provided, stored);
+}
 
 async function computeCartTotals(items) {
   let subtotal = 0;
@@ -72,9 +104,12 @@ export async function createOrder(req, res) {
   const couponDiscount = calcCouponDiscount(coupon, subtotal);
   const deliveryCharge = deliveryChargeByDistrict(district);
   const total = subtotal - couponDiscount + deliveryCharge;
+  const lookupToken = crypto.randomBytes(24).toString("hex");
 
   const order = await Order.create({
     user: req.auth?.sub,
+    guestSessionId: abandonedCartSessionId,
+    lookupToken,
     customerName,
     customerPhone,
     shippingAddress,
@@ -133,12 +168,36 @@ export async function createOrder(req, res) {
     await order.save();
   }
 
-  return res.status(201).json({ order, payment });
+  return res.status(201).json({
+    order: orderPayload(order),
+    orderAccess: { orderId: order._id.toString(), token: lookupToken },
+    payment
+  });
 }
 
 export async function myOrders(req, res) {
   const orders = await Order.find({ user: req.auth.sub }).sort({ createdAt: -1 });
-  res.json({ orders });
+  res.json({ orders: orders.map(orderPayload) });
+}
+
+export async function getOrder(req, res) {
+  const { token, sessionId } = req.query;
+  if (!/^[a-f0-9]{24}$/i.test(String(req.params.id))) {
+    return res.status(404).json({ message: "Order not found" });
+  }
+  const order = await Order.findById(req.params.id);
+  if (!order) return res.status(404).json({ message: "Order not found" });
+
+  const isOwner = req.auth?.sub && order.user?.toString() === req.auth.sub;
+  const isAdmin = req.auth?.role === "admin";
+  const hasToken = safeTokenMatch(token, order.lookupToken);
+  const hasGuestSession = sessionId && order.guestSessionId && String(sessionId) === String(order.guestSessionId);
+
+  if (!isOwner && !isAdmin && !hasToken && !hasGuestSession) {
+    return res.status(403).json({ message: "Order access denied" });
+  }
+
+  res.json({ order: orderPayload(order) });
 }
 
 export async function adminOrders(req, res) {

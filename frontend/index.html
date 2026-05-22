@@ -763,6 +763,14 @@ footer ul a:hover{color:var(--white)}
 .order-box h3{font-size:15px;font-weight:700;color:var(--forest);margin-bottom:12px}
 .order-detail{display:flex;justify-content:space-between;font-size:13.5px;color:var(--text-muted);padding:6px 0;border-bottom:1px solid var(--border)}
 .order-detail:last-child{border-bottom:none}
+.order-status-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 10px;background:rgba(26,77,58,.10);color:var(--forest);font-weight:700}
+.confirm-state{display:none;margin:16px 0;padding:12px 14px;border-radius:12px;font-size:14px;text-align:left}
+.confirm-state.show{display:block}
+.confirm-loading{background:rgba(201,154,43,.12);color:var(--forest);border:1px solid rgba(201,154,43,.24)}
+.confirm-error{background:rgba(199,52,38,.10);color:var(--red);border:1px solid rgba(199,52,38,.18)}
+.confirm-items{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}
+.confirm-item{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--text-muted);padding:6px 0}
+.confirm-item strong{color:var(--forest)}
 .steps-list{list-style:none;counter-reset:steps;text-align:left;margin-bottom:28px}
 .steps-list li{
   counter-increment:steps;
@@ -1379,12 +1387,18 @@ input,select,textarea{font-size:16px}
     <div class="confirm-icon">✅</div>
     <h1>অর্ডার সফলভাবে দেওয়া হয়েছে!</h1>
     <p>আপনার অর্ডার আমরা পেয়েছি। শীঘ্রই আমাদের টিম আপনাকে কল করে নিশ্চিত করবে।</p>
+    <div class="confirm-state confirm-loading" id="confirm-loading">অর্ডার তথ্য লোড হচ্ছে...</div>
+    <div class="confirm-state confirm-error" id="confirm-error"></div>
     <div class="order-box">
       <h3>অর্ডার বিবরণী</h3>
       <div class="order-detail"><span>অর্ডার নম্বর</span><span id="conf-orderno" style="font-weight:700;color:var(--forest)">-</span></div>
+      <div class="order-detail"><span>অর্ডার স্ট্যাটাস</span><span id="conf-status" class="order-status-pill">-</span></div>
       <div class="order-detail"><span>পেমেন্ট পদ্ধতি</span><span id="conf-payment">Cash on Delivery</span></div>
+      <div class="order-detail"><span>পেমেন্ট স্ট্যাটাস</span><span id="conf-payment-status">-</span></div>
+      <div class="order-detail"><span>মোট</span><span id="conf-total" style="font-weight:700;color:var(--forest)">-</span></div>
       <div class="order-detail"><span>আনুমানিক ডেলিভারি</span><span>৩–৭ কার্যদিবস</span></div>
       <div class="order-detail"><span>ডেলিভারি ঠিকানা</span><span id="conf-address">—</span></div>
+      <div class="confirm-items" id="conf-items"></div>
     </div>
     <p style="font-weight:600;color:var(--forest)">📞 আমাদের টিম ২৪ ঘন্টার মধ্যে আপনার সাথে যোগাযোগ করবে।</p>
     <p style="margin-bottom:28px">কোনো প্রশ্ন থাকলে: 01700-000000</p>
@@ -1702,6 +1716,7 @@ let hasConfirmedOrder = false;
 let selectedPayment = 'cod';
 const abandonedCartSessionId = localStorage.getItem('pureorigins_cart_session') || ((window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `cart-${Date.now()}-${Math.random().toString(16).slice(2)}`);
 localStorage.setItem('pureorigins_cart_session', abandonedCartSessionId);
+const ORDER_REFERENCE_KEY = 'pureorigins_last_order';
 let abandonedCartTimer = null;
 
 function getFieldValue(...ids){
@@ -2080,6 +2095,113 @@ function selectPayment(el,method){
   }
 }
 
+function formatOrderId(id){
+  return '#PO-' + String(id || '').slice(-8).toUpperCase();
+}
+
+function formatTaka(amount){
+  return `৳${Number(amount || 0).toLocaleString()}`;
+}
+
+function paymentLabel(method){
+  const labels = {COD:'ক্যাশ অন ডেলিভারি', bKash:'bKash', Nagad:'Nagad', Rocket:'Rocket', SSLCommerz:'SSLCommerz'};
+  return labels[method] || method || '-';
+}
+
+function paymentStatusLabel(status){
+  const labels = {unpaid:'অপরিশোধিত', pending:'অপেক্ষমাণ', paid:'পরিশোধিত', failed:'ব্যর্থ', refunded:'রিফান্ডেড'};
+  return labels[status] || status || '-';
+}
+
+function orderStatusLabel(status){
+  const labels = {
+    Pending:'পেন্ডিং',
+    Confirmed:'কনফার্মড',
+    Packed:'প্যাকড',
+    Shipped:'শিপড',
+    Delivered:'ডেলিভার্ড',
+    Cancelled:'ক্যানসেলড',
+    Returned:'রিটার্নড',
+    Refunded:'রিফান্ডেড'
+  };
+  return labels[status] || status || '-';
+}
+
+function setConfirmLoading(show){
+  const loading = document.getElementById('confirm-loading');
+  if(loading)loading.classList.toggle('show',Boolean(show));
+}
+
+function setConfirmError(message=''){
+  const error = document.getElementById('confirm-error');
+  if(!error)return;
+  error.textContent = message;
+  error.classList.toggle('show',Boolean(message));
+}
+
+function saveOrderReference(orderId, token){
+  if(!orderId)return;
+  const reference = {orderId:String(orderId), token:token || '', sessionId:abandonedCartSessionId, savedAt:Date.now()};
+  localStorage.setItem(ORDER_REFERENCE_KEY, JSON.stringify(reference));
+  if(history.replaceState) history.replaceState(null, '', `#order-${reference.orderId}`);
+}
+
+function readSavedOrderReference(){
+  const hashMatch = String(location.hash || '').match(/^#order-([a-f0-9]{24})$/i);
+  let saved = null;
+  try{ saved = JSON.parse(localStorage.getItem(ORDER_REFERENCE_KEY) || 'null'); }
+  catch{ localStorage.removeItem(ORDER_REFERENCE_KEY); }
+  if(hashMatch){
+    return {orderId:hashMatch[1], token:saved?.orderId === hashMatch[1] ? saved.token : '', sessionId:saved?.sessionId || abandonedCartSessionId};
+  }
+  if(saved?.orderId)return saved;
+  return null;
+}
+
+async function fetchOrderByReference(reference){
+  const query = new URLSearchParams();
+  if(reference.token)query.set('token', reference.token);
+  query.set('sessionId', reference.sessionId || abandonedCartSessionId);
+  const data = await apiRequest(`/orders/${reference.orderId}?${query.toString()}`);
+  return data.order;
+}
+
+function renderOrderConfirmation(order){
+  if(!order)return;
+  hasConfirmedOrder = true;
+  setConfirmLoading(false);
+  setConfirmError('');
+  document.getElementById('conf-orderno').textContent = formatOrderId(order._id);
+  document.getElementById('conf-status').textContent = orderStatusLabel(order.status);
+  document.getElementById('conf-payment').textContent = paymentLabel(order.paymentMethod);
+  document.getElementById('conf-payment-status').textContent = paymentStatusLabel(order.paymentStatus);
+  document.getElementById('conf-total').textContent = formatTaka(order.total);
+  document.getElementById('conf-address').textContent = [order.shippingAddress, order.upazila, order.district].filter(Boolean).join(', ') || '—';
+  const items = Array.isArray(order.orderItems) ? order.orderItems : [];
+  const itemBox = document.getElementById('conf-items');
+  if(itemBox){
+    itemBox.innerHTML = items.length
+      ? items.map(item=>`<div class="confirm-item"><span><strong>${escapeAttr(item.productName || 'Product')}</strong> ${escapeAttr(item.variantWeight || '')} × ${Number(item.quantity || 1)}</span><span>${formatTaka(item.subtotal)}</span></div>`).join('')
+      : '';
+  }
+}
+
+async function restoreSavedOrder(){
+  const reference = readSavedOrderReference();
+  if(!reference?.orderId)return;
+  hasConfirmedOrder = true;
+  navigate('confirm');
+  setConfirmLoading(true);
+  setConfirmError('');
+  try{
+    const order = await fetchOrderByReference(reference);
+    renderOrderConfirmation(order);
+  }catch(error){
+    setConfirmLoading(false);
+    setConfirmError(error.message || 'অর্ডার তথ্য লোড করা যায়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।');
+  }
+}
+
 async function placeOrder(){
   if(!cart.length){showToast('Cart is empty');return}
   const form=validateCheckoutForm();
@@ -2108,9 +2230,8 @@ async function placeOrder(){
     }
     const order=data.order;
     hasConfirmedOrder = true;
-    document.getElementById('conf-orderno').textContent='#PO-'+String(order._id||'').slice(-8).toUpperCase();
-    document.getElementById('conf-payment').textContent=payload.paymentMethod==='COD'?'\u0995\u09CD\u09AF\u09BE\u09B6 \u0985\u09A8 \u09A1\u09C7\u09B2\u09BF\u09AD\u09BE\u09B0\u09BF':payload.paymentMethod;
-    document.getElementById('conf-address').textContent=address+', '+district;
+    saveOrderReference(data.orderAccess?.orderId || order._id, data.orderAccess?.token);
+    renderOrderConfirmation(order);
     cart=[];
     saveCart();
     updateCartCount();
@@ -2309,6 +2430,7 @@ function renderStorefront(){
     const el=document.getElementById(id);
     if(el)el.addEventListener('input',scheduleAbandonedCartSync);
   });
+  restoreSavedOrder();
 })();
 </script>
 </body>
