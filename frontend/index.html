@@ -296,8 +296,7 @@ nav{
 .price-now{font-size:18px;font-weight:700;color:var(--forest)}
 .price-old{font-size:13px;color:var(--text-muted);text-decoration:line-through}
 .price-save{font-size:11px;color:var(--red);font-weight:600}
-.product-actions{display:flex;gap:8px}
-.product-actions.has-buy{display:grid;grid-template-columns:1fr 1fr 92px}
+.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn-cart{
   flex:1;background:var(--forest);color:#fff;
   border:none;border-radius:8px;
@@ -305,13 +304,6 @@ nav{
   transition:.2s;
 }
 .btn-cart:hover{background:var(--forest-light)}
-.btn-view{
-  background:var(--cream-dark);color:var(--forest);
-  border:1.5px solid var(--border);
-  border-radius:8px;padding:10px 12px;
-  font-size:13px;transition:.2s;
-}
-.btn-view:hover{border-color:var(--forest)}
 .btn-buy-card{
   background:var(--gold);color:var(--white);
   border:none;border-radius:8px;
@@ -1071,9 +1063,8 @@ input,select,textarea{font-size:16px}
   .product-body{padding:18px}
   .bn-name{font-size:16px}
   .price-now{font-size:21px}
-.product-actions{display:grid;grid-template-columns:1fr 104px;gap:10px}
-.product-actions.has-buy{grid-template-columns:1fr 1fr 96px}
-  .btn-cart,.btn-view{min-height:48px;font-size:14px;border-radius:10px}
+  .product-actions{grid-template-columns:1fr 1fr;gap:10px}
+  .btn-cart,.btn-buy-card{min-height:48px;font-size:14px;border-radius:10px}
   .why-grid{grid-template-columns:1fr 1fr;gap:10px}
   .why-card{padding:16px 10px;border-radius:12px}
   .why-icon{font-size:28px}
@@ -1148,8 +1139,6 @@ input,select,textarea{font-size:16px}
   .hero-visual{grid-auto-columns:124px}
   .section-head h2{font-size:24px}
   .product-actions{grid-template-columns:1fr}
-  .product-actions.has-buy{grid-template-columns:1fr}
-  .btn-view{min-height:44px}
   .why-grid,.trust-strip-inner{grid-template-columns:1fr}
   .reviews-slider{grid-auto-columns:88%}
   .cart-row{grid-template-columns:48px 1fr}
@@ -2102,14 +2091,10 @@ function openProductCard(card){
   const id = card?.dataset?.productId;
   if(id)navigate('detail',id);
 }
-function openProductFromButton(button){
-  openProductCard(button.closest('.product-card'));
-}
 function uiIcon(name){
   const icons={
     cart:'<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.4L22 8H7"/></svg>',
-    bolt:'<svg class="svg-icon" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-13h-7l1-7Z"/></svg>',
-    arrow:'<svg class="svg-icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>'
+    bolt:'<svg class="svg-icon" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-13h-7l1-7Z"/></svg>'
   };
   return icons[name] || '';
 }
@@ -2145,10 +2130,10 @@ function productCard(p,showAdd=true){
         <span class="price-now">৳${p.price}</span>
         ${p.oldPrice?`<span class="price-old">৳${p.oldPrice}</span><span class="price-save">৳${p.oldPrice-p.price} সাশ্রয়</span>`:''}
       </div>
-      <div class="product-actions ${showAdd?'has-buy':''}">
-        ${showAdd?`<button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">${uiIcon('cart')} কার্টে যোগ</button><button class="btn-buy-card" onclick="event.stopPropagation();buyCardProduct(this)">${uiIcon('bolt')} এখনই কিনুন</button>`:''}
-        <button class="btn-view" onclick="event.stopPropagation();openProductFromButton(this)">বিবরণ ${uiIcon('arrow')}</button>
-      </div>
+      ${showAdd?`<div class="product-actions">
+        <button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">${uiIcon('cart')} Add to Cart</button>
+        <button class="btn-buy-card" onclick="event.stopPropagation();buyCardProduct(this)">${uiIcon('bolt')} Buy Now</button>
+      </div>`:''}
     </div>
   </div>`;
 }
@@ -2705,8 +2690,8 @@ function renderDetail(id){
       <span style="font-size:13px;color:var(--text-muted)">পিস</span>
     </div>
     <div class="detail-actions">
-      <button class="btn-buy" onclick="buyNow()">⚡ এখনই কিনুন</button>
-      <button class="btn-add" onclick="addDetailToCart()">🛒 কার্টে যোগ করুন</button>
+      <button class="btn-buy" onclick="buyNow()">⚡ Buy Now</button>
+      <button class="btn-add" onclick="addDetailToCart()">🛒 Add to Cart</button>
     </div>
     <div class="detail-meta">
       <div class="meta-row"><span class="meta-icon">💵</span><span>পেমেন্ট: <strong>COD / bKash / Nagad / Rocket</strong></span></div>
