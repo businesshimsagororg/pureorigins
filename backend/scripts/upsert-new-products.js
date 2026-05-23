@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import { pathToFileURL } from "url";
 import Category from "../src/models/Category.js";
 import Product from "../src/models/Product.js";
 
@@ -93,13 +94,7 @@ const buildProducts = (categoryBySlug) => [
   }
 ];
 
-async function main() {
-  if (!process.env.MONGODB_URI) {
-    throw new Error("MONGODB_URI is required.");
-  }
-
-  await mongoose.connect(process.env.MONGODB_URI);
-
+export async function upsertNewProducts() {
   for (const category of categorySeeds) {
     await Category.findOneAndUpdate(
       { slug: category.slug },
@@ -123,12 +118,23 @@ async function main() {
 
     console.log(`Upserted ${result.nameBn} (${result.slug})`);
   }
+}
+
+async function main() {
+  if (!process.env.MONGODB_URI) {
+    throw new Error("MONGODB_URI is required.");
+  }
+
+  await mongoose.connect(process.env.MONGODB_URI);
+  await upsertNewProducts();
 
   await mongoose.disconnect();
 }
 
-main().catch(async (error) => {
-  console.error(error);
-  await mongoose.disconnect();
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch(async (error) => {
+    console.error(error);
+    await mongoose.disconnect();
+    process.exit(1);
+  });
+}
