@@ -33,6 +33,7 @@ function orderPayload(order) {
     status: order.status,
     statusHistory: order.statusHistory,
     trackingNumber: order.trackingNumber,
+    integrations: order.integrations || {},
     createdAt: order.createdAt,
     updatedAt: order.updatedAt
   };
@@ -160,7 +161,7 @@ export async function createOrder(req, res) {
   const { subtotal, orderItems } = await computeCartTotals(sourceItems);
   const coupon = couponCode ? await Coupon.findOne({ code: couponCode.toUpperCase(), isActive: true }) : null;
   const couponDiscount = calcCouponDiscount(coupon, subtotal);
-  const deliveryCharge = deliveryChargeByDistrict(district);
+  const deliveryCharge = deliveryChargeByDistrict(district, subtotal);
   const total = subtotal - couponDiscount + deliveryCharge;
   const lookupToken = crypto.randomBytes(24).toString("hex");
   const customerUserId = req.auth?.sub || await ensureCustomerAccount({ customerName, customerPhone, customerEmail, district, upazila, shippingAddress });
@@ -233,7 +234,10 @@ export async function createOrder(req, res) {
     order.paymentStatus = payment.paymentStatus;
     await order.save();
   }
-  void exportOrderToGoogleSheet(order);
+  const sheetExport = await exportOrderToGoogleSheet(order);
+  if (!sheetExport.ok) {
+    console.warn(`Order ${order._id} was created but Google Sheets export did not complete: ${sheetExport.message || sheetExport.error || "unknown error"}`);
+  }
 
   return res.status(201).json({
     order: orderPayload(order),
@@ -295,6 +299,20 @@ export async function adminOrders(req, res) {
   const filter = q ? { $or: [{ customerPhone: { $regex: q, $options: "i" } }, { customerName: { $regex: q, $options: "i" } }] } : {};
   const orders = await Order.find(filter).sort({ createdAt: -1 });
   res.json({ orders });
+}
+
+export async function exportOrderToSheet(req, res) {
+  const order = await Order.findById(req.params.id);
+  if (!order) return res.status(404).json({ message: "Order not found" });
+
+  const result = await exportOrderToGoogleSheet(order);
+  const refreshedOrder = await Order.findById(order._id);
+
+  res.json({
+    message: result.message || (result.ok ? "Order exported to Google Sheets." : "Google Sheets export failed."),
+    result,
+    order: refreshedOrder
+  });
 }
 
 export async function updateOrderStatus(req, res) {

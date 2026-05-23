@@ -16,6 +16,18 @@ const statusLogSchema = new mongoose.Schema({
   changedAt: { type: Date, default: Date.now }
 }, { _id: false });
 
+const integrationSchema = new mongoose.Schema({
+  googleSheets: {
+    status: { type: String, enum: ["pending", "success", "failed", "not_configured"], default: "pending" },
+    attempts: { type: Number, default: 0 },
+    attemptedAt: Date,
+    exportedAt: Date,
+    lastStatusCode: Number,
+    lastError: String,
+    responseBody: String
+  }
+}, { _id: false });
+
 const orderSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   guestSessionId: { type: String, index: true },
@@ -37,7 +49,8 @@ const orderSchema = new mongoose.Schema({
   status: { type: String, enum: ["Pending", "Confirmed", "Packed", "Shipped", "Delivered", "Cancelled", "Returned", "Refunded"], default: "Pending" },
   statusHistory: [statusLogSchema],
   trackingNumber: String,
-  notes: String
+  notes: String,
+  integrations: { type: integrationSchema, default: () => ({}) }
 }, { timestamps: true });
 
 export default mongoose.model("Order", orderSchema);

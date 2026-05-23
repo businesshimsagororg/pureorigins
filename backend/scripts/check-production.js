@@ -17,8 +17,9 @@ function testCouponTotals() {
   assert.equal(calcCouponDiscount({ type: "percent", value: 15 }, 1000), 150, "percent coupon total");
   assert.equal(calcCouponDiscount({ type: "flat", value: 700 }, 500), 500, "flat coupon cannot exceed subtotal");
   assert.equal(calcCouponDiscount({ type: "percent", value: 10, minimumOrderAmount: 1000 }, 900), 0, "minimum order should block coupon");
-  assert.equal(deliveryChargeByDistrict("Dhaka"), 60, "Dhaka delivery charge");
-  assert.equal(deliveryChargeByDistrict("Chittagong"), 120, "outside Dhaka delivery charge");
+  assert.equal(deliveryChargeByDistrict("Dhaka", 500), 80, "Dhaka and outside Dhaka should use one delivery charge");
+  assert.equal(deliveryChargeByDistrict("Chittagong", 500), 80, "outside Dhaka should use the same delivery charge");
+  assert.equal(deliveryChargeByDistrict("Any District", 800), 0, "large orders should keep the free delivery rule");
 }
 
 async function testPaymentCallbackBehavior() {
@@ -76,11 +77,21 @@ async function testOrderControllerContracts() {
   assert.match(source, /safeTokenMatch\(token,\s*order\.lookupToken\)/, "guest lookup should prefer secure lookup token");
   assert.match(source, /export async function lookupOrder/, "phone + order number lookup endpoint should exist");
   assert.match(source, /customerPhone:\s*phone/, "order lookup should be scoped to the customer phone number");
+  assert.match(source, /await exportOrderToGoogleSheet\(order\)/, "order creation should wait for Google Sheets export status");
+  assert.match(source, /export async function exportOrderToSheet/, "admin should be able to retry Google Sheets export");
 }
 
 async function testRouteContracts() {
   const source = await readSource("src/routes/orderRoutes.js");
   assert.match(source, /r\.post\("\/lookup",\s*lookupOrder\)/, "order lookup route should be registered before /:id");
+  assert.match(source, /r\.post\("\/admin\/orders\/:id\/export-sheet"/, "admin sheet export retry route should exist");
+}
+
+async function testGoogleSheetContracts() {
+  const source = await readSource("src/services/googleSheetService.js");
+  assert.match(source, /GOOGLE_SHEET_WEBHOOK_URL is not configured/, "missing Google Sheet webhook should be visible");
+  assert.match(source, /recordExportResult/, "Google Sheet export status should persist on the order");
+  assert.match(source, /response\.text\(\)/, "Google Sheet webhook response should be captured for troubleshooting");
 }
 
 async function testSeoContracts() {
@@ -91,6 +102,7 @@ async function testSeoContracts() {
 
 await testOrderControllerContracts();
 await testRouteContracts();
+await testGoogleSheetContracts();
 await testPaymentCallbackBehavior();
 await testSeoContracts();
 testCouponTotals();

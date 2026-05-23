@@ -1,6 +1,5 @@
-export function deliveryChargeByDistrict(district) {
-  const d = (district || "").toLowerCase();
-  return d.includes("dhaka") ? 60 : 120;
+export function deliveryChargeByDistrict(_district, subtotal = 0) {
+  return Number(subtotal || 0) >= 800 ? 0 : 80;
 }
 
 export function calcCouponDiscount(coupon, subtotal) {

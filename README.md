@@ -51,6 +51,7 @@ This is a separate project from your previous work.
 - `POST /api/orders/lookup`
 - `GET /api/orders/me`
 - `GET /api/orders/admin/orders`
+- `POST /api/orders/admin/orders/:id/export-sheet`
 - `PUT /api/orders/admin/orders/:id/status`
 
 ### Cart
@@ -116,6 +117,28 @@ Uses seeded admin credentials from `.env`:
 - Cloudinary: plug credentials and switch upload strategy.
 - SSLCommerz/bKash/Nagad: use service layer in `backend/src/services/paymentService.js`.
 - SMS: plug SSL Wireless credentials in `smsService.js`.
+
+## Google Sheets Order Export
+
+Use this when you want every new order to automatically appear in a Google Sheet.
+
+1. Create or open a Google Sheet for PureOrigins orders.
+2. Go to `Extensions` -> `Apps Script`.
+3. Paste the code from `docs/google-sheets-webhook.gs`.
+4. Click `Deploy` -> `New deployment`.
+5. Choose type `Web app`.
+6. Set `Execute as` to `Me`.
+7. Set `Who has access` to `Anyone`.
+8. Deploy and copy the Web App URL. It must end with `/exec`.
+9. In Render -> PureOrigins backend -> Environment, add:
+   - `GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/macros/s/.../exec`
+10. Save the Render environment and redeploy the backend.
+
+If an order still does not export, open the admin dashboard Orders screen. Each order now shows a `Sheet` status and an `Export Sheet` retry button:
+
+- `Exported` means the row was sent to Google Sheets.
+- `No webhook` means `GOOGLE_SHEET_WEBHOOK_URL` is missing in Render or Render was not redeployed after saving it.
+- `Failed` means Google Apps Script returned an error or timed out. Check that the deployment access is `Anyone` and the URL is the `/exec` web app URL, not the editor URL.
 
 ## Next Upgrade Targets (Phase 2/3 hardening)
 

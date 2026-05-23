@@ -122,6 +122,19 @@ function statusPill(value, active = true) {
   return `<span class="pill ${cls}">${escapeHtml(value)}</span>`;
 }
 
+function sheetStatus(order) {
+  const sheet = order.integrations?.googleSheets || {};
+  const status = sheet.status || "pending";
+  const labelMap = {
+    success: "Exported",
+    failed: "Failed",
+    not_configured: "No webhook",
+    pending: "Not sent"
+  };
+  const note = sheet.lastError || "";
+  return `${statusPill(labelMap[status] || status, status === "success")}${note ? `<br/><small>${escapeHtml(note)}</small>` : ""}`;
+}
+
 async function loadProducts() {
   let products = [];
   try {
@@ -266,7 +279,7 @@ async function loadOrders() {
 
 function renderOrders(target = "#ordersTable", limit = null) {
   const orders = limit ? state.orders.slice(0, limit) : state.orders;
-  $(target).innerHTML = table(["Order", "Customer", "Items", "Total", "Status", "Tracking", "Actions"], orders.map(order => `
+  $(target).innerHTML = table(["Order", "Customer", "Items", "Total", "Status", "Sheet", "Tracking", "Actions"], orders.map(order => `
     <tr>
       <td><strong>${shortId(order._id)}</strong><br/><small>${dateText(order.createdAt)}</small></td>
       <td>${escapeHtml(order.customerName)}<br/><small>${escapeHtml(order.customerPhone)} · ${escapeHtml(order.district)}</small></td>
@@ -275,8 +288,12 @@ function renderOrders(target = "#ordersTable", limit = null) {
       <td><select data-order-status="${order._id}">
         ${["Pending","Confirmed","Packed","Shipped","Delivered","Cancelled","Returned","Refunded"].map(status => `<option ${status === order.status ? "selected" : ""}>${status}</option>`).join("")}
       </select></td>
+      <td>${sheetStatus(order)}</td>
       <td><input class="small-input" data-order-track="${order._id}" value="${escapeHtml(order.trackingNumber || "")}" placeholder="Tracking number"/></td>
-      <td><button class="mini-btn" data-save-order="${order._id}">Save</button></td>
+      <td><div class="actions">
+        <button class="mini-btn" data-save-order="${order._id}">Save</button>
+        <button class="mini-btn" data-export-sheet="${order._id}">Export Sheet</button>
+      </div></td>
     </tr>
   `));
 }
@@ -287,6 +304,12 @@ async function saveOrderStatus(id) {
   await req(`/orders/admin/orders/${id}/status`, { method: "PUT", body: { status, trackingNumber, note: "Updated from admin dashboard" } });
   await loadOrders();
   setMessage("Order updated.");
+}
+
+async function exportOrderSheet(id) {
+  const { message, result } = await req(`/orders/admin/orders/${id}/export-sheet`, { method: "POST" });
+  await loadOrders();
+  setMessage(message || result?.message || "Google Sheets export attempted.", result?.ok ? "" : "error");
 }
 
 async function loadCoupons() {
@@ -558,6 +581,7 @@ async function handleClick(event) {
     if (target.dataset.editProduct) editProduct(target.dataset.editProduct);
     if (target.dataset.deleteProduct) { await req(`/products/admin/products/${target.dataset.deleteProduct}`, { method: "DELETE" }); await loadProducts(); setMessage("Product archived."); }
     if (target.dataset.saveOrder) await saveOrderStatus(target.dataset.saveOrder);
+    if (target.dataset.exportSheet) await exportOrderSheet(target.dataset.exportSheet);
     if (target.id === "resetCouponForm") resetCouponForm();
     if (target.dataset.editCoupon) editCoupon(target.dataset.editCoupon);
     if (target.dataset.disableCoupon) { await req(`/coupons/admin/coupons/${target.dataset.disableCoupon}`, { method: "PUT", body: { isActive: false } }); await loadCoupons(); }
