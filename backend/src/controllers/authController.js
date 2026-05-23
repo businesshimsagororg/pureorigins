@@ -48,7 +48,10 @@ export async function login(req, res) {
   if (!ok) return res.status(401).json({ message: "Invalid credentials" });
   const token = signToken(user);
   setAuthCookie(req, res, token);
-  res.json({ user: { id: user._id, name: user.name, role: user.role } });
+  res.json({
+    user: { id: user._id, name: user.name, role: user.role },
+    ...(user.role === "admin" ? { accessToken: token } : {})
+  });
 }
 
 export async function requestPhoneLogin(req, res) {

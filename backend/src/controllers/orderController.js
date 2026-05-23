@@ -10,6 +10,7 @@ import AbandonedCart from "../models/AbandonedCart.js";
 import { calcCouponDiscount, deliveryChargeByDistrict } from "../utils/pricing.js";
 import { initiatePayment } from "../services/paymentService.js";
 import { notifyOrderPlaced, notifyOrderStatus } from "../services/notificationService.js";
+import { exportOrderToGoogleSheet } from "../services/googleSheetService.js";
 
 const GUEST_ORDER_SESSION_GRACE_MS = 15 * 60 * 1000;
 
@@ -232,6 +233,7 @@ export async function createOrder(req, res) {
     order.paymentStatus = payment.paymentStatus;
     await order.save();
   }
+  void exportOrderToGoogleSheet(order);
 
   return res.status(201).json({
     order: orderPayload(order),

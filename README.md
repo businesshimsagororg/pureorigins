@@ -19,6 +19,7 @@ This is a separate project from your previous work.
 - Cart persistence in DB
 - Real order creation in DB
 - Order status updates (admin)
+- Optional Google Sheets order export webhook
 - Coupon validation + admin coupon CRUD
 - Review system + admin approve/reject
 - Banner CRUD + homepage banner feed
@@ -47,6 +48,7 @@ This is a separate project from your previous work.
 
 ### Orders
 - `POST /api/orders`
+- `POST /api/orders/lookup`
 - `GET /api/orders/me`
 - `GET /api/orders/admin/orders`
 - `PUT /api/orders/admin/orders/:id/status`
@@ -110,6 +112,7 @@ Uses seeded admin credentials from `.env`:
 - Frontend: Vercel static hosting.
 - Backend: Render/Railway with environment variables.
 - DB: MongoDB Atlas.
+- Google Sheets export: create a Google Apps Script web app and set its URL as `GOOGLE_SHEET_WEBHOOK_URL` in Render.
 - Cloudinary: plug credentials and switch upload strategy.
 - SSLCommerz/bKash/Nagad: use service layer in `backend/src/services/paymentService.js`.
 - SMS: plug SSL Wireless credentials in `smsService.js`.

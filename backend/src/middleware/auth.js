@@ -5,8 +5,15 @@ export function signToken(user) {
   return jwt.sign({ sub: user._id.toString(), role: user.role }, env.jwtAccessSecret, { expiresIn: env.jwtExpiresIn });
 }
 
+function tokenFromRequest(req) {
+  const cookieToken = req.cookies?.accessToken;
+  const authHeader = req.get("authorization") || "";
+  const bearerToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
+  return cookieToken || bearerToken;
+}
+
 export function authRequired(req, res, next) {
-  const token = req.cookies.accessToken;
+  const token = tokenFromRequest(req);
   if (!token) return res.status(401).json({ message: "Unauthorized" });
   try {
     req.auth = jwt.verify(token, env.jwtAccessSecret);
@@ -17,7 +24,7 @@ export function authRequired(req, res, next) {
 }
 
 export function optionalAuth(req, res, next) {
-  const token = req.cookies?.accessToken;
+  const token = tokenFromRequest(req);
   if (!token) {
     req.auth = null;
     return next();

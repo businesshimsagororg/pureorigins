@@ -1,5 +1,6 @@
 const isLocalFrontend = ["127.0.0.1", "localhost", ""].includes(location.hostname);
 const API = isLocalFrontend ? "http://localhost:5000/api" : "https://pureorigins.onrender.com/api";
+const ADMIN_TOKEN_KEY = "pureorigins_admin_token";
 const state = {
   user: null,
   products: [],
@@ -40,6 +41,8 @@ function setMessage(text = "", type = "") {
 async function req(path, options = {}) {
   const isFormData = options.body instanceof FormData;
   const headers = isFormData ? { ...(options.headers || {}) } : { "Content-Type": "application/json", ...(options.headers || {}) };
+  const token = sessionStorage.getItem(ADMIN_TOKEN_KEY);
+  if (token) headers.Authorization = `Bearer ${token}`;
   const response = await fetch(`${API}${path}`, {
     credentials: "include",
     ...options,
@@ -79,12 +82,14 @@ async function login(event) {
   $("#loginMessage").textContent = "";
   const body = Object.fromEntries(new FormData(event.target));
   try {
-    const { user } = await req("/auth/login", { method: "POST", body });
+    const { user, accessToken } = await req("/auth/login", { method: "POST", body });
     if (user?.role !== "admin") {
       await req("/auth/logout", { method: "POST" }).catch(() => {});
+      sessionStorage.removeItem(ADMIN_TOKEN_KEY);
       showLogin("এই অ্যাকাউন্ট অ্যাডমিন নয়।");
       return;
     }
+    if (accessToken) sessionStorage.setItem(ADMIN_TOKEN_KEY, accessToken);
     state.user = user;
     showAdmin();
     await refreshAll();
@@ -95,6 +100,7 @@ async function login(event) {
 
 async function logout() {
   await req("/auth/logout", { method: "POST" }).catch(() => {});
+  sessionStorage.removeItem(ADMIN_TOKEN_KEY);
   state.user = null;
   showLogin("Logged out.");
 }
