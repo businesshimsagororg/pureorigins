@@ -1892,6 +1892,16 @@ const products = [
     ingredients:['বিশুদ্ধ মৌমাছির মধু (১০০%)'],
     benefits:['প্রাকৃতিক মিষ্টির উৎস','চা, দুধ ও নাশতায় ব্যবহারযোগ্য','গরম পানির সাথে পরিমিত ব্যবহার করা যায়','সিলড প্যাকেজিংয়ে সরবরাহ'],
     usage:'প্রতিদিন সকালে ১-২ চামচ সরাসরি বা কুসুম গরম পানিতে মিশিয়ে পান করুন।'},
+  {id:9,slug:'tukma-seeds',emoji:'🌱',name:'তোকমা দানা',enName:'Tukma / Basil Seeds',benefit:'শরবত, ফালুদা ও পানীয়তে ফাইবারসমৃদ্ধ শীতল দানা',price:190,oldPrice:240,discount:21,category:'seeds',weight:['১০০গ্রাম','২৫০গ্রাম','৫০০গ্রাম'],stock:'in',badge:'ফাইবার রিচ',rating:4.7,reviews:54,
+    desc:'তোকমা দানা বা Basil Seeds শরবত, ফালুদা, দুধ, স্মুদি ও ঠান্ডা পানীয়তে ব্যবহারের জন্য জনপ্রিয় একটি প্রাকৃতিক ফাইবারসমৃদ্ধ দানা। PureOrigins-এর তোকমা দানা পরিষ্কারভাবে বাছাই করা, ধুলাবালি মুক্ত এবং প্রতিদিনের রুটিনে সহজে ব্যবহারযোগ্য করে প্যাক করা হয়।',
+    ingredients:['১০০% পরিষ্কার তোকমা দানা (Basil Seeds)'],
+    benefits:['ফাইবারসমৃদ্ধ প্রাকৃতিক দানা','শরবত, ফালুদা ও পানীয়তে ব্যবহারযোগ্য','গরমের দিনে হালকা রুটিনে যোগ করা যায়','দুধ বা স্মুদিতে সুন্দর টেক্সচার যোগ করে'],
+    usage:'১-২ চা চামচ তোকমা দানা ১৫-২০ মিনিট পানিতে ভিজিয়ে নিন, তারপর শরবত, দুধ, জুস বা ফালুদার সাথে মিশিয়ে পান করুন।'},
+  {id:10,slug:'isabgol-bhusi',emoji:'🌾',name:'ইসবগুল ভুসি',enName:'Psyllium Husk (Isabgol Bhusi)',benefit:'প্রাকৃতিক ফাইবার সাপোর্ট, হালকা ও সহজে মিশে যায়',price:300,oldPrice:360,discount:17,category:'powders',weight:['১০০গ্রাম','২৫০গ্রাম','৫০০গ্রাম'],stock:'in',badge:'ফাইবার',rating:4.8,reviews:61,
+    desc:'ইসবগুল ভুসি বা Psyllium Husk দৈনন্দিন ফাইবারসমৃদ্ধ রুটিনে যোগ করার জন্য পরিচিত একটি প্রাকৃতিক উপাদান। PureOrigins-এর ইসবগুল ভুসি পরিষ্কার, হালকা এবং সহজে মিশে যায় এমনভাবে প্যাক করা হয়, যাতে পানি বা দুধে সুবিধাজনকভাবে মেশানো যায়।',
+    ingredients:['১০০% ইসবগুল ভুসি (Psyllium Husk)'],
+    benefits:['প্রাকৃতিক ফাইবার সাপোর্ট','দৈনন্দিন রুটিনে যোগ করা সহজ','পানি-দুধে সুবিধাজনকভাবে মিশে যায়','হালকা খাদ্যাভ্যাসের সাথে সহজে ব্যবহারযোগ্য'],
+    usage:'১-২ চা চামচ ইসবগুল ভুসি এক গ্লাস পানিতে মিশিয়ে দ্রুত পান করুন। ব্যবহারের পর পর্যাপ্ত পানি পান করা ভালো।'},
 ];
 
 const combos = [
@@ -1952,7 +1962,9 @@ const productEmojiBySlug = {
   "sunflower-seeds": "\u{1F338}",
   "beetroot-powder": "\u{1F534}",
   "moringa-powder": "\u{1F343}",
-  "pure-honey": "\u{1F36F}"
+  "pure-honey": "\u{1F36F}",
+  "tukma-seeds": "\u{1F331}",
+  "isabgol-bhusi": "\u{1F33E}"
 };
 
 const productContentBySlug = {
@@ -2029,7 +2041,9 @@ async function loadProductsFromApi() {
   try {
     const data = await apiRequest("/products", { signal: controller.signal });
     if (Array.isArray(data.products) && data.products.length) {
-      products.splice(0, products.length, ...data.products.map(apiProductToUi));
+      const apiSlugs = new Set(data.products.map(product => product.slug));
+      const localOnlyProducts = products.filter(product => !apiSlugs.has(product.slug));
+      products.splice(0, products.length, ...data.products.map(apiProductToUi), ...localOnlyProducts);
       renderStorefront();
     }
   } catch (error) {
