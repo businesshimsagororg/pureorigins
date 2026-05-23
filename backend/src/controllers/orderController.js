@@ -245,6 +245,28 @@ export async function myOrders(req, res) {
   res.json({ orders: orders.map(orderPayload) });
 }
 
+export async function lookupOrder(req, res) {
+  const phone = String(req.body.phone || "").trim();
+  const rawOrderId = String(req.body.orderId || "").trim();
+  const normalizedOrderId = rawOrderId.replace(/^#?PO-/i, "").replace(/[^a-f0-9]/gi, "").toLowerCase();
+
+  if (!/^01[3-9]\d{8}$/.test(phone) || normalizedOrderId.length < 6) {
+    return res.status(400).json({ message: "Valid phone and order number are required" });
+  }
+
+  let order = null;
+  if (/^[a-f0-9]{24}$/i.test(normalizedOrderId)) {
+    order = await Order.findOne({ _id: normalizedOrderId, customerPhone: phone });
+  } else {
+    const recentOrders = await Order.find({ customerPhone: phone }).sort({ createdAt: -1 }).limit(50);
+    order = recentOrders.find(item => item._id.toString().slice(-8).toLowerCase() === normalizedOrderId.slice(-8));
+  }
+
+  if (!order) return res.status(404).json({ message: "Order not found for this phone number" });
+
+  res.json({ order: orderPayload(order) });
+}
+
 export async function getOrder(req, res) {
   const { token, sessionId } = req.query;
   if (!/^[a-f0-9]{24}$/i.test(String(req.params.id))) {

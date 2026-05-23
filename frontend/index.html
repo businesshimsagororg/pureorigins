@@ -5,7 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>PureOrigins - প্রিমিয়াম হেলথ সিড ও সুপারফুড | বাংলাদেশ</title>
 <meta name="description" content="বাংলাদেশের সেরা অর্গানিক সুপারফুড ও হেলথ সিড শপ। কালোজিরা, চিয়া সিড, মরিঙ্গা পাউডার ও আরও পণ্য হোম ডেলিভারিতে পান। COD সুবিধা।"/>
+<link rel="canonical" href="https://pureorigins.vercel.app/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:locale" content="bn_BD"/>
+<meta property="og:site_name" content="PureOrigins"/>
+<meta property="og:title" content="PureOrigins - প্রিমিয়াম হেলথ সিড ও সুপারফুড"/>
+<meta property="og:description" content="কালোজিরা, চিয়া সিড, মরিঙ্গা পাউডার ও খাঁটি মধু — সারাদেশে হোম ডেলিভারি ও COD সুবিধা।"/>
+<meta property="og:url" content="https://pureorigins.vercel.app/"/>
+<meta property="og:image" content="https://pureorigins.vercel.app/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="PureOrigins - প্রিমিয়াম হেলথ সিড ও সুপারফুড"/>
+<meta name="twitter:description" content="বাংলাদেশের প্রিমিয়াম হেলথ সিড ও সুপারফুড শপ।"/>
+<meta name="twitter:image" content="https://pureorigins.vercel.app/og-image.svg"/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"/>
+<script type="application/ld+json" id="site-schema">{"@context":"https://schema.org","@type":"Organization","name":"PureOrigins","url":"https://pureorigins.vercel.app/","sameAs":["https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr"],"contactPoint":{"@type":"ContactPoint","telephone":"+8801700000000","contactType":"customer service","areaServed":"BD","availableLanguage":["bn","en"]}}</script>
+<script type="application/ld+json" id="product-schema">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[]}</script>
 <style>
 :root {
   --forest: #1B4332;
@@ -23,7 +37,7 @@
   --border: #E8E0D0;
   --shadow: rgba(27,67,50,0.12);
   --red: #C0392B;
-  --font-bn: 'Hind Siliguri', sans-serif;
+  --font-bn: 'Noto Sans Bengali', sans-serif;
   --font-en: 'Cormorant Garamond', serif;
 }
 
@@ -97,7 +111,7 @@ nav{
   padding:9px 18px;font-size:13.5px;font-weight:600;
   display:flex;align-items:center;gap:6px;
   transition:all .2s;
-  position:fixed;top:34px;right:24px;z-index:1205;
+  position:relative;
   box-shadow:0 10px 24px rgba(27,67,50,.18);
 }
 .cart-btn:hover{background:var(--forest);transform:translateY(-1px)}
@@ -309,6 +323,20 @@ nav{
   border:none;border-radius:8px;
   padding:10px;font-size:13px;font-weight:700;
 }
+.product-actions .btn-cart,.product-actions .btn-buy-card{min-height:48px}
+.card-weight-row{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.card-weight-pill{
+  border:1px solid var(--border);
+  background:var(--cream);
+  color:var(--forest);
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:12px;
+  font-weight:700;
+  min-height:34px;
+}
+.card-weight-pill.active{background:var(--forest);border-color:var(--forest);color:#fff}
+button:disabled{opacity:.72;cursor:not-allowed}
 
 /* ── WHY US ── */
 .why-grid{
@@ -931,13 +959,6 @@ footer ul a:hover{color:var(--white)}
 .stock-badge{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:12px}
 .in-stock{background:rgba(46,125,50,.1);color:#2E7D32}
 .low-stock{background:rgba(230,81,0,.1);color:#E65100}
-.banner-offer{
-  background:linear-gradient(90deg,var(--red),#E74C3C);
-  color:#fff;text-align:center;
-  padding:12px 20px;font-size:14px;font-weight:600;
-}
-.banner-offer span{background:rgba(255,255,255,.2);padding:2px 8px;border-radius:4px;margin:0 6px}
-
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   .hero-content{grid-template-columns:1fr}
@@ -969,6 +990,7 @@ input,select,textarea{font-size:16px}
 
 @media(max-width:768px){
   body{font-size:15px}
+  .nav-links{display:none}
   .topbar{
     display:flex;overflow-x:auto;white-space:nowrap;text-align:left;
     gap:12px;padding:8px 12px;scrollbar-width:none;
@@ -980,7 +1002,7 @@ input,select,textarea{font-size:16px}
   .logo-leaf{font-size:20px}
   .nav-right{gap:8px}
   .cart-btn{
-    position:fixed;top:18px;right:62px;min-width:42px;height:40px;padding:0 10px;
+    position:static;min-width:42px;height:40px;padding:0 10px;
     justify-content:center;font-size:0;border-radius:10px;
   }
   .cart-btn::before{content:'Cart';font-size:11px;font-weight:800;letter-spacing:.2px}
@@ -1016,6 +1038,8 @@ input,select,textarea{font-size:16px}
     margin-top:20px;
     padding:2px 2px 6px;
     scrollbar-width:none;
+    max-width:100%;
+    -webkit-overflow-scrolling:touch;
   }
   .hero-visual::-webkit-scrollbar{display:none}
   .hero-card{
@@ -1153,9 +1177,10 @@ input,select,textarea{font-size:16px}
 
 <!-- TOPBAR -->
 <div class="topbar">
+  <span>🎉 PURE15 কোডে প্রথম অর্ডারে ১৫% ছাড়</span>
   <span>🚚 সারাদেশে হোম ডেলিভারি</span>
+  <span>💵 COD সুবিধা</span>
   <span>📞 01700-000000</span>
-  <span>💚 COD সুবিধা পাচ্ছেন</span>
 </div>
 
 <!-- NAVBAR -->
@@ -1192,16 +1217,12 @@ input,select,textarea{font-size:16px}
     <a href="#faq" onclick="navigate('faq');toggleMobile();return false;">❓ FAQ</a>
     <a href="#contact" onclick="navigate('contact');toggleMobile();return false;">📞 যোগাযোগ</a>
     <a href="#account" onclick="navigate('account');toggleMobile();return false;">👤 অ্যাকাউন্ট</a>
+    <a href="#order-lookup" onclick="navigate('order-lookup');toggleMobile();return false;">📦 অর্ডার ট্র্যাক</a>
   </div>
 </nav>
 
 <!-- ════════════════ HOME PAGE ════════════════ -->
 <div class="page active" id="page-home">
-
-  <!-- OFFER BANNER -->
-  <div class="banner-offer">
-    🎉 প্রথম অর্ডারে <span>১৫% ছাড়</span> পাচ্ছেন! কোড ব্যবহার করুন: <span>PURE15</span>
-  </div>
 
   <!-- HERO -->
   <section class="hero">
@@ -1212,7 +1233,7 @@ input,select,textarea{font-size:16px}
         <p class="hero-subtitle">বাংলাদেশের সেরা হেলথ সিড ও সুপারফুড শপ। সরাসরি উৎস থেকে সংগ্রহ করা, পরিষ্কারভাবে প্যাকেজ করা, আপনার দোরগোড়ায় পৌঁছে দেওয়া।</p>
         <div class="hero-actions">
           <button class="btn-primary" onclick="navigate('shop')">এখনই অর্ডার করুন →</button>
-          <button class="btn-outline" onclick="navigate('shop')">পণ্য দেখুন</button>
+          <button class="btn-outline" onclick="navigate('about')">আমাদের গল্প দেখুন</button>
         </div>
         <div class="hero-stats">
           <div class="stat"><div class="stat-num">৫০০০+</div><div class="stat-lbl">সন্তুষ্ট গ্রাহক</div></div>
@@ -1362,20 +1383,6 @@ input,select,textarea{font-size:16px}
         </div>
       </div>
       <div class="reviews-slider" id="reviews-container"></div>
-    </div>
-  </section>
-
-  <!-- FAQ PREVIEW -->
-  <section class="section section-alt">
-    <div class="container">
-      <div class="section-head">
-        <div class="tag-line">সাধারণ প্রশ্ন</div>
-        <h2>কিছু জিজ্ঞাসা আছে?</h2>
-      </div>
-      <div style="max-width:720px;margin:0 auto" id="home-faq"></div>
-      <div style="text-align:center;margin-top:28px">
-        <button class="btn-primary" onclick="navigate('faq')">সব প্রশ্ন দেখুন →</button>
-      </div>
     </div>
   </section>
 
@@ -1532,7 +1539,7 @@ input,select,textarea{font-size:16px}
             <div class="field-error" id="co-transaction-error"></div>
           </div>
         </div>
-        <button class="btn-primary" style="width:100%;margin-top:24px;padding:15px;font-size:16px" onclick="placeOrder()">অর্ডার নিশ্চিত করুন ✓</button>
+        <button class="btn-primary" id="place-order-btn" style="width:100%;margin-top:24px;padding:15px;font-size:16px" onclick="placeOrder()">অর্ডার নিশ্চিত করুন ✓</button>
         </div>
       </div>
     </div>
@@ -1699,6 +1706,36 @@ input,select,textarea{font-size:16px}
 
 
 <!-- ACCOUNT PAGE -->
+<div class="page" id="page-order-lookup">
+  <div class="shop-header">
+    <h1>অর্ডার ট্র্যাক করুন</h1>
+    <p>ফোন নম্বর ও অর্ডার নম্বর দিয়ে আপনার অর্ডার স্ট্যাটাস দেখুন</p>
+  </div>
+  <section class="section-sm">
+    <div class="account-layout">
+      <div class="account-card">
+        <h2>অর্ডার খুঁজুন</h2>
+        <p>অর্ডার করার সময় যে মোবাইল নম্বর দিয়েছেন এবং কনফার্মেশন পেজের অর্ডার নম্বর লিখুন।</p>
+        <div class="form-group">
+          <label>মোবাইল নম্বর</label>
+          <input type="tel" id="lookup-phone" placeholder="01XXXXXXXXX" maxlength="11"/>
+        </div>
+        <div class="form-group">
+          <label>অর্ডার নম্বর</label>
+          <input type="text" id="lookup-order-id" placeholder="#PO-1234ABCD"/>
+        </div>
+        <button class="btn-primary" id="lookup-order-btn" style="width:100%;padding:12px" onclick="lookupOrderStatus()">স্ট্যাটাস দেখুন</button>
+        <div class="account-message" id="lookup-message"></div>
+      </div>
+      <div class="orders-card">
+        <h2>স্ট্যাটাস</h2>
+        <p>অর্ডার পাওয়া গেলে এখানে বিস্তারিত দেখা যাবে।</p>
+        <div id="lookup-result"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
 <div class="page" id="page-account">
   <div class="shop-header">
     <h1>আমার অ্যাকাউন্ট</h1>
@@ -1766,6 +1803,7 @@ input,select,textarea{font-size:16px}
         <li><a href="#combos" onclick="navigate('combos');return false;">কম্বো অফার</a></li>
         <li><a href="#about" onclick="navigate('about');return false;">আমাদের সম্পর্কে</a></li>
         <li><a href="#faq" onclick="navigate('faq');return false;">FAQ</a></li>
+        <li><a href="#order-lookup" onclick="navigate('order-lookup');return false;">অর্ডার ট্র্যাক</a></li>
       </ul>
     </div>
     <div>
@@ -1966,6 +2004,7 @@ function apiProductToUi(product) {
     rating: Number(product.ratingAvg || 4.8),
     reviews: Number(product.reviewsCount || 0),
     weight: variants.length ? variants.map(variant => variant.weight) : ["\u09E7\u09E6\u09E6\u0997\u09CD\u09B0\u09BE\u09AE"],
+    variantPrices: variants.length ? Object.fromEntries(variants.map(variant => [variant.weight, Number(variant.unitPrice || product.price || 0)])) : {},
     benefit: product.shortDescription || product.description || "Premium natural wellness product",
     desc: product.description || product.shortDescription || "Premium natural wellness product",
     ingredients: Array.isArray(product.ingredients) ? product.ingredients : [product.ingredients || "Pure natural ingredients"],
@@ -1975,14 +2014,19 @@ function apiProductToUi(product) {
 }
 
 async function loadProductsFromApi() {
+  const controller = new AbortController();
+  const timer = setTimeout(()=>controller.abort(), 8000);
   try {
-    const data = await apiRequest("/products");
+    const data = await apiRequest("/products", { signal: controller.signal });
     if (Array.isArray(data.products) && data.products.length) {
       products.splice(0, products.length, ...data.products.map(apiProductToUi));
       renderStorefront();
     }
   } catch (error) {
     console.warn("Product API unavailable; using local fallback products.", error);
+    renderStorefront();
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -2062,9 +2106,10 @@ function updateCartCount(){
 function addToCart(product,weight,qty=1){
   if(!product){showToast('Product is not available. Please refresh and try again.');return}
   const key = product.id + '-' + weight;
+  const unitPrice = getProductUnitPrice(product, weight);
   const existing = cart.find(i=>i.key===key);
   if(existing){existing.qty+=qty;}
-  else{cart.push({key,id:product.id,productId:product.id,slug:product.slug,name:product.name,emoji:product.emoji,weight,price:product.price,qty});}
+  else{cart.push({key,id:product.id,productId:product.id,slug:product.slug,name:product.name,emoji:product.emoji,weight,price:unitPrice,qty});}
   saveCart();updateCartCount();
   showToast('✅ ' + product.name + ' কার্টে যোগ হয়েছে!');
 }
@@ -2082,6 +2127,22 @@ function changeQty(key,delta){
 
 function getCartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
 function getDelivery(){return getCartTotal()>=800?0:80}
+function getWeightMultiplier(product, weight){
+  const weights = Array.isArray(product?.weight) ? product.weight : [];
+  const index = weights.findIndex(item => String(item) === String(weight));
+  if(index === 1)return 2;
+  if(index >= 2)return 4;
+  return 1;
+}
+function getProductUnitPrice(product, weight){
+  if(!product)return 0;
+  if(product.variantPrices && product.variantPrices[weight] != null)return Number(product.variantPrices[weight]);
+  return Number(product.price || 0) * getWeightMultiplier(product, weight);
+}
+function getProductOldPrice(product, weight){
+  if(!product?.oldPrice)return 0;
+  return Number(product.oldPrice || 0) * getWeightMultiplier(product, weight);
+}
 
 // ═══════════════════════════════════════════
 //  RENDER HELPERS
@@ -2104,6 +2165,22 @@ function addCardProductToCart(button){
   const weight = card?.dataset?.weight || '';
   addToCart(getProduct(id),weight);
 }
+function selectCardWeight(button){
+  const card = button.closest('.product-card');
+  if(!card)return;
+  card.dataset.weight = button.dataset.weight || button.textContent.trim();
+  card.querySelectorAll('.card-weight-pill').forEach(pill=>pill.classList.remove('active'));
+  button.classList.add('active');
+  const product = getProduct(card.dataset.productId);
+  const price = getProductUnitPrice(product, card.dataset.weight);
+  const oldPrice = getProductOldPrice(product, card.dataset.weight);
+  const priceNow = card.querySelector('.price-now');
+  const priceOld = card.querySelector('.price-old');
+  const priceSave = card.querySelector('.price-save');
+  if(priceNow)priceNow.textContent = `৳${price}`;
+  if(priceOld && oldPrice)priceOld.textContent = `৳${oldPrice}`;
+  if(priceSave && oldPrice)priceSave.textContent = `৳${oldPrice-price} সাশ্রয়`;
+}
 function buyCardProduct(button){
   const card = button.closest('.product-card');
   const id = card?.dataset?.productId;
@@ -2120,6 +2197,7 @@ function productCard(p,showAdd=true){
   const nameAttr = escapeAttr(p.name);
   const badgeHtml = p.badge?`<div class="product-badge ${p.badge==='নতুন'||p.badge==='সুপারফুড'?'new':''}">${p.badge}</div>`:'';
   const discHtml = p.discount?`<div class="product-badge" style="top:12px;right:12px;left:auto;background:var(--red)">-${p.discount}%</div>`:'';
+  const weightHtml = (p.weight || []).slice(0,3).map((weight,index)=>`<button class="card-weight-pill ${index===0?'active':''}" data-weight="${escapeAttr(weight)}" onclick="event.stopPropagation();selectCardWeight(this)">${weight}</button>`).join('');
   return `<div class="product-card" data-product-id="${idAttr}" data-weight="${weightAttr}" onclick="openProductCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProductCard(this)}" role="button" tabindex="0" aria-label="${nameAttr} বিস্তারিত দেখুন">
     <div class="product-img">${p.emoji}${badgeHtml}${discHtml}</div>
     <div class="product-body">
@@ -2130,6 +2208,7 @@ function productCard(p,showAdd=true){
         <span class="price-now">৳${p.price}</span>
         ${p.oldPrice?`<span class="price-old">৳${p.oldPrice}</span><span class="price-save">৳${p.oldPrice-p.price} সাশ্রয়</span>`:''}
       </div>
+      ${showAdd && weightHtml?`<div class="card-weight-row" aria-label="ওজন বেছে নিন">${weightHtml}</div>`:''}
       ${showAdd?`<div class="product-actions">
         <button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">${uiIcon('cart')} Add to Cart</button>
         <button class="btn-buy-card" onclick="event.stopPropagation();buyCardProduct(this)">${uiIcon('bolt')} Buy Now</button>
@@ -2552,6 +2631,41 @@ function orderHistoryCard(order){
   </div>`;
 }
 
+function setLookupMessage(message='', isError=false){
+  const el = document.getElementById('lookup-message');
+  if(!el)return;
+  el.textContent = message;
+  el.classList.toggle('error', Boolean(isError));
+}
+
+async function lookupOrderStatus(){
+  const phone = getFieldValue('lookup-phone');
+  const orderId = getFieldValue('lookup-order-id');
+  const result = document.getElementById('lookup-result');
+  const button = document.getElementById('lookup-order-btn');
+  if(!/^01[3-9]\d{8}$/.test(phone)){
+    setLookupMessage('সঠিক ১১ ডিজিটের বাংলাদেশি মোবাইল নম্বর লিখুন।', true);
+    return;
+  }
+  if(orderId.length < 6){
+    setLookupMessage('অর্ডার নম্বর লিখুন।', true);
+    return;
+  }
+  setLookupMessage('অর্ডার খোঁজা হচ্ছে...');
+  if(button)button.disabled = true;
+  if(result)result.innerHTML = '<p>লোড হচ্ছে...</p>';
+  try{
+    const data = await apiRequest('/orders/lookup', {method:'POST', body:{phone, orderId}});
+    if(result)result.innerHTML = orderHistoryCard(data.order);
+    setLookupMessage('অর্ডার পাওয়া গেছে।');
+  }catch(error){
+    if(result)result.innerHTML = '';
+    setLookupMessage(error.message || 'অর্ডার পাওয়া যায়নি।', true);
+  }finally{
+    if(button)button.disabled = false;
+  }
+}
+
 async function loadAccount(){
   const ordersEl = document.getElementById('account-orders');
   const userLine = document.getElementById('account-user-line');
@@ -2606,7 +2720,17 @@ async function logoutAccount(){
   loadAccount();
 }
 
+let isPlacingOrder = false;
+
+function setPlaceOrderLoading(isLoading){
+  const button = document.getElementById('place-order-btn');
+  if(!button)return;
+  button.disabled = Boolean(isLoading);
+  button.textContent = isLoading ? 'অর্ডার প্রসেস হচ্ছে...' : 'অর্ডার নিশ্চিত করুন ✓';
+}
+
 async function placeOrder(){
+  if(isPlacingOrder)return;
   if(!cart.length){showToast('Cart is empty');return}
   const form=validateCheckoutForm();
   if(!form){showToast('অনুগ্রহ করে ফর্মের ভুলগুলো ঠিক করুন');return}
@@ -2627,6 +2751,8 @@ async function placeOrder(){
     items:orderItems
   };
   try{
+    isPlacingOrder = true;
+    setPlaceOrderLoading(true);
     const data=await apiRequest('/orders',{method:'POST',body:payload});
     if(data.payment?.redirectUrl){
       window.location.href=data.payment.redirectUrl;
@@ -2644,6 +2770,9 @@ async function placeOrder(){
     showToast('Order created successfully');
   }catch(error){
     showToast(error.message||'Order could not be created');
+  }finally{
+    isPlacingOrder = false;
+    setPlaceOrderLoading(false);
   }
 }
 
@@ -2723,7 +2852,17 @@ function renderDetail(id){
 
 let currentQty=1;
 function adjQty(d){currentQty=Math.max(1,currentQty+d);const el=document.getElementById('qty-val');if(el)el.textContent=currentQty;}
-function selectWeight(btn){document.querySelectorAll('#weight-opts .weight-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function selectWeight(btn){
+  document.querySelectorAll('#weight-opts .weight-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const product = getProduct(currentDetailProductId);
+  const price = getProductUnitPrice(product, btn.textContent);
+  const oldPrice = getProductOldPrice(product, btn.textContent);
+  const priceNow = document.querySelector('#detail-info .detail-price');
+  const priceOld = document.querySelector('#detail-info .detail-old');
+  if(priceNow)priceNow.textContent = `৳${price}`;
+  if(priceOld && oldPrice)priceOld.textContent = `৳${oldPrice}`;
+}
 function setThumb(el,emoji){document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('detail-img').textContent=emoji;}
 function switchTab(el,id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -2798,7 +2937,7 @@ function routeFromHash(){
   const hash = String(location.hash || '').replace(/^#/,'');
   if(!hash || /^order-/i.test(hash))return false;
   if(hash.startsWith('policy-')){navigate('policy', hash.replace('policy-',''));return true;}
-  const allowed = ['home','shop','combos','sunnah','about','faq','contact','cart','checkout','account'];
+  const allowed = ['home','shop','combos','sunnah','about','faq','contact','cart','checkout','account','order-lookup'];
   if(allowed.includes(hash)){navigate(hash);return true;}
   return false;
 }
@@ -2815,6 +2954,40 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 
+function updateStructuredData(){
+  const schemaEl = document.getElementById('product-schema');
+  if(!schemaEl)return;
+  const itemList = {
+    "@context":"https://schema.org",
+    "@type":"ItemList",
+    itemListElement: products.slice(0,12).map((product,index)=>({
+      "@type":"ListItem",
+      position:index+1,
+      item:{
+        "@type":"Product",
+        name:product.name,
+        alternateName:product.enName,
+        description:product.desc || product.benefit,
+        category:product.category,
+        brand:{"@type":"Brand",name:"PureOrigins"},
+        offers:{
+          "@type":"Offer",
+          priceCurrency:"BDT",
+          price:String(product.price || 0),
+          availability:Number(product.stock || 0) === 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+          url:"https://pureorigins.vercel.app/#shop"
+        },
+        aggregateRating:{
+          "@type":"AggregateRating",
+          ratingValue:String(product.rating || 4.8),
+          reviewCount:String(product.reviews || 1)
+        }
+      }
+    }))
+  };
+  schemaEl.textContent = JSON.stringify(itemList);
+}
+
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
@@ -2829,8 +3002,8 @@ function renderStorefront(){
   if(homeCombos)homeCombos.innerHTML=combos.slice(0,3).map(comboCard).join('');
   // Reviews
   renderReviews();
-  // FAQ preview
-  renderFaqBlock('home-faq',4);
+  // SEO product schema
+  updateStructuredData();
   // Shop
   renderShop();
   // Cart count

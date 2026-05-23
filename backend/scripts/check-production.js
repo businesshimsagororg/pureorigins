@@ -74,6 +74,13 @@ async function testOrderControllerContracts() {
   assert.match(source, /GUEST_ORDER_SESSION_GRACE_MS/, "guest session lookup must be time-limited");
   assert.doesNotMatch(source, /hasGuestSession\s*=/, "guest access should not allow sessionId alone indefinitely");
   assert.match(source, /safeTokenMatch\(token,\s*order\.lookupToken\)/, "guest lookup should prefer secure lookup token");
+  assert.match(source, /export async function lookupOrder/, "phone + order number lookup endpoint should exist");
+  assert.match(source, /customerPhone:\s*phone/, "order lookup should be scoped to the customer phone number");
+}
+
+async function testRouteContracts() {
+  const source = await readSource("src/routes/orderRoutes.js");
+  assert.match(source, /r\.post\("\/lookup",\s*lookupOrder\)/, "order lookup route should be registered before /:id");
 }
 
 async function testSeoContracts() {
@@ -83,6 +90,7 @@ async function testSeoContracts() {
 }
 
 await testOrderControllerContracts();
+await testRouteContracts();
 await testPaymentCallbackBehavior();
 await testSeoContracts();
 testCouponTotals();
