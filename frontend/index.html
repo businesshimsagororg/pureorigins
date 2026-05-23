@@ -309,28 +309,6 @@ nav{
   height:200px;display:flex;align-items:center;justify-content:center;
   font-size:72px;position:relative;overflow:hidden;
 }
-.product-pack{
-  width:118px;height:150px;border-radius:16px 16px 22px 22px;
-  background:linear-gradient(165deg,#fffef8 0%,#f3ead7 55%,#ded0b4 100%);
-  border:1px solid rgba(82,54,32,.18);
-  box-shadow:0 18px 34px rgba(27,67,50,.16), inset 0 0 0 6px rgba(255,255,255,.38);
-  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-  padding:14px 12px 12px;position:relative;z-index:1;
-}
-.product-pack::before{
-  content:'';position:absolute;top:0;left:18px;right:18px;height:7px;
-  background:linear-gradient(90deg,var(--forest),var(--gold));
-  border-radius:0 0 10px 10px;
-}
-.pack-mark{
-  min-width:64px;height:46px;border-radius:999px;
-  background:linear-gradient(135deg,var(--forest),var(--forest-light));
-  color:var(--gold-light);display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:900;letter-spacing:.8px;
-  box-shadow:0 6px 18px rgba(27,67,50,.22);
-}
-.pack-name{font-size:12px;font-weight:800;color:var(--forest);text-align:center;line-height:1.25}
-.pack-size{font-size:10px;font-weight:700;color:var(--brown);background:rgba(196,151,47,.14);padding:3px 8px;border-radius:999px}
 .product-badge{
   position:absolute;top:12px;left:12px;
   background:var(--red);color:#fff;
@@ -342,15 +320,6 @@ nav{
 .product-body h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
 .product-body .bn-name{font-size:16px;font-weight:700;color:var(--forest);margin-bottom:6px}
 .product-body .benefit{font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5}
-.product-aids{
-  display:grid;gap:5px;margin:0 0 12px;
-  font-size:11.5px;color:var(--text-muted);line-height:1.45;
-}
-.product-aids span{
-  display:flex;gap:6px;align-items:flex-start;
-  background:var(--cream);border:1px solid var(--border);
-  border-radius:9px;padding:6px 8px;
-}
 .price-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .price-now{font-size:18px;font-weight:700;color:var(--forest)}
 .price-old{font-size:13px;color:var(--text-muted);text-decoration:line-through}
@@ -1233,7 +1202,7 @@ input,select,textarea{font-size:16px}
 <div class="topbar">
   <span>🎉 PURE15 কোডে প্রথম অর্ডারে ১৫% ছাড়</span>
   <span>💵 পণ্য হাতে পেয়ে COD পেমেন্ট</span>
-  <span>🚚 ঢাকায় ১–৩ দিন, ঢাকার বাইরে ৩–৭ দিন</span>
+  <span>🚚 সারাদেশে আনুমানিক ৩–৫ কার্যদিবস</span>
   <span>📞 01700-000000</span>
 </div>
 
@@ -1307,7 +1276,7 @@ input,select,textarea{font-size:16px}
   <div class="trust-strip">
     <div class="trust-strip-inner">
       <div class="trust-item"><span class="icon">💵</span>COD: পণ্য হাতে পেয়ে পেমেন্ট</div>
-      <div class="trust-item"><span class="icon">🚚</span>ETA: ঢাকায় ১–৩ দিন, বাইরে ৩–৭ দিন</div>
+      <div class="trust-item"><span class="icon">🚚</span>ETA: সারাদেশে আনুমানিক ৩–৫ কার্যদিবস</div>
       <div class="trust-item"><span class="icon">↩️</span>সমস্যা হলে ২৪ ঘণ্টার মধ্যে জানান</div>
     </div>
   </div>
@@ -1592,7 +1561,7 @@ input,select,textarea{font-size:16px}
       <div class="order-detail"><span>পেমেন্ট পদ্ধতি</span><span id="conf-payment">Cash on Delivery</span></div>
       <div class="order-detail"><span>পেমেন্ট স্ট্যাটাস</span><span id="conf-payment-status">-</span></div>
       <div class="order-detail"><span>মোট</span><span id="conf-total" style="font-weight:700;color:var(--forest)">-</span></div>
-      <div class="order-detail"><span>আনুমানিক ডেলিভারি</span><span>৩–৭ কার্যদিবস</span></div>
+      <div class="order-detail"><span>আনুমানিক ডেলিভারি</span><span>৩–৫ কার্যদিবস</span></div>
       <div class="order-detail"><span>ডেলিভারি ঠিকানা</span><span id="conf-address">—</span></div>
       <div class="confirm-items" id="conf-items"></div>
     </div>
@@ -1938,11 +1907,11 @@ const reviews = [
 const faqs = [
   {q:'কীভাবে অর্ডার করব?',a:'ওয়েবসাইটে পণ্য বেছে "কার্টে যোগ করুন" ক্লিক করুন, তারপর চেকআউটে গিয়ে নাম, ফোন নম্বর ও ঠিকানা দিন। অর্ডার কনফার্ম হলে আমাদের টিম আপনাকে কল করবে।'},
   {q:'ক্যাশ অন ডেলিভারি (COD) কি পাওয়া যায়?',a:'হ্যাঁ! আমরা সারাদেশে Cash on Delivery সুবিধা দিই। পণ্য পেয়ে ক্যাশে পেমেন্ট করতে পারবেন। কোনো অগ্রিম পেমেন্ট প্রয়োজন নেই।'},
-  {q:'ডেলিভারি কত দিনে পাব?',a:'ঢাকার ভেতরে ১-৩ কার্যদিবস। ঢাকার বাইরে ৩-৭ কার্যদিবস। অর্ডার দেওয়ার পর আমাদের টিম ডেলিভারির আপডেট দেবে।'},
+  {q:'ডেলিভারি কত দিনে পাব?',a:'সারাদেশে সাধারণত ৩–৫ কার্যদিবসের মধ্যে ডেলিভারি দেওয়ার চেষ্টা করা হয়। অর্ডার দেওয়ার পর আমাদের টিম ডেলিভারির আপডেট দেবে।'},
   {q:'পণ্য কি আসলেই অর্গানিক ও বিশুদ্ধ?',a:'হ্যাঁ, আমরা সরাসরি বিশ্বস্ত কৃষক ও সরবরাহকারীদের কাছ থেকে পণ্য সংগ্রহ করি। প্রতিটি ব্যাচ মান নিয়ন্ত্রণের মধ্য দিয়ে যায়। কোনো কৃত্রিম সংযোজন নেই।'},
   {q:'পণ্য ফেরত বা এক্সচেঞ্জ করা যাবে কি?',a:'পণ্যে কোনো সমস্যা থাকলে বা ভুল পণ্য আসলে আমরা দায়িত্ব নিই। পণ্য পাওয়ার ৪৮ ঘন্টার মধ্যে আমাদের সাথে যোগাযোগ করুন।'},
   {q:'পণ্য কীভাবে সংরক্ষণ করব?',a:'ঠান্ডা, শুকনো ও সরাসরি আলো থেকে দূরে রাখুন। প্যাকেট খোলার পর এয়ারটাইট কন্টেইনারে রাখলে ভালো থাকবে।'},
-  {q:'ডেলিভারি চার্জ কত?',a:'ঢাকার ভেতরে: ৬০ টাকা। ঢাকার বাইরে: ১০০-১৫০ টাকা। ৮০০ টাকার বেশি অর্ডারে ফ্রি ডেলিভারি পাবেন!'},
+  {q:'ডেলিভারি চার্জ কত?',a:'সারাদেশে ডেলিভারি চার্জ ৮০ টাকা। ৮০০ টাকার বেশি অর্ডারে ফ্রি ডেলিভারি পাবেন!'},
 ];
 
 // ═══════════════════════════════════════════
@@ -2223,34 +2192,6 @@ function buyCardProduct(button){
   const afterCount = cart.reduce((sum,item)=>sum+item.qty,0);
   if(afterCount>beforeCount)navigate('checkout');
 }
-function productPackVisual(product){
-  const categoryLabel = product.category === 'powders' ? 'POWDER' : product.category === 'honey' ? 'HONEY' : 'SEEDS';
-  const packSize = (product.weight && product.weight[0]) || 'Pack';
-  return `<div class="product-pack" aria-hidden="true">
-    <div class="pack-mark">${categoryLabel}</div>
-    <div class="pack-name">${product.name}</div>
-    <div class="pack-size">${packSize}</div>
-  </div>`;
-}
-function productStorageLine(product){
-  if(product.category === 'honey')return 'Storage: শুকনো, ঠান্ডা স্থানে রাখুন';
-  if(product.category === 'powders')return 'Storage: ঢাকনা বন্ধ করে শুকনো স্থানে রাখুন';
-  return 'Storage: এয়ারটাইট জারে শুকনো স্থানে রাখুন';
-}
-function productUseLine(product){
-  if(product.category === 'honey')return 'Use: চা, দুধ বা নাশতায় পরিমিত ব্যবহার';
-  if(product.category === 'powders')return 'Use: পানি, জুস বা স্মুদিতে মিশিয়ে নিন';
-  return 'Use: দই, ওটস, সালাদ বা পানিতে ব্যবহার করুন';
-}
-function productDecisionAids(product){
-  const ingredient = Array.isArray(product.ingredients) && product.ingredients.length ? product.ingredients[0] : 'প্রাকৃতিক উপাদান';
-  return `<div class="product-aids">
-    <span><strong>Ingredients:</strong> ${ingredient}</span>
-    <span>${productUseLine(product)}</span>
-    <span>${productStorageLine(product)}</span>
-    <span>Expiry: প্যাকেটে থাকা মেয়াদ দেখে ব্যবহার করুন</span>
-  </div>`;
-}
 
 function productCard(p,showAdd=true){
   const idAttr = escapeAttr(p.id);
@@ -2260,19 +2201,18 @@ function productCard(p,showAdd=true){
   const discHtml = p.discount?`<div class="product-badge" style="top:12px;right:12px;left:auto;background:var(--red)">-${p.discount}%</div>`:'';
   const weightHtml = (p.weight || []).slice(0,3).map((weight,index)=>`<button class="card-weight-pill ${index===0?'active':''}" data-weight="${escapeAttr(weight)}" onclick="event.stopPropagation();selectCardWeight(this)">${weight}</button>`).join('');
   return `<div class="product-card" data-product-id="${idAttr}" data-weight="${weightAttr}" onclick="openProductCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProductCard(this)}" role="button" tabindex="0" aria-label="${nameAttr} বিস্তারিত দেখুন">
-    <div class="product-img">${productPackVisual(p)}${badgeHtml}${discHtml}</div>
+    <div class="product-img">${p.emoji}${badgeHtml}${discHtml}</div>
     <div class="product-body">
       <div class="bn-name">${p.name}</div>
       <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">${p.enName}</div>
       <div class="benefit">${p.benefit}</div>
-      ${productDecisionAids(p)}
       <div class="price-row">
         <span class="price-now">৳${p.price}</span>
         ${p.oldPrice?`<span class="price-old">৳${p.oldPrice}</span><span class="price-save">৳${p.oldPrice-p.price} সাশ্রয়</span>`:''}
       </div>
       ${showAdd && weightHtml?`<div class="card-weight-row" aria-label="ওজন বেছে নিন">${weightHtml}</div>`:''}
       ${showAdd?`<div class="product-actions">
-        <button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">${uiIcon('cart')} Add to Cart – COD</button>
+        <button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">${uiIcon('cart')} Add to Cart</button>
         <button class="btn-buy-card" onclick="event.stopPropagation();buyCardProduct(this)">${uiIcon('bolt')} Buy Now</button>
       </div>`:''}
     </div>
@@ -2386,7 +2326,7 @@ function toggleFaq(id){
 const policyPages = {
   return: {title:'রিটার্ন ও রিফান্ড পলিসি', subtitle:'ক্ষতিগ্রস্ত, ভুল বা মান-সংক্রান্ত সমস্যায় দ্রুত সহায়তা।', html:'<h2>রিটার্ন ও রিফান্ড পলিসি</h2><p>আমরা আমাদের প্রতিটি পণ্যের মান নিয়ে ১০০% আত্মবিশ্বাসী। তবে ডেলিভারি পাওয়ার পর যদি কোনো পণ্যের প্যাকেজিং নষ্ট থাকে, পণ্যের কোয়ালিটি নিয়ে যুক্তিসঙ্গত অভিযোগ থাকে বা আপনি ভুল পণ্য পেয়ে থাকেন, তবে ডেলিভারি ম্যান থাকা অবস্থায় অথবা সর্বোচ্চ ২৪ ঘণ্টার মধ্যে আমাদের সাথে যোগাযোগ করার অনুরোধ করা হচ্ছে।</p><h3>যে ক্ষেত্রে রিটার্ন বা এক্সচেঞ্জ প্রযোজ্য</h3><ul><li>ভুল পণ্য ডেলিভারি হয়েছে।</li><li>প্যাকেজিং নষ্ট বা খোলা অবস্থায় পণ্য পেয়েছেন।</li><li>পণ্যের মান নিয়ে গ্রহণযোগ্য প্রমাণসহ অভিযোগ করেছেন।</li></ul><p>অভিযোগ যাচাই করে প্রমাণিত হলে আমরা পণ্যটি বিনামূল্যে পরিবর্তন করে দেব অথবা আপনার প্রদানকৃত মূল্য রিফান্ডের ব্যবস্থা করব।</p>'},
   privacy: {title:'প্রাইভেসি পলিসি', subtitle:'আপনার ব্যক্তিগত তথ্য নিরাপদ রাখার অঙ্গীকার।', html:'<h2>প্রাইভেসি পলিসি</h2><p>PureOrigins আপনার ব্যক্তিগত তথ্যের সর্বোচ্চ গোপনীয়তা রক্ষায় বদ্ধপরিকর। অর্ডার করার সময় আপনার প্রদানকৃত নাম, ঠিকানা, ইমেইল এবং ফোন নম্বর শুধুমাত্র ডেলিভারি সম্পন্ন করা, অর্ডার সাপোর্ট এবং আমাদের সেবার মান উন্নয়নের কাজেই ব্যবহৃত হয়।</p><h3>তথ্য ব্যবহার</h3><ul><li>অর্ডার কনফার্মেশন ও ডেলিভারি।</li><li>অর্ডার স্ট্যাটাস ও কাস্টমার সাপোর্ট।</li><li>সাইট উন্নয়ন, নিরাপত্তা ও প্রতারণা প্রতিরোধ।</li></ul><p>আমরা কোনো অবস্থাতেই তৃতীয় পক্ষের কাছে গ্রাহকের ব্যক্তিগত তথ্য বিক্রি করি না। আমাদের পেমেন্ট গেটওয়ে ও অর্ডার সিস্টেম নিরাপত্তাকে অগ্রাধিকার দিয়ে পরিচালিত হয়।</p>'},
-  delivery: {title:'ডেলিভারি পলিসি', subtitle:'ডেলিভারি সময়, চার্জ ও কভারেজ।', html:'<h2>ডেলিভারি পলিসি</h2><p>PureOrigins সবসময় চেষ্টা করে আপনার অর্ডারকৃত পণ্যটি সম্পূর্ণ সুরক্ষিত অবস্থায় দ্রুততম সময়ের মধ্যে আপনার দোরগোড়ায় পৌঁছে দিতে। আমরা স্বনামধন্য ও বিশ্বস্ত কুরিয়ার সার্ভিসের মাধ্যমে সারা বাংলাদেশে ক্যাশ অন ডেলিভারি (COD) সুবিধায় পণ্য পাঠিয়ে থাকি।</p><h3>আনুমানিক ডেলিভারি সময়</h3><ul><li>ঢাকার ভেতরে: সাধারণত ১ থেকে ৩ কার্যদিবস।</li><li>ঢাকার বাইরে: সাধারণত ৩ থেকে ৭ কার্যদিবস।</li></ul><h3>ডেলিভারি চার্জ</h3><p>ডেলিভারি চার্জ চেকআউট পেজে আপনার লোকেশন অনুযায়ী স্বয়ংক্রিয়ভাবে যুক্ত হবে। অর্ডারের পর আমাদের টিম প্রয়োজনে ফোনে ডেলিভারি নিশ্চিত করবে।</p>'},
+  delivery: {title:'ডেলিভারি পলিসি', subtitle:'ডেলিভারি সময়, চার্জ ও কভারেজ।', html:'<h2>ডেলিভারি পলিসি</h2><p>PureOrigins সবসময় চেষ্টা করে আপনার অর্ডারকৃত পণ্যটি সম্পূর্ণ সুরক্ষিত অবস্থায় দ্রুততম সময়ের মধ্যে আপনার দোরগোড়ায় পৌঁছে দিতে। আমরা স্বনামধন্য ও বিশ্বস্ত কুরিয়ার সার্ভিসের মাধ্যমে সারা বাংলাদেশে ক্যাশ অন ডেলিভারি (COD) সুবিধায় পণ্য পাঠিয়ে থাকি।</p><h3>আনুমানিক ডেলিভারি সময়</h3><p>সারাদেশে সাধারণত ৩–৫ কার্যদিবসের মধ্যে ডেলিভারি দেওয়ার চেষ্টা করা হয়।</p><h3>ডেলিভারি চার্জ</h3><p>সারাদেশে ডেলিভারি চার্জ ৮০ টাকা। ৮০০ টাকার বেশি অর্ডারে ফ্রি ডেলিভারি প্রযোজ্য। অর্ডারের পর আমাদের টিম প্রয়োজনে ফোনে ডেলিভারি নিশ্চিত করবে।</p>'},
   terms: {title:'শর্তাবলী', subtitle:'PureOrigins ব্যবহারের নিয়মাবলী।', html:'<h2>শর্তাবলী</h2><p>PureOrigins ওয়েবসাইটে প্রবেশ ও কেনাকাটা করার মাধ্যমে আপনি আমাদের সাধারণ শর্তাবলীর সাথে সম্মত হচ্ছেন। আমরা ওয়েবসাইটে প্রদত্ত পণ্যের দাম, স্টক বা অফার যেকোনো সময় পরিবর্তন করার অধিকার সংরক্ষণ করি।</p><h3>অর্ডার ও ব্যবহার</h3><ul><li>স্টক, মূল্য ও অফার সময়ভেদে পরিবর্তন হতে পারে।</li><li>ভুল ঠিকানা বা অসম্পূর্ণ তথ্য দিলে ডেলিভারি বিলম্ব হতে পারে।</li><li>COD অর্ডার ফোনে কনফার্ম করা হতে পারে।</li></ul><p>আমাদের “সুন্নাহ কর্নার” বা “স্বাস্থ্য উপকারিতা” অংশে দেওয়া তথ্যগুলো সাধারণ সচেতনতার উদ্দেশ্যে প্রদান করা হয়েছে; এটি কোনো বিশেষজ্ঞ চিকিৎসকের প্রেসক্রিপশনের বিকল্প নয়। দীর্ঘমেয়াদি কোনো রোগ থাকলে বা গর্ভাবস্থায় যেকোনো সুপারফুড ব্যবহারের পূর্বে চিকিৎসকের পরামর্শ নেওয়া বাঞ্ছনীয়।</p>'}
 };
 
@@ -2458,10 +2398,7 @@ function applyCoupon(){
 function renderCheckoutSummary(){
   const el=document.getElementById('checkout-order-summary');if(!el)return;
   const sub=getCartTotal(),del=getDelivery(),tot=sub+del;
-  const district=getFieldValue('co-district');
-  const eta=district
-    ? (district==='ঢাকা' ? 'ঢাকার ভেতরে আনুমানিক ১–৩ কার্যদিবস' : 'ঢাকার বাইরে আনুমানিক ৩–৭ কার্যদিবস')
-    : 'জেলা বেছে নিলে ETA নিশ্চিত হবে';
+  const eta='সারাদেশে আনুমানিক ৩–৫ কার্যদিবস';
   el.innerHTML=`
     <h3 style="font-size:17px;font-weight:700;color:var(--forest);margin-bottom:16px">অর্ডার সারাংশ</h3>
     ${cart.map(i=>`<div class="summary-row"><span>${i.emoji} ${i.name} × ${i.qty}</span><span>৳${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
@@ -2893,7 +2830,7 @@ function renderDetail(id){
     </div>
     <div class="detail-meta">
       <div class="meta-row"><span class="meta-icon">💵</span><span>পেমেন্ট: <strong>COD / bKash / Nagad / Rocket</strong></span></div>
-      <div class="meta-row"><span class="meta-icon">🚚</span><span>ডেলিভারি: <strong>ঢাকায় ১-৩ দিন, ঢাকার বাইরে ৩-৭ দিন</strong></span></div>
+      <div class="meta-row"><span class="meta-icon">🚚</span><span>ডেলিভারি: <strong>সারাদেশে আনুমানিক ৩–৫ কার্যদিবস</strong></span></div>
       <div class="meta-row"><span class="meta-icon">📦</span><span>প্যাকেজিং: <strong>হাইজিনিক ও সিলড প্যাকেট</strong></span></div>
       <div class="meta-row"><span class="meta-icon">↩️</span><span>রিটার্ন: <strong>সমস্যা থাকলে ৪৮ ঘন্টার মধ্যে যোগাযোগ করুন</strong></span></div>
     </div>
