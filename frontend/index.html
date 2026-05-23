@@ -752,7 +752,12 @@ footer ul a:hover{color:var(--white)}
 .cart-row:last-child{border-bottom:none}
 .cart-row-head{background:var(--cream-dark);font-size:12.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
 .cart-img{width:64px;height:64px;border-radius:10px;background:var(--cream-dark);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
-.cart-name{font-size:14.5px;font-weight:600;color:var(--forest)}
+.cart-name{
+  background:none;border:none;padding:0;margin:0;
+  font-size:14.5px;font-weight:600;color:var(--forest);
+  text-align:left;line-height:1.35;
+}
+.cart-name:hover{text-decoration:underline;color:var(--gold)}
 .cart-variant{font-size:12px;color:var(--text-muted)}
 .cart-price{font-size:15px;font-weight:700;color:var(--forest);white-space:nowrap}
 .remove-btn{background:none;border:none;font-size:16px;color:var(--text-muted);cursor:pointer;padding:4px;transition:.2s}
@@ -2350,11 +2355,13 @@ function renderCart(){
     <div class="cart-row cart-row-head">
       <div></div><div>পণ্য</div><div>পরিমাণ</div><div>মূল্য</div>
     </div>`+
-    cart.map(item=>`
+    cart.map(item=>{
+      const productId = escapeAttr(item.productId || item.id || '');
+      return `
     <div class="cart-row">
       <div class="cart-img">${item.emoji}</div>
       <div>
-        <div class="cart-name">${item.name}</div>
+        <button type="button" class="cart-name" onclick="navigate('detail','${productId}')">${item.name}</button>
         <div class="cart-variant">${item.weight}</div>
       </div>
       <div>
@@ -2368,7 +2375,7 @@ function renderCart(){
         <span class="cart-price">৳${(item.price*item.qty).toLocaleString()}</span>
         <button class="remove-btn" onclick="removeFromCart('${item.key}')">🗑️</button>
       </div>
-    </div>`).join('');
+    </div>`}).join('');
 
   const sub=getCartTotal(),del=getDelivery(),tot=sub+del;
   summary.innerHTML=`
