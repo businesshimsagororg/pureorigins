@@ -39,6 +39,7 @@
           <button class="nav-tab" data-screen="banners">Banners</button>
           <button class="nav-tab" data-screen="reports">Reports</button>
           <button class="nav-tab" data-screen="customers">Customers</button>
+          <button class="nav-tab" data-screen="messages">Messages</button>
         </nav>
         <button id="logoutBtn" class="ghost-btn">Logout</button>
       </aside>
@@ -182,6 +183,16 @@
           <div class="panel">
             <h2>Customer activity</h2>
             <div id="customerInsights"></div>
+          </div>
+        </section>
+
+        <section id="screen-messages" class="screen">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Customer messages</h2>
+              <button class="secondary-btn" data-refresh-messages="true">Refresh</button>
+            </div>
+            <div id="messagesTable"></div>
           </div>
         </section>
       </section>

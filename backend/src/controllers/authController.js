@@ -120,6 +120,6 @@ export async function ensureAdminSeed() {
   const existing = await User.findOne({ email: env.adminEmail });
   if (existing) return;
   const passwordHash = await bcrypt.hash(env.adminPassword, 10);
-  const user = await User.create({ name: "PureOrigins Admin", phone: "01700000000", email: env.adminEmail, passwordHash, role: "admin" });
+  const user = await User.create({ name: "PureOrigins Admin", phone: env.adminPhone || "01900000000", email: env.adminEmail, passwordHash, role: "admin" });
   await Admin.create({ user: user._id, permissions: ["all"] });
 }

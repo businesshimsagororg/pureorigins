@@ -9,6 +9,7 @@ const state = {
   coupons: [],
   reviews: [],
   banners: [],
+  messages: [],
   reports: { sales: null, stock: null, customers: null }
 };
 
@@ -549,6 +550,35 @@ function renderReports() {
   `));
 }
 
+async function loadMessages() {
+  const { messages } = await req("/contact/admin/messages");
+  state.messages = messages;
+  renderMessages();
+}
+
+function renderMessages() {
+  $("#messagesTable").innerHTML = table(["From", "Subject", "Message", "Status", "Received", "Actions"], state.messages.map(message => `
+    <tr>
+      <td><strong>${escapeHtml(message.name)}</strong><br/><small>${escapeHtml(message.phone || message.email || "-")}</small></td>
+      <td>${escapeHtml(message.subject)}</td>
+      <td>${escapeHtml(message.message)}</td>
+      <td>${statusPill(message.status || "new", message.status !== "archived")}</td>
+      <td>${dateText(message.createdAt)}</td>
+      <td><div class="actions">
+        <button class="mini-btn" data-message-status="${message._id}" data-status="read">Read</button>
+        <button class="mini-btn" data-message-status="${message._id}" data-status="replied">Replied</button>
+        <button class="mini-btn danger" data-message-status="${message._id}" data-status="archived">Archive</button>
+      </div></td>
+    </tr>
+  `));
+}
+
+async function updateMessageStatus(id, status) {
+  await req(`/contact/admin/messages/${id}`, { method: "PUT", body: { status } });
+  await loadMessages();
+  setMessage("Message updated.");
+}
+
 function renderDashboard() {
   const revenue = state.orders.reduce((sum, order) => sum + (order.total || 0), 0);
   const lowStock = state.products.filter(product => Number(product.stockQuantity) <= Number(product.lowStockThreshold || 0)).length;
@@ -563,7 +593,7 @@ function renderDashboard() {
 
 async function refreshAll() {
   setMessage("Loading dashboard...");
-  await Promise.all([loadProducts(), loadOrders(), loadCoupons(), loadReviews(), loadBanners()]);
+  await Promise.all([loadProducts(), loadOrders(), loadCoupons(), loadReviews(), loadBanners(), loadMessages()]);
   await loadReports();
   renderDashboard();
   setMessage("");
@@ -595,6 +625,8 @@ async function handleClick(event) {
       await loadBanners();
     }
     if (target.dataset.deleteBanner) { await req(`/banners/admin/banners/${target.dataset.deleteBanner}`, { method: "DELETE" }); await loadBanners(); }
+    if (target.dataset.refreshMessages) await loadMessages();
+    if (target.dataset.messageStatus) await updateMessageStatus(target.dataset.messageStatus, target.dataset.status);
   } catch (error) {
     setMessage(error.message, "error");
   }

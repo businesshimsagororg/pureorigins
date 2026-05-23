@@ -12,13 +12,13 @@
 <meta property="og:title" content="PureOrigins - প্রিমিয়াম হেলথ সিড ও সুপারফুড"/>
 <meta property="og:description" content="কালোজিরা, চিয়া সিড, মরিঙ্গা পাউডার ও খাঁটি মধু — সারাদেশে হোম ডেলিভারি ও COD সুবিধা।"/>
 <meta property="og:url" content="https://pureorigins.vercel.app/"/>
-<meta property="og:image" content="https://pureorigins.vercel.app/og-image.svg"/>
+<meta property="og:image" content="https://pureorigins.vercel.app/og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="PureOrigins - প্রিমিয়াম হেলথ সিড ও সুপারফুড"/>
 <meta name="twitter:description" content="বাংলাদেশের প্রিমিয়াম হেলথ সিড ও সুপারফুড শপ।"/>
-<meta name="twitter:image" content="https://pureorigins.vercel.app/og-image.svg"/>
+<meta name="twitter:image" content="https://pureorigins.vercel.app/og-image.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"/>
-<script type="application/ld+json" id="site-schema">{"@context":"https://schema.org","@type":"Organization","name":"PureOrigins","url":"https://pureorigins.vercel.app/","sameAs":["https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr"],"contactPoint":{"@type":"ContactPoint","telephone":"+8801700000000","contactType":"customer service","areaServed":"BD","availableLanguage":["bn","en"]}}</script>
+<script type="application/ld+json" id="site-schema">{"@context":"https://schema.org","@type":"Organization","name":"PureOrigins","url":"https://pureorigins.vercel.app/","sameAs":["https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr"],"contactPoint":{"@type":"ContactPoint","url":"https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr","contactType":"customer service","areaServed":"BD","availableLanguage":["bn","en"]}}</script>
 <script type="application/ld+json" id="product-schema">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Product","name":"কালোজিরা","alternateName":"Black Seeds","brand":{"@type":"Brand","name":"PureOrigins"},"offers":{"@type":"Offer","priceCurrency":"BDT","price":"180","availability":"https://schema.org/InStock","url":"https://pureorigins.vercel.app/#shop"}}},{"@type":"ListItem","position":2,"item":{"@type":"Product","name":"চিয়া সিড","alternateName":"Chia Seeds","brand":{"@type":"Brand","name":"PureOrigins"},"offers":{"@type":"Offer","priceCurrency":"BDT","price":"280","availability":"https://schema.org/InStock","url":"https://pureorigins.vercel.app/#shop"}}}]}</script>
 <style>
 :root {
@@ -72,7 +72,8 @@ input,select,textarea{font-family:var(--font-bn)}
   padding:7px 16px;
   letter-spacing:.3px;
 }
-.topbar span{margin:0 10px}
+.topbar span,.topbar a{margin:0 10px}
+.topbar a{color:var(--gold-light);font-weight:700;text-decoration:none}
 
 /* ── NAVBAR ── */
 nav{
@@ -149,8 +150,8 @@ nav{
 /* ── HERO ── */
 .hero{
   background:linear-gradient(135deg,#0D2B1D 0%,#1B4332 45%,#2D6A4F 100%);
-  min-height:46vh;
-  display:flex;align-items:flex-start;
+  min-height:70vh;
+  display:flex;align-items:center;
   position:relative;overflow:hidden;
   padding:24px 20px 18px;
 }
@@ -892,6 +893,11 @@ footer ul a:hover{color:var(--white)}
   transition:.2s;margin-top:4px;
 }
 .btn-submit:hover{background:var(--forest-light)}
+.btn-submit:disabled{opacity:.65;cursor:not-allowed}
+.contact-message-status{margin-top:10px;min-height:20px;font-size:13px;font-weight:700;color:var(--forest)}
+.contact-message-status.error{color:#C0392B}
+.free-delivery-note{background:linear-gradient(135deg,var(--cream-dark),#fff);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--forest);margin:10px 0;line-height:1.5}
+.free-delivery-note.unlocked{background:rgba(21,78,53,.08);border-color:rgba(21,78,53,.18)}
 
 /* ── ORDER CONFIRM ── */
 .confirm-page{
@@ -1203,7 +1209,7 @@ input,select,textarea{font-size:16px}
   <span>🎉 PURE15 কোডে প্রথম অর্ডারে ১৫% ছাড়</span>
   <span>💵 পণ্য হাতে পেয়ে COD পেমেন্ট</span>
   <span>🚚 সারাদেশে আনুমানিক ৩–৫ কার্যদিবস</span>
-  <span>📞 01700-000000</span>
+  <a href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">💬 Facebook পেজে মেসেজ</a>
 </div>
 
 <!-- NAVBAR -->
@@ -1281,29 +1287,6 @@ input,select,textarea{font-size:16px}
     </div>
   </div>
 
-  <!-- SUNNAH CORNER PREVIEW -->
-  <section class="section sunnah-preview">
-    <div class="container">
-      <div class="sunnah-panel">
-        <div class="sunnah-card dark">
-          <div class="tag-line" style="color:var(--gold-light)">সুন্নাহ কর্নার</div>
-          <h3>কালোজিরা ও সুন্নাহ-অনুপ্রাণিত খাবার</h3>
-          <p>কালোজিরা, খাঁটি মধু ও পরিচ্ছন্ন প্রাকৃতিক খাবার সম্পর্কে ইসলামি ঐতিহ্য, সতর্ক ব্যবহার এবং দৈনন্দিন খাদ্যাভ্যাসের সহজ গাইড এক জায়গায় পড়ুন।</p>
-          <button class="btn-primary" style="margin-top:16px" onclick="navigate('sunnah')">সুন্নাহ কর্নার দেখুন →</button>
-        </div>
-        <div class="sunnah-card">
-          <h3>বিশ্বাস + সচেতনতা</h3>
-          <p>আমরা Hadith-এর সম্মান বজায় রেখে তথ্য দিই, কিন্তু কোনো রোগের চিকিৎসার নিশ্চয়তা দিই না। অসুস্থতা, গর্ভাবস্থা বা নিয়মিত ওষুধ চললে চিকিৎসকের পরামর্শ নিন।</p>
-          <div class="sunnah-pill-row">
-            <span class="sunnah-pill">কালোজিরা</span>
-            <span class="sunnah-pill">খাঁটি মধু</span>
-            <span class="sunnah-pill">পরিমিত ব্যবহার</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- CATEGORIES -->
   <section class="section">
     <div class="container">
@@ -1313,11 +1296,11 @@ input,select,textarea{font-size:16px}
         <p>প্রকৃতির সেরা উপহার থেকে বেছে নিন আপনার পছন্দের পণ্য</p>
       </div>
       <div class="cat-grid">
-        <div class="cat-card" onclick="navigate('shop')"><div class="cat-emoji">🌿</div><h3>সিডস</h3><p>Seeds</p></div>
-        <div class="cat-card" onclick="navigate('shop')"><div class="cat-emoji">🌿</div><h3>পাউডার</h3><p>Powders</p></div>
-        <div class="cat-card" onclick="navigate('shop')"><div class="cat-emoji">🍯</div><h3>মধু</h3><p>Honey</p></div>
-        <div class="cat-card" onclick="navigate('shop')"><div class="cat-emoji">🎁</div><h3>কম্বো</h3><p>Combos</p></div>
-        <div class="cat-card" onclick="navigate('shop')"><div class="cat-emoji">⭐</div><h3>বেস্ট সেলার</h3><p>Best Sellers</p></div>
+        <div class="cat-card" onclick="goShop('seeds')"><div class="cat-emoji">🌿</div><h3>সিডস</h3><p>Seeds</p></div>
+        <div class="cat-card" onclick="goShop('powders')"><div class="cat-emoji">🌿</div><h3>পাউডার</h3><p>Powders</p></div>
+        <div class="cat-card" onclick="goShop('honey')"><div class="cat-emoji">🍯</div><h3>মধু</h3><p>Honey</p></div>
+        <div class="cat-card" onclick="navigate('combos')"><div class="cat-emoji">🎁</div><h3>কম্বো</h3><p>Combos</p></div>
+        <div class="cat-card" onclick="goShop('all','popular')"><div class="cat-emoji">⭐</div><h3>বেস্ট সেলার</h3><p>Best Sellers</p></div>
       </div>
     </div>
   </section>
@@ -1363,6 +1346,29 @@ input,select,textarea{font-size:16px}
         <p style="color:rgba(255,255,255,.7)">একসাথে কিনুন, বেশি বাঁচান</p>
       </div>
       <div class="combo-grid" id="home-combos"></div>
+    </div>
+  </section>
+
+  <!-- SUNNAH CORNER PREVIEW -->
+  <section class="section sunnah-preview">
+    <div class="container">
+      <div class="sunnah-panel">
+        <div class="sunnah-card dark">
+          <div class="tag-line" style="color:var(--gold-light)">সুন্নাহ কর্নার</div>
+          <h3>কালোজিরা ও সুন্নাহ-অনুপ্রাণিত খাবার</h3>
+          <p>কালোজিরা, খাঁটি মধু ও পরিচ্ছন্ন প্রাকৃতিক খাবার সম্পর্কে ইসলামি ঐতিহ্য, সতর্ক ব্যবহার এবং দৈনন্দিন খাদ্যাভ্যাসের সহজ গাইড এক জায়গায় পড়ুন।</p>
+          <button class="btn-primary" style="margin-top:16px" onclick="navigate('sunnah')">সুন্নাহ কর্নার দেখুন →</button>
+        </div>
+        <div class="sunnah-card">
+          <h3>বিশ্বাস + সচেতনতা</h3>
+          <p>আমরা Hadith-এর সম্মান বজায় রেখে তথ্য দিই, কিন্তু কোনো রোগের চিকিৎসার নিশ্চয়তা দিই না। অসুস্থতা, গর্ভাবস্থা বা নিয়মিত ওষুধ চললে চিকিৎসকের পরামর্শ নিন।</p>
+          <div class="sunnah-pill-row">
+            <span class="sunnah-pill">কালোজিরা</span>
+            <span class="sunnah-pill">খাঁটি মধু</span>
+            <span class="sunnah-pill">পরিমিত ব্যবহার</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1566,7 +1572,7 @@ input,select,textarea{font-size:16px}
       <div class="confirm-items" id="conf-items"></div>
     </div>
     <p style="font-weight:600;color:var(--forest)">📞 আমাদের টিম ২৪ ঘন্টার মধ্যে আপনার সাথে যোগাযোগ করবে।</p>
-    <p style="margin-bottom:28px">কোনো প্রশ্ন থাকলে: 01700-000000</p>
+    <p style="margin-bottom:28px">কোনো প্রশ্ন থাকলে <a href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style="color:var(--forest);font-weight:700">Facebook পেজে মেসেজ করুন</a></p>
     <button class="btn-outline" style="margin-right:10px;color:var(--forest);border-color:var(--border)" onclick="navigate('account')">অ্যাকাউন্টে অর্ডার দেখুন</button>
     <button class="btn-primary" onclick="navigate('home')">হোমে ফিরে যান</button>
   </div>
@@ -1672,8 +1678,8 @@ input,select,textarea{font-size:16px}
     <div class="contact-info">
       <h2>যোগাযোগের তথ্য</h2>
       <p>আমাদের টিম সকাল ৯টা থেকে রাত ৯টা পর্যন্ত সেবায় প্রস্তুত।</p>
-      <div class="contact-item"><span class="contact-icon">📞</span><div><h4>ফোন নম্বর</h4><p>01700-000000</p></div></div>
-      <div class="contact-item"><span class="contact-icon">💬</span><div><h4>WhatsApp</h4><p>01700-000000 (বার্তা পাঠান)</p></div></div>
+      <div class="contact-item"><span class="contact-icon">💬</span><div><h4>Messenger Support</h4><p><a href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Facebook পেজে মেসেজ করুন</a></p></div></div>
+      <div class="contact-item"><span class="contact-icon">📦</span><div><h4>অর্ডার সাপোর্ট</h4><p>অর্ডার করার পর আমাদের টিম আপনার ফোন নম্বরে কনফার্ম করবে।</p></div></div>
       <div class="contact-item"><span class="contact-icon">📘</span><div><h4>Facebook Page</h4><p><a href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">facebook.com/PureOriginsBD</a></p></div></div>
       <div class="contact-item"><span class="contact-icon">📧</span><div><h4>ইমেইল</h4><p>support@pureorigins.com</p></div></div>
       <div class="contact-item"><span class="contact-icon">🕐</span><div><h4>সেবার সময়</h4><p>শনি–বৃহস্পতি: সকাল ৯টা – রাত ৯টা</p></div></div>
@@ -1682,12 +1688,13 @@ input,select,textarea{font-size:16px}
     <div class="contact-form">
       <h2>বার্তা পাঠান</h2>
       <div class="form-row">
-        <div class="form-group"><label>নাম</label><input type="text" placeholder="আপনার নাম"/></div>
-        <div class="form-group"><label>মোবাইল</label><input type="tel" placeholder="01XXXXXXXXX"/></div>
+        <div class="form-group"><label>নাম</label><input type="text" placeholder="আপনার নাম" id="contact-name"/></div>
+        <div class="form-group"><label>মোবাইল</label><input type="tel" placeholder="01XXXXXXXXX" id="contact-phone" maxlength="11"/></div>
       </div>
-      <div class="form-group"><label>বিষয়</label><input type="text" placeholder="বার্তার বিষয় লিখুন"/></div>
-      <div class="form-group"><label>বার্তা</label><textarea rows="5" placeholder="আপনার বিস্তারিত বার্তা লিখুন..."></textarea></div>
-      <button class="btn-submit" onclick="showToast('বার্তা পাঠানো হয়েছে! শীঘ্রই যোগাযোগ করা হবে। ✅')">বার্তা পাঠান 📨</button>
+      <div class="form-group"><label>বিষয়</label><input type="text" placeholder="বার্তার বিষয় লিখুন" id="contact-subject"/></div>
+      <div class="form-group"><label>বার্তা</label><textarea rows="5" placeholder="আপনার বিস্তারিত বার্তা লিখুন..." id="contact-message"></textarea></div>
+      <button class="btn-submit" id="contact-submit" onclick="sendContactMessage()">বার্তা পাঠান 📨</button>
+      <div class="contact-message-status" id="contact-status"></div>
     </div>
   </div>
 </div>
@@ -1773,8 +1780,8 @@ input,select,textarea{font-size:16px}
 <!-- POLICY PAGE -->
 <div class="page" id="page-policy">
   <div class="shop-header">
-    <h1 id="policy-title">PureOrigins Policy</h1>
-    <p id="policy-subtitle">Clear store policies for safe shopping.</p>
+    <h1 id="policy-title">PureOrigins নীতিমালা</h1>
+    <p id="policy-subtitle">নিরাপদ কেনাকাটার জন্য পরিষ্কার স্টোর নীতিমালা।</p>
   </div>
   <section class="section-sm">
     <div class="container">
@@ -1818,8 +1825,8 @@ input,select,textarea{font-size:16px}
     </div>
     <div class="footer-contact">
       <h4>যোগাযোগ</h4>
-      <p><span>📞</span> 01700-000000</p>
-      <p><span>💬</span> WhatsApp: 01700-000000</p>
+      <p><span>💬</span> <a href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Facebook পেজে মেসেজ করুন</a></p>
+      <p><span>📦</span> অর্ডারের পর ফোনে কনফার্মেশন</p>
       <p><span>📧</span> support@pureorigins.com</p>
       <p><span>🕐</span> শনি–বৃহস্পতি: ৯AM–৯PM</p>
       <p><span>🏢</span> ব্যবসায়িক ঠিকানা/ট্রেড লাইসেন্স: যাচাই শেষে প্রকাশিত হবে</p>
@@ -1837,7 +1844,7 @@ input,select,textarea{font-size:16px}
 </footer>
 
 <!-- WHATSAPP FLOAT -->
-<button class="wa-float" onclick="window.open('https://wa.me/8801700000000','_blank')">💬</button>
+<button class="wa-float" aria-label="Facebook Messenger" onclick="window.open('https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr','_blank')">💬</button>
 
 <script>
 // ═══════════════════════════════════════════
@@ -2129,6 +2136,11 @@ function changeQty(key,delta){
 
 function getCartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
 function getDelivery(){return getCartTotal()>=800?0:80}
+function freeDeliveryUpsell(subtotal=getCartTotal()){
+  const remaining = Math.max(0,800-Number(subtotal||0));
+  if(remaining<=0)return '<div class="free-delivery-note unlocked">✅ ফ্রি ডেলিভারি আনলক হয়েছে</div>';
+  return `<div class="free-delivery-note">🚚 ৳${remaining.toLocaleString()} আরও যোগ করলে ফ্রি ডেলিভারি!</div>`;
+}
 function getWeightMultiplier(product, weight){
   const weights = Array.isArray(product?.weight) ? product.weight : [];
   const index = weights.findIndex(item => String(item) === String(weight));
@@ -2379,7 +2391,7 @@ function renderCart(){
     <h3>অর্ডার সারাংশ</h3>
     <div class="summary-row"><span>পণ্য মূল্য</span><span>৳${sub.toLocaleString()}</span></div>
     <div class="summary-row"><span>ডেলিভারি চার্জ</span><span>${del===0?'<span style="color:var(--forest);font-weight:600">বিনামূল্যে</span>':'৳'+del}</span></div>
-    ${del>0?`<div style="background:var(--cream-dark);border-radius:8px;padding:10px;font-size:12.5px;color:var(--forest);margin:8px 0">💡 ৳${800-sub} বেশি কিনুন — ফ্রি ডেলিভারি পাবেন!</div>`:''}
+    ${freeDeliveryUpsell(sub)}
     <div class="coupon-input">
       <input placeholder="কুপন কোড লিখুন..." id="coupon-code"/>
       <button onclick="applyCoupon()">প্রয়োগ</button>
@@ -2404,6 +2416,7 @@ function renderCheckoutSummary(){
     ${cart.map(i=>`<div class="summary-row"><span>${i.emoji} ${i.name} × ${i.qty}</span><span>৳${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
     <div class="summary-row" style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px"><span>পণ্য মূল্য</span><span>৳${sub.toLocaleString()}</span></div>
     <div class="summary-row"><span>ডেলিভারি</span><span>${del===0?'বিনামূল্যে':'৳'+del}</span></div>
+    ${freeDeliveryUpsell(sub)}
     <div class="summary-row"><span>আনুমানিক ডেলিভারি</span><span style="text-align:right;font-weight:600;color:var(--forest)">${eta}</span></div>
     <div class="summary-row total"><span>মোট পরিশোধযোগ্য</span><span>৳${tot.toLocaleString()}</span></div>
     <div style="background:var(--cream-dark);border-radius:8px;padding:12px;margin-top:12px;font-size:13px;color:var(--text-muted);line-height:1.7">
@@ -2427,9 +2440,9 @@ const upazilasByDistrict = {
 };
 
 const walletPayments = {
-  bkash:{label:"bKash",number:"01700-000000"},
-  nagad:{label:"Nagad",number:"01700-000000"},
-  rocket:{label:"Rocket",number:"01700-000000"}
+  bkash:{label:"bKash",number:""},
+  nagad:{label:"Nagad",number:""},
+  rocket:{label:"Rocket",number:""}
 };
 
 function updateUpazilaOptions(){
@@ -2482,7 +2495,7 @@ function validateCheckoutForm(){
   if(selectedDistrict === 'অন্যান্য' && manualDistrict.length<2){setFieldError('co-district-other','জেলার নাম লিখুন');ok=false;}
   if(!data.upazila){setFieldError('co-upazila','উপজেলা বেছে নিন');ok=false;}
   if((selectedDistrict === 'অন্যান্য' || !upazilasByDistrict[selectedDistrict]) && manualUpazila.length<2){setFieldError('co-upazila-other','উপজেলা/থানার নাম লিখুন');ok=false;}
-  if(selectedPayment!=='cod' && data.transactionRef.length<4){setFieldError('co-transaction','পেমেন্ট করার পর Transaction ID লিখুন');ok=false;}
+  if(selectedPayment!=='cod' && walletPayments[selectedPayment]?.number && data.transactionRef.length<4){setFieldError('co-transaction','পেমেন্ট করার পর Transaction ID লিখুন');ok=false;}
   return ok?data:null;
 }
 
@@ -2496,7 +2509,11 @@ function selectPayment(el,method){
   if(!box||!text)return;
   const wallet=walletPayments[method];
   if(wallet){
-    text.innerHTML=`<strong>${wallet.label} payment:</strong> Send money to <strong>${wallet.number}</strong>, then enter your Transaction ID below.`;
+    if(wallet.number){
+      text.innerHTML=`<strong>${wallet.label} payment:</strong> Send money to <strong>${wallet.number}</strong>, then enter your Transaction ID below.`;
+    }else{
+      text.innerHTML=`<strong>${wallet.label}</strong> এখনো অনলাইন পেমেন্টের জন্য কনফিগার করা হয়নি। আপাতত COD বেছে নিন, অথবা Facebook পেজে মেসেজ করুন।`;
+    }
     box.classList.add('show');
   }else{
     box.classList.remove('show');
@@ -2904,6 +2921,14 @@ function renderShop(){
 
 function setCat(c){activeCat=c;renderShop();}
 
+function goShop(category='all', sort=''){
+  activeCat=category||'all';
+  navigate('shop');
+  const sortEl=document.getElementById('sortSelect');
+  if(sortEl && sort)sortEl.value=sort;
+  renderShop();
+}
+
 function filterProducts(){
   const q=(document.getElementById('searchInput')?.value||'').toLowerCase();
   const sort=document.getElementById('sortSelect')?.value||'';
@@ -2918,6 +2943,39 @@ function filterProducts(){
 }
 
 // ═══════════════════════════════════════════
+
+async function sendContactMessage(){
+  const status=document.getElementById('contact-status');
+  const button=document.getElementById('contact-submit');
+  const body={
+    name:document.getElementById('contact-name')?.value.trim()||'',
+    phone:document.getElementById('contact-phone')?.value.trim()||'',
+    subject:document.getElementById('contact-subject')?.value.trim()||'',
+    message:document.getElementById('contact-message')?.value.trim()||''
+  };
+  if(status){status.textContent='';status.classList.remove('error');}
+  if(body.name.length<2||!/^01[3-9]\d{8}$/.test(body.phone)||body.subject.length<2||body.message.length<8){
+    const msg='নাম, সঠিক মোবাইল নম্বর, বিষয় ও বিস্তারিত বার্তা লিখুন।';
+    if(status){status.textContent=msg;status.classList.add('error');}
+    showToast(msg);
+    return;
+  }
+  if(button){button.disabled=true;button.textContent='পাঠানো হচ্ছে...';}
+  try{
+    await apiRequest('/contact',{method:'POST',body});
+    ['contact-name','contact-phone','contact-subject','contact-message'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const msg='বার্তা গ্রহণ করা হয়েছে। দ্রুত উত্তর দেওয়া হবে।';
+    if(status){status.textContent=msg;}
+    showToast('✅ '+msg);
+  }catch(error){
+    const msg='বার্তা পাঠানো যায়নি। অনুগ্রহ করে Facebook পেজে মেসেজ করুন।';
+    if(status){status.textContent=msg;status.classList.add('error');}
+    showToast(msg);
+  }finally{
+    if(button){button.disabled=false;button.textContent='বার্তা পাঠান 📨';}
+  }
+}
+
 //  NAVIGATION
 // ═══════════════════════════════════════════
 function navigate(page,data=null){

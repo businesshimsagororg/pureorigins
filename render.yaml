@@ -16,3 +16,7 @@ services:
         value: none
       - key: FRONTEND_ORIGIN
         value: https://pureorigins.vercel.app
+      - key: GOOGLE_SHEET_WEBHOOK_URL
+        sync: false
+      - key: GOOGLE_SHEET_WEBHOOK_SECRET
+        sync: false

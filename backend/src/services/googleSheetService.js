@@ -9,7 +9,7 @@ function orderPayload(order) {
     subtotal: item.subtotal
   }));
 
-  return {
+  const payload = {
     orderId: order._id.toString(),
     createdAt: order.createdAt,
     customerName: order.customerName,
@@ -30,6 +30,26 @@ function orderPayload(order) {
     items,
     itemsText: items.map(item => `${item.productName || "Product"} ${item.variantWeight || ""} x ${item.quantity || 1}`).join(", ")
   };
+
+  if (env.googleSheetWebhookSecret) {
+    payload.secret = env.googleSheetWebhookSecret;
+  }
+
+  return payload;
+}
+
+function parseWebhookResponse(responseBody) {
+  const trimmed = String(responseBody || "").trim();
+  if (!trimmed) return { parsed: null, error: "Google Sheets webhook returned an empty response." };
+
+  try {
+    return { parsed: JSON.parse(trimmed), error: "" };
+  } catch {
+    return {
+      parsed: null,
+      error: "Google Sheets webhook did not return JSON. Check Apps Script deployment access is set to Anyone and the URL ends with /exec."
+    };
+  }
 }
 
 async function recordExportResult(order, result) {
@@ -41,7 +61,7 @@ async function recordExportResult(order, result) {
   order.integrations.googleSheets.attempts = (order.integrations.googleSheets.attempts || 0) + 1;
   order.integrations.googleSheets.attemptedAt = new Date();
   order.integrations.googleSheets.lastStatusCode = result.statusCode;
-  order.integrations.googleSheets.lastError = result.error || result.message || "";
+  order.integrations.googleSheets.lastError = result.ok ? "" : result.error || result.message || "";
   order.integrations.googleSheets.responseBody = result.responseBody || "";
   if (result.ok) order.integrations.googleSheets.exportedAt = new Date();
 
@@ -73,6 +93,8 @@ export async function exportOrderToGoogleSheet(order) {
     });
     const responseBody = await response.text().catch(() => "");
 
+    const parsed = parseWebhookResponse(responseBody);
+
     if (!response.ok) {
       const result = {
         ok: false,
@@ -85,12 +107,25 @@ export async function exportOrderToGoogleSheet(order) {
       return result;
     }
 
+    if (parsed.error || parsed.parsed?.ok !== true) {
+      const result = {
+        ok: false,
+        status: "failed",
+        statusCode: response.status,
+        responseBody: responseBody.slice(0, 500),
+        error: parsed.error || parsed.parsed?.error || "Google Sheets webhook returned ok:false.",
+        message: "Google Sheets order export failed."
+      };
+      await recordExportResult(order, result);
+      return result;
+    }
+
     const result = {
       ok: true,
       status: "success",
       statusCode: response.status,
       responseBody: responseBody.slice(0, 500),
-      message: "Order exported to Google Sheets."
+      message: parsed.parsed.message || "Order exported to Google Sheets."
     };
     await recordExportResult(order, result);
     return result;

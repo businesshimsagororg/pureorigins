@@ -87,6 +87,11 @@ This is a separate project from your previous work.
 - `GET /api/admin/reports/stock`
 - `GET /api/admin/reports/customers`
 
+### Contact
+- `POST /api/contact`
+- `GET /api/contact/admin/messages`
+- `PUT /api/contact/admin/messages/:id`
+
 ## Environment Variables
 Copy `backend/.env.example` to `backend/.env` and fill secrets.
 
@@ -130,15 +135,21 @@ Use this when you want every new order to automatically appear in a Google Sheet
 6. Set `Execute as` to `Me`.
 7. Set `Who has access` to `Anyone`.
 8. Deploy and copy the Web App URL. It must end with `/exec`.
-9. In Render -> PureOrigins backend -> Environment, add:
+9. Optional but recommended: in Apps Script, go to `Project Settings` -> `Script properties` and add:
+   - `WEBHOOK_SECRET=any-long-random-secret`
+   - `SPREADSHEET_ID=your-sheet-id` only if the script is not bound directly to the order Sheet.
+10. In Render -> PureOrigins backend -> Environment, add:
    - `GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/macros/s/.../exec`
-10. Save the Render environment and redeploy the backend.
+   - `GOOGLE_SHEET_WEBHOOK_SECRET=the-same-secret` if you added `WEBHOOK_SECRET`.
+11. Save the Render environment and redeploy the backend.
 
 If an order still does not export, open the admin dashboard Orders screen. Each order now shows a `Sheet` status and an `Export Sheet` retry button:
 
 - `Exported` means the row was sent to Google Sheets.
 - `No webhook` means `GOOGLE_SHEET_WEBHOOK_URL` is missing in Render or Render was not redeployed after saving it.
-- `Failed` means Google Apps Script returned an error or timed out. Check that the deployment access is `Anyone` and the URL is the `/exec` web app URL, not the editor URL.
+- `Failed` means Google Apps Script returned an error, non-JSON HTML, or timed out. Check that the deployment access is `Anyone`, the URL is the `/exec` web app URL, and the optional secret matches exactly.
+
+The webhook updates an existing order row when you retry the same order, so retries are safe and will not duplicate the order.
 
 ## Next Upgrade Targets (Phase 2/3 hardening)
 

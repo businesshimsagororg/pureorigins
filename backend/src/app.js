@@ -12,6 +12,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import bannerRoutes from "./routes/bannerRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
@@ -36,7 +37,7 @@ app.use("/uploads", express.static("uploads"));
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.get("/api/config/client", (req, res) => res.json({ ga4Id: env.ga4Id, fbPixelId: env.fbPixelId }));
-app.get("/robots.txt", (req, res) => res.type("text/plain").send("User-agent: *\nAllow: /"));
+app.get("/robots.txt", (req, res) => res.type("text/plain").send("User-agent: *\nAllow: /\nDisallow: /admin/"));
 app.get("/sitemap.xml", (req, res) => {
   const frontendUrl = (env.frontendOrigin || "https://pureorigins.vercel.app").replace(/\/+$/, "");
   res.type("application/xml").send(`<?xml version="1.0" encoding="UTF-8"?>
@@ -52,6 +53,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/banners", bannerRoutes);
+app.use("/api/contact", contactRoutes);
 app.use("/api", reportRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/payments", paymentRoutes);

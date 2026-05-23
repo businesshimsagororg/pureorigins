@@ -16,5 +16,7 @@ export const env = {
   adminPassword: process.env.ADMIN_PASSWORD,
   ga4Id: process.env.GA4_ID || "",
   fbPixelId: process.env.FACEBOOK_PIXEL_ID || "",
-  googleSheetWebhookUrl: process.env.GOOGLE_SHEET_WEBHOOK_URL || ""
+  googleSheetWebhookUrl: process.env.GOOGLE_SHEET_WEBHOOK_URL || process.env.GOOGLE_APPS_SCRIPT_WEBHOOK_URL || "",
+  googleSheetWebhookSecret: process.env.GOOGLE_SHEET_WEBHOOK_SECRET || "",
+  adminPhone: process.env.ADMIN_PHONE || ""
 };
