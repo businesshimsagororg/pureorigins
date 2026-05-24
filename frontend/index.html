@@ -376,8 +376,28 @@ nav{
   text-align:center;
   cursor:pointer;
   transition:transform .22s ease;
+  animation: catPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
+@keyframes catPop {
+  0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.cat-card:nth-child(1) { animation-delay: 0.1s; }
+.cat-card:nth-child(2) { animation-delay: 0.2s; }
+.cat-card:nth-child(3) { animation-delay: 0.3s; }
+.cat-card:nth-child(4) { animation-delay: 0.4s; }
+.cat-card:nth-child(5) { animation-delay: 0.5s; }
+
 .cat-card:hover{transform:translateY(-4px)}
+.cat-card:hover .cat-thumb{
+  animation: thumbFloat 1.5s ease-in-out infinite;
+  box-shadow: 0 16px 36px rgba(27,67,50,.15);
+  border-color: rgba(17,79,58,.25);
+}
+@keyframes thumbFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
 .cat-thumb{
   width:88px;
   height:88px;
