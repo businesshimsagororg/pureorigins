@@ -80,7 +80,7 @@ input,select,textarea{font-family:var(--font-bn)}
 nav{
   background:var(--white);
   box-shadow:0 2px 20px var(--shadow);
-  position:sticky;top:0;z-index:1000;
+  position:relative;z-index:1000;
 }
 .nav-inner{
   max-width:1200px;margin:0 auto;
@@ -147,6 +147,85 @@ nav{
   font-size:15px;
 }
 .mobile-nav a:last-child{border-bottom:none}
+
+.floating-cart-fab{
+  position:fixed;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:1400;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--forest),#0E3326);
+  color:var(--white);
+  padding:12px 14px;
+  min-width:154px;
+  box-shadow:0 18px 44px rgba(15,58,44,.32);
+}
+.floating-cart-fab:hover{transform:translateY(-50%) translateX(-2px)}
+.floating-cart-fab.is-empty{background:linear-gradient(135deg,#1F1A12,#100C07)}
+.floating-cart-icon{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.12);flex:0 0 38px;
+}
+.floating-cart-fab svg{width:18px;height:18px;stroke:currentColor}
+.floating-cart-copy{display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.floating-cart-label{font-size:10px;letter-spacing:.28px;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.floating-cart-total{font-size:13px;font-weight:800}
+
+.bottom-nav{
+  display:none;
+  position:fixed;
+  left:10px;
+  right:10px;
+  bottom:10px;
+  z-index:1390;
+  padding:8px;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:22px;
+  background:rgba(255,252,246,.96);
+  backdrop-filter:blur(18px);
+  box-shadow:0 16px 40px rgba(25,51,40,.18);
+}
+.bottom-nav-btn{
+  position:relative;
+  min-height:58px;
+  border:none;
+  border-radius:16px;
+  background:transparent;
+  color:var(--brown);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  font-size:11.5px;
+  font-weight:700;
+}
+.bottom-nav-btn svg{width:18px;height:18px;stroke:currentColor}
+.bottom-nav-btn.active{background:var(--forest);color:var(--white)}
+.bottom-nav-badge{
+  position:absolute;
+  top:6px;
+  right:18px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:var(--red);
+  color:#fff;
+  font-size:10px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
 /* ── HERO ── */
 .hero{
@@ -278,19 +357,61 @@ nav{
 }
 
 /* ── CATEGORIES ── */
-.cat-grid{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:16px;
+.category-carousel-shell{position:relative}
+.category-carousel{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  scrollbar-width:none;
+  padding:6px 44px 10px;
 }
+.category-carousel::-webkit-scrollbar{display:none}
 .cat-card{
-  background:var(--white);border:1.5px solid var(--border);
-  border-radius:14px;padding:24px 16px;
-  text-align:center;cursor:pointer;
-  transition:all .25s;
+  flex:0 0 116px;
+  scroll-snap-align:start;
+  background:transparent;
+  border:none;
+  text-align:center;
+  cursor:pointer;
+  transition:transform .22s ease;
 }
-.cat-card:hover{border-color:var(--forest);transform:translateY(-4px);box-shadow:0 12px 28px var(--shadow)}
-.cat-emoji{font-size:38px;margin-bottom:10px}
-.cat-card h3{font-size:14px;font-weight:600;color:var(--forest);margin-bottom:4px}
+.cat-card:hover{transform:translateY(-4px)}
+.cat-thumb{
+  width:88px;
+  height:88px;
+  margin:0 auto 10px;
+  border-radius:50%;
+  border:1.5px solid rgba(17,79,58,.12);
+  background:linear-gradient(135deg,#F7F0DD,#FFFDF7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  box-shadow:0 12px 30px rgba(27,67,50,.08);
+}
+.cat-card h3{font-size:14px;font-weight:700;color:var(--forest);margin-bottom:4px}
 .cat-card p{font-size:12px;color:var(--text-muted)}
+.category-arrow{
+  position:absolute;
+  top:44px;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  border:1px solid var(--border);
+  border-radius:50%;
+  background:rgba(255,255,255,.96);
+  color:var(--forest);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 10px 26px rgba(29,55,43,.12);
+  z-index:2;
+}
+.category-arrow svg{width:18px;height:18px;stroke:currentColor}
+.category-arrow.left{left:0}
+.category-arrow.right{right:0}
 
 /* ── PRODUCTS ── */
 .products-grid{
@@ -1014,7 +1135,6 @@ footer ul a:hover{color:var(--white)}
 @media(max-width:900px){
   .hero-content{grid-template-columns:1fr}
   .hero-visual{display:none}
-  .cat-grid{grid-template-columns:repeat(3,1fr)}
   .footer-grid{grid-template-columns:1fr 1fr}
   .about-story{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
@@ -1027,7 +1147,6 @@ footer ul a:hover{color:var(--white)}
 @media(max-width:640px){
   .nav-links{display:none}
   .hamburger{display:flex}
-  .cat-grid{grid-template-columns:repeat(2,1fr)}
   .hero{min-height:70vh}
   .footer-grid{grid-template-columns:1fr}
   .trust-strip-inner{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}
@@ -1125,9 +1244,15 @@ input,select,textarea{font-size:16px}
   .section-head{margin-bottom:18px}
   .section-head h2{font-size:26px;line-height:1.22}
   .section-head p{font-size:14px;line-height:1.7}
-  .cat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .cat-card{padding:16px 10px;border-radius:12px}
-  .cat-emoji{font-size:30px;margin-bottom:8px}
+  .floating-cart-fab{right:10px;min-width:132px;padding:10px 12px}
+  .floating-cart-icon{width:34px;height:34px;flex-basis:34px}
+  .floating-cart-total{font-size:12.5px}
+  .bottom-nav{display:grid}
+  body{padding-bottom:94px}
+  .category-carousel{padding:4px 40px 8px}
+  .cat-card{flex-basis:102px}
+  .cat-thumb{width:78px;height:78px;font-size:32px}
+  .category-arrow{width:34px;height:34px;top:40px}
   .products-grid{grid-template-columns:1fr;gap:14px}
   .product-card{border-radius:14px}
   .product-card:hover{transform:none}
@@ -1321,12 +1446,20 @@ input,select,textarea{font-size:16px}
         <h2>আমাদের পণ্যের ধরন</h2>
         <p>প্রকৃতির সেরা উপহার থেকে বেছে নিন আপনার পছন্দের পণ্য</p>
       </div>
-      <div class="cat-grid">
-        <div class="cat-card" onclick="goShop('seeds')"><div class="cat-emoji">🌿</div><h3>সিডস</h3><p>Seeds</p></div>
-        <div class="cat-card" onclick="goShop('powders')"><div class="cat-emoji">🌿</div><h3>পাউডার</h3><p>Powders</p></div>
-        <div class="cat-card" onclick="goShop('honey')"><div class="cat-emoji">🍯</div><h3>মধু</h3><p>Honey</p></div>
-        <div class="cat-card" onclick="navigate('combos')"><div class="cat-emoji">🎁</div><h3>কম্বো</h3><p>Combos</p></div>
-        <div class="cat-card" onclick="goShop('all','popular')"><div class="cat-emoji">⭐</div><h3>বেস্ট সেলার</h3><p>Best Sellers</p></div>
+      <div class="category-carousel-shell">
+        <button class="category-arrow left" onclick="scrollCategories(-1)" aria-label="Previous categories">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="category-carousel" id="categoryCarousel">
+          <div class="cat-card" onclick="goShop('seeds')"><div class="cat-thumb">🌿</div><h3>সিডস</h3><p>Seeds</p></div>
+          <div class="cat-card" onclick="goShop('powders')"><div class="cat-thumb">🌾</div><h3>পাউডার</h3><p>Powders</p></div>
+          <div class="cat-card" onclick="goShop('honey')"><div class="cat-thumb">🍯</div><h3>মধু</h3><p>Honey</p></div>
+          <div class="cat-card" onclick="navigate('combos')"><div class="cat-thumb">🎁</div><h3>কম্বো</h3><p>Combos</p></div>
+          <div class="cat-card" onclick="goShop('all','popular')"><div class="cat-thumb">⭐</div><h3>বেস্ট সেলার</h3><p>Best Sellers</p></div>
+        </div>
+        <button class="category-arrow right" onclick="scrollCategories(1)" aria-label="Next categories">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
       </div>
     </div>
   </section>
@@ -2149,7 +2282,27 @@ function saveCart(){localStorage.setItem('pureorigins_cart',JSON.stringify(cart)
 
 function updateCartCount(){
   const total = cart.reduce((s,i)=>s+i.qty,0);
+  const subtotal = getCartTotal();
+  // Navbar badge
   document.getElementById('cartCount').textContent = total;
+  // Bottom-nav cart badge
+  const bottomBadge = document.getElementById('bottomCartBadge');
+  if(bottomBadge){
+    bottomBadge.textContent = total;
+    bottomBadge.style.display = total > 0 ? 'flex' : 'none';
+  }
+  // Floating FAB
+  const fab    = document.getElementById('floatingCartFab');
+  const fabTxt = document.getElementById('floatingCartText');
+  if(fab && fabTxt){
+    if(total > 0){
+      fab.classList.remove('is-empty');
+      fabTxt.textContent = total + ' Items | ৳' + subtotal.toLocaleString('en-BD');
+    } else {
+      fab.classList.add('is-empty');
+      fabTxt.textContent = 'কার্ট খালি';
+    }
+  }
 }
 
 function addToCart(product,weight,qty=1){
@@ -3087,6 +3240,11 @@ function navigate(page,data=null){
   if(pageEl)pageEl.classList.add('active');
   const navEl=document.getElementById('nav-'+page);
   if(navEl)navEl.classList.add('active');
+  // Sync bottom-nav active state
+  document.querySelectorAll('.bottom-nav-btn').forEach(b=>b.classList.remove('active'));
+  const bottomPage = (page==='shop'||page==='detail') ? 'shop' : page;
+  const bottomBtn = document.getElementById('bnav-'+bottomPage);
+  if(bottomBtn)bottomBtn.classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 
   if(page==='detail'&&data){renderDetail(data);return;}
@@ -3096,6 +3254,22 @@ function navigate(page,data=null){
   if(page==='faq'){renderFaqBlock('full-faq');}
   if(page==='account'){loadAccount();}
   if(page==='policy'){renderPolicy(data || 'return');}
+}
+
+function scrollCategories(dir){
+  const el=document.getElementById('categoryCarousel');
+  if(!el)return;
+  const card=el.querySelector('.cat-card');
+  const step=card?(card.offsetWidth+14):130;
+  el.scrollBy({left:dir*step,behavior:'smooth'});
+}
+
+function openShopSearch(){
+  navigate('shop');
+  setTimeout(()=>{
+    const s=document.getElementById('searchInput');
+    if(s){s.focus();s.scrollIntoView({behavior:'smooth',block:'center'});}
+  },120);
 }
 
 function routeFromHash(){
@@ -3186,5 +3360,38 @@ function renderStorefront(){
   if(!routeFromHash())restoreSavedOrder();
 })();
 </script>
+
+<!-- ════ FLOATING CART FAB ════ -->
+<button class="floating-cart-fab is-empty" id="floatingCartFab" onclick="navigate('cart')" aria-label="View cart">
+  <span class="floating-cart-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+  </span>
+  <span class="floating-cart-copy">
+    <span class="floating-cart-label">কার্ট</span>
+    <span class="floating-cart-total" id="floatingCartText">কার্ট খালি</span>
+  </span>
+</button>
+
+<!-- ════ BOTTOM MOBILE NAVIGATION ════ -->
+<div class="bottom-nav" role="navigation" aria-label="Mobile navigation">
+  <button class="bottom-nav-btn active" id="bnav-home" onclick="navigate('home')">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    <span>হোম</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnav-shop" onclick="navigate('shop')">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+    <span>মেনু</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnav-search" onclick="openShopSearch()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <span>সার্চ</span>
+  </button>
+  <button class="bottom-nav-btn" id="bnav-cart" onclick="navigate('cart')" style="position:relative">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    <span>কার্ট</span>
+    <span class="bottom-nav-badge" id="bottomCartBadge" style="display:none">0</span>
+  </button>
+</div>
+
 </body>
 </html>
