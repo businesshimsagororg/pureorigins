@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { pathToFileURL } from "url";
 import Category from "../src/models/Category.js";
+import Coupon from "../src/models/Coupon.js";
 import Product from "../src/models/Product.js";
 
 dotenv.config();
@@ -95,6 +96,23 @@ const buildProducts = (categoryBySlug) => [
 ];
 
 export async function upsertNewProducts() {
+  await Coupon.findOneAndUpdate(
+    { code: "PURE15" },
+    {
+      $set: {
+        code: "PURE15",
+        type: "percent",
+        value: 15,
+        expiryDate: new Date("2030-12-31T23:59:59.999Z"),
+        usageLimit: 0,
+        perUserUsageLimit: 1,
+        minimumOrderAmount: 0,
+        isActive: true
+      }
+    },
+    { upsert: true, new: true, runValidators: true }
+  );
+
   for (const category of categorySeeds) {
     await Category.findOneAndUpdate(
       { slug: category.slug },

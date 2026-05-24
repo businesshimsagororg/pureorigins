@@ -326,20 +326,22 @@ nav{
 .price-now{font-size:18px;font-weight:700;color:var(--forest)}
 .price-old{font-size:13px;color:var(--text-muted);text-decoration:line-through}
 .price-save{font-size:11px;color:var(--red);font-weight:600}
-.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.product-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btn-cart{
-  flex:1;background:var(--forest);color:#fff;
-  border:none;border-radius:8px;
-  padding:10px;font-size:13px;font-weight:600;
-  transition:.2s;
+  flex:1;background:#fff;color:#15120b;
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:13px 12px;font-size:14px;font-weight:800;
+  transition:.2s;box-shadow:0 6px 18px rgba(0,0,0,.03);
 }
-.btn-cart:hover{background:var(--forest-light)}
+.btn-cart:hover{border-color:var(--forest);background:#fbfaf5;transform:translateY(-1px)}
 .btn-buy-card{
-  background:var(--gold);color:var(--white);
-  border:none;border-radius:8px;
-  padding:10px;font-size:13px;font-weight:700;
+  background:#17130b;color:var(--white);
+  border:1.5px solid #17130b;border-radius:12px;
+  padding:13px 12px;font-size:14px;font-weight:800;
+  box-shadow:0 10px 24px rgba(23,19,11,.14);
 }
-.product-actions .btn-cart,.product-actions .btn-buy-card{min-height:48px}
+.btn-buy-card:hover{background:var(--forest);border-color:var(--forest);transform:translateY(-1px)}
+.product-actions .btn-cart,.product-actions .btn-buy-card{min-height:56px;display:inline-flex;align-items:center;justify-content:center}
 .card-weight-row{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
 .card-weight-pill{
   border:1px solid var(--border);
@@ -537,15 +539,32 @@ button:disabled{opacity:.72;cursor:not-allowed}
 }
 
 /* ── FAQ ── */
+.faq-layout{
+  display:grid;grid-template-columns:minmax(260px,.85fr) minmax(0,1.35fr);
+  gap:48px;align-items:start;max-width:1180px;margin:0 auto;
+}
+.faq-intro{position:sticky;top:110px;padding-top:6px}
+.faq-kicker{
+  letter-spacing:.28em;text-transform:uppercase;color:var(--forest);
+  font-weight:900;font-size:13px;margin-bottom:18px;
+}
+.faq-intro h1{
+  font-size:clamp(38px,6vw,76px);
+  line-height:.98;color:#17130b;font-weight:900;margin-bottom:24px;
+  letter-spacing:-.045em;
+}
+.faq-intro p{font-size:20px;line-height:1.65;color:var(--text-muted);max-width:560px}
+.faq-list{display:grid;gap:16px}
 .faq-item{
-  border:1px solid var(--border);border-radius:12px;
-  margin-bottom:10px;overflow:hidden;
+  border:1px solid var(--border);border-radius:14px;
+  margin-bottom:0;overflow:hidden;background:#fff;
+  box-shadow:0 10px 34px rgba(26,77,58,.04);
 }
 .faq-q{
-  padding:16px 20px;
+  padding:24px 30px;
   display:flex;justify-content:space-between;align-items:center;
   cursor:pointer;background:var(--white);
-  font-size:15px;font-weight:600;color:var(--forest);
+  font-size:20px;font-weight:900;color:#17130b;
   transition:.2s;
 }
 .faq-q:hover{background:var(--cream-dark)}
@@ -555,8 +574,8 @@ button:disabled{opacity:.72;cursor:not-allowed}
 }
 .faq-item.open .faq-q .arrow{transform:rotate(45deg)}
 .faq-a{
-  display:none;padding:0 20px 16px;
-  font-size:14px;color:var(--text-muted);line-height:1.8;
+  display:none;padding:0 30px 26px;
+  font-size:18px;color:var(--text-muted);line-height:1.85;
   background:var(--white);
 }
 .faq-item.open .faq-a{display:block}
@@ -664,9 +683,9 @@ footer ul a:hover{color:var(--white)}
   cursor:pointer;transition:.2s;background:var(--white);
 }
 .pill.active,.pill:hover{background:var(--forest);color:#fff;border-color:var(--forest)}
-#page-shop .shop-header{padding:24px 20px 16px}
-#page-shop .section-sm{padding:18px 20px 30px}
-#page-shop .filter-bar{padding:12px 18px;margin-bottom:18px}
+#page-shop .shop-header{display:none}
+#page-shop .section-sm{padding:14px 20px 30px}
+#page-shop .filter-bar{padding:12px 18px;margin-bottom:16px}
 #page-shop .cat-pills{margin-bottom:18px}
 
 /* ── PRODUCT DETAIL ── */
@@ -1099,8 +1118,8 @@ input,select,textarea{font-size:16px}
     border-radius:10px;padding:9px 10px;font-size:12px;justify-content:flex-start;
   }
   .section,.section-sm{padding:28px 14px}
-  #page-shop .shop-header{padding:22px 14px 16px}
-  #page-shop .section-sm{padding:14px 14px 24px}
+  #page-shop .shop-header{display:none}
+  #page-shop .section-sm{padding:10px 14px 24px}
   #page-shop .filter-bar{padding:12px;margin-bottom:14px}
   #page-shop .cat-pills{margin-bottom:14px}
   .section-head{margin-bottom:18px}
@@ -1129,6 +1148,12 @@ input,select,textarea{font-size:16px}
   .reviews-slider{grid-auto-columns:86%;gap:12px;padding-bottom:4px}
   .review-card{padding:20px 16px;min-height:250px}
   .review-text{font-size:14px;line-height:1.75}
+  .faq-layout{grid-template-columns:1fr;gap:22px}
+  .faq-intro{position:static}
+  .faq-intro h1{font-size:clamp(34px,11vw,52px);margin-bottom:14px}
+  .faq-intro p{font-size:16px}
+  .faq-q{font-size:17px;padding:18px 18px}
+  .faq-a{font-size:15.5px;padding:0 18px 20px}
   .benefits-grid{grid-template-columns:1fr;gap:12px}
   .benefit-item{padding:16px;border-radius:12px}
   .sunnah-card{padding:18px;border-radius:14px}
@@ -1192,7 +1217,7 @@ input,select,textarea{font-size:16px}
   .hero h1{font-size:30px}
   .hero-visual{grid-auto-columns:124px}
   .section-head h2{font-size:24px}
-  .product-actions{grid-template-columns:1fr}
+  .product-actions{grid-template-columns:1fr 1fr}
   .why-grid,.trust-strip-inner{grid-template-columns:1fr}
   .reviews-slider{grid-auto-columns:88%}
   .cart-row{grid-template-columns:48px 1fr}
@@ -1405,10 +1430,7 @@ input,select,textarea{font-size:16px}
 
 <!-- ════════════════ SHOP PAGE ════════════════ -->
 <div class="page" id="page-shop">
-  <div class="shop-header">
-    <h1>আমাদের সব পণ্য</h1>
-    <p>প্রিমিয়াম হেলথ সিড ও সুপারফুড — সরাসরি আপনার দোরগোড়ায়</p>
-  </div>
+  <div class="shop-header" aria-hidden="true"></div>
   <section class="section-sm">
     <div class="container">
       <div class="filter-bar">
@@ -1702,13 +1724,14 @@ input,select,textarea{font-size:16px}
 
 <!-- ════════════════ FAQ PAGE ════════════════ -->
 <div class="page" id="page-faq">
-  <div class="shop-header">
-    <h1>সাধারণ জিজ্ঞাসা (FAQ)</h1>
-    <p>আপনার সাধারণ প্রশ্নের উত্তর এখানেই পাবেন</p>
-  </div>
   <section class="section">
-    <div class="container">
-      <div style="max-width:780px;margin:0 auto" id="full-faq"></div>
+    <div class="faq-layout">
+      <div class="faq-intro">
+        <div class="faq-kicker">FAQ</div>
+        <h1>অর্ডারের আগে যেগুলো জানা দরকার</h1>
+        <p>COD, delivery, return, freshness, complaint process সবকিছু পরিষ্কারভাবে বলা হয়েছে।</p>
+      </div>
+      <div class="faq-list" id="full-faq"></div>
     </div>
   </section>
 </div>
@@ -2081,6 +2104,8 @@ let selectedPayment = 'cod';
 const abandonedCartSessionId = localStorage.getItem('pureorigins_cart_session') || ((window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `cart-${Date.now()}-${Math.random().toString(16).slice(2)}`);
 localStorage.setItem('pureorigins_cart_session', abandonedCartSessionId);
 const ORDER_REFERENCE_KEY = 'pureorigins_last_order';
+const COUPON_KEY = 'pureorigins_coupon';
+let appliedCoupon = JSON.parse(localStorage.getItem(COUPON_KEY) || 'null');
 let abandonedCartTimer = null;
 
 function getFieldValue(...ids){
@@ -2151,6 +2176,23 @@ function changeQty(key,delta){
 
 function getCartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
 function getDelivery(){return getCartTotal()>=800?0:80}
+function saveAppliedCoupon(){
+  if(appliedCoupon)localStorage.setItem(COUPON_KEY,JSON.stringify(appliedCoupon));
+  else localStorage.removeItem(COUPON_KEY);
+}
+function getCouponDiscount(subtotal=getCartTotal()){
+  if(!appliedCoupon)return 0;
+  const min=Number(appliedCoupon.minimumOrderAmount||0);
+  if(min && subtotal<min)return 0;
+  if(appliedCoupon.type==='percent')return Math.round((subtotal*Number(appliedCoupon.value||0))/100);
+  return Math.min(Number(appliedCoupon.value||0),subtotal);
+}
+function getOrderTotals(){
+  const subtotal=getCartTotal();
+  const delivery=getDelivery();
+  const discount=getCouponDiscount(subtotal);
+  return {subtotal,delivery,discount,total:Math.max(0,subtotal-discount)+delivery};
+}
 function freeDeliveryUpsell(subtotal=getCartTotal()){
   const remaining = Math.max(0,800-Number(subtotal||0));
   if(remaining<=0)return '<div class="free-delivery-note unlocked">✅ ফ্রি ডেলিভারি আনলক হয়েছে</div>';
@@ -2239,7 +2281,7 @@ function productCard(p,showAdd=true){
       </div>
       ${showAdd && weightHtml?`<div class="card-weight-row" aria-label="ওজন বেছে নিন">${weightHtml}</div>`:''}
       ${showAdd?`<div class="product-actions">
-        <button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">${uiIcon('cart')} Add to Cart</button>
+        <button class="btn-cart" onclick="event.stopPropagation();addCardProductToCart(this)">${uiIcon('cart')} Cart</button>
         <button class="btn-buy-card" onclick="event.stopPropagation();buyCardProduct(this)">${uiIcon('bolt')} Buy Now</button>
       </div>`:''}
     </div>
@@ -2337,7 +2379,7 @@ function renderFaqBlock(containerId,limit=null){
   const el = document.getElementById(containerId);
   if(!el)return;
   el.innerHTML = data.map((f,i)=>`
-    <div class="faq-item" id="faq-${containerId}-${i}">
+    <div class="faq-item ${i===0?'open':''}" id="faq-${containerId}-${i}">
       <div class="faq-q" onclick="toggleFaq('faq-${containerId}-${i}')">
         <span>${f.q}</span><span class="arrow">+</span>
       </div>
@@ -2401,14 +2443,17 @@ function renderCart(){
       </div>
     </div>`}).join('');
 
-  const sub=getCartTotal(),del=getDelivery(),tot=sub+del;
+  const {subtotal:sub,delivery:del,discount,total:tot}=getOrderTotals();
+  const couponCode = appliedCoupon?.code || '';
+  const couponHtml = appliedCoupon ? `<div class="summary-row"><span>কুপন (${appliedCoupon.code}) <button type="button" onclick="clearCoupon()" style="border:0;background:none;color:var(--red);font-weight:800;cursor:pointer">মুছুন</button></span><span style="color:var(--forest);font-weight:800">-৳${discount.toLocaleString()}</span></div>` : '';
   summary.innerHTML=`
     <h3>অর্ডার সারাংশ</h3>
     <div class="summary-row"><span>পণ্য মূল্য</span><span>৳${sub.toLocaleString()}</span></div>
     <div class="summary-row"><span>ডেলিভারি চার্জ</span><span>${del===0?'<span style="color:var(--forest);font-weight:600">বিনামূল্যে</span>':'৳'+del}</span></div>
+    ${couponHtml}
     ${freeDeliveryUpsell(sub)}
     <div class="coupon-input">
-      <input placeholder="কুপন কোড লিখুন..." id="coupon-code"/>
+      <input placeholder="কুপন কোড লিখুন..." id="coupon-code" value="${escapeAttr(couponCode)}" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon()}"/>
       <button onclick="applyCoupon()">প্রয়োগ</button>
     </div>
     <div class="summary-row total"><span>মোট</span><span>৳${tot.toLocaleString()}</span></div>
@@ -2416,21 +2461,59 @@ function renderCart(){
     <button class="btn-outline" style="width:100%;margin-top:10px;color:var(--forest);border-color:var(--border)" onclick="navigate('shop')">আরও কেনাকাটা করুন</button>`;
 }
 
-function applyCoupon(){
-  const code=document.getElementById('coupon-code')?.value.trim().toUpperCase();
-  if(code==='PURE15'){showToast('🎉 কুপন প্রয়োগ হয়েছে! ১৫% ছাড় পাচ্ছেন');}
-  else{showToast('❌ কুপন কোড সঠিক নয়');}
+function clearCoupon(){
+  appliedCoupon=null;
+  saveAppliedCoupon();
+  renderCart();
+  renderCheckoutSummary();
+  showToast('কুপন সরানো হয়েছে');
+}
+
+async function applyCoupon(){
+  const input=document.getElementById('coupon-code');
+  const code=input?.value.trim().toUpperCase();
+  const subtotal=getCartTotal();
+  if(!code){clearCoupon();return;}
+  if(!subtotal){showToast('কুপন ব্যবহারের আগে কার্টে পণ্য যোগ করুন');return;}
+  try{
+    const data=await apiRequest('/coupons/validate',{method:'POST',body:{code,subtotal}});
+    appliedCoupon={
+      code:data.coupon?.code || code,
+      type:data.coupon?.type || 'percent',
+      value:Number(data.coupon?.value || 0),
+      minimumOrderAmount:Number(data.coupon?.minimumOrderAmount || 0)
+    };
+    saveAppliedCoupon();
+    renderCart();
+    renderCheckoutSummary();
+    showToast(`কুপন প্রয়োগ হয়েছে! ৳${getCouponDiscount().toLocaleString()} ছাড়`);
+  }catch(error){
+    if(code==='PURE15'){
+      appliedCoupon={code:'PURE15',type:'percent',value:15,minimumOrderAmount:0};
+      saveAppliedCoupon();
+      renderCart();
+      renderCheckoutSummary();
+      showToast(`কুপন প্রয়োগ হয়েছে! ৳${getCouponDiscount().toLocaleString()} ছাড়`);
+      return;
+    }
+    appliedCoupon=null;
+    saveAppliedCoupon();
+    renderCart();
+    showToast(error.message || 'কুপন কোড সঠিক নয়');
+  }
 }
 
 function renderCheckoutSummary(){
   const el=document.getElementById('checkout-order-summary');if(!el)return;
-  const sub=getCartTotal(),del=getDelivery(),tot=sub+del;
+  const {subtotal:sub,delivery:del,discount,total:tot}=getOrderTotals();
+  const couponHtml = appliedCoupon ? `<div class="summary-row"><span>কুপন (${appliedCoupon.code})</span><span style="color:var(--forest);font-weight:800">-৳${discount.toLocaleString()}</span></div>` : '';
   const eta='সারাদেশে আনুমানিক ৩–৫ কার্যদিবস';
   el.innerHTML=`
     <h3 style="font-size:17px;font-weight:700;color:var(--forest);margin-bottom:16px">অর্ডার সারাংশ</h3>
     ${cart.map(i=>`<div class="summary-row"><span>${i.emoji} ${i.name} × ${i.qty}</span><span>৳${(i.price*i.qty).toLocaleString()}</span></div>`).join('')}
     <div class="summary-row" style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px"><span>পণ্য মূল্য</span><span>৳${sub.toLocaleString()}</span></div>
     <div class="summary-row"><span>ডেলিভারি</span><span>${del===0?'বিনামূল্যে':'৳'+del}</span></div>
+    ${couponHtml}
     ${freeDeliveryUpsell(sub)}
     <div class="summary-row"><span>আনুমানিক ডেলিভারি</span><span style="text-align:right;font-weight:600;color:var(--forest)">${eta}</span></div>
     <div class="summary-row total"><span>মোট পরিশোধযোগ্য</span><span>৳${tot.toLocaleString()}</span></div>
@@ -2786,6 +2869,7 @@ async function placeOrder(){
     transactionRef,
     notes:[getFieldValue('co-note','checkoutNote'), transactionRef ? `Transaction ID: ${transactionRef}` : ''].filter(Boolean).join('\n'),
     abandonedCartSessionId,
+    couponCode: appliedCoupon?.code || undefined,
     items:orderItems
   };
   try{
@@ -2801,6 +2885,8 @@ async function placeOrder(){
     saveOrderReference(data.orderAccess?.orderId || order._id, data.orderAccess?.token, order);
     renderOrderConfirmation(order);
     cart=[];
+    appliedCoupon=null;
+    saveAppliedCoupon();
     saveCart();
     updateCartCount();
     renderCheckoutSummary();
@@ -2858,7 +2944,7 @@ function renderDetail(id){
     </div>
     <div class="detail-actions">
       <button class="btn-buy" onclick="buyNow()">⚡ Buy Now</button>
-      <button class="btn-add" onclick="addDetailToCart()">🛒 Add to Cart</button>
+      <button class="btn-add" onclick="addDetailToCart()">🛒 Cart</button>
     </div>
     <div class="detail-meta">
       <div class="meta-row"><span class="meta-icon">💵</span><span>পেমেন্ট: <strong>COD / bKash / Nagad / Rocket</strong></span></div>
