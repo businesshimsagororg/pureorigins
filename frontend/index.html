@@ -356,38 +356,32 @@ nav{
   margin-bottom:8px;
 }
 
-/* ── CATEGORIES ── */
-.category-carousel-shell{position:relative}
+/* ── CATEGORIES (MARQUEE) ── */
+.category-carousel-shell{position:relative;overflow:hidden;padding:10px 0}
 .category-carousel{
   display:flex;
   gap:14px;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;
-  scrollbar-width:none;
-  padding:6px 44px 10px;
+  width:max-content;
+  animation: slideMarquee 15s linear infinite;
 }
-.category-carousel::-webkit-scrollbar{display:none}
+.category-carousel:hover{animation-play-state:paused}
+.marquee-group{
+  display:flex;
+  gap:14px;
+  flex-shrink:0;
+}
+@keyframes slideMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100% / 3 - 4.66px)); }
+}
 .cat-card{
   flex:0 0 116px;
-  scroll-snap-align:start;
   background:transparent;
   border:none;
   text-align:center;
   cursor:pointer;
   transition:transform .22s ease;
-  animation: catPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
-@keyframes catPop {
-  0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-.cat-card:nth-child(1) { animation-delay: 0.1s; }
-.cat-card:nth-child(2) { animation-delay: 0.2s; }
-.cat-card:nth-child(3) { animation-delay: 0.3s; }
-.cat-card:nth-child(4) { animation-delay: 0.4s; }
-.cat-card:nth-child(5) { animation-delay: 0.5s; }
-
 .cat-card:hover{transform:translateY(-4px)}
 .cat-card:hover .cat-thumb{
   animation: thumbFloat 1.5s ease-in-out infinite;
@@ -413,25 +407,6 @@ nav{
 }
 .cat-card h3{font-size:14px;font-weight:700;color:var(--forest);margin-bottom:4px}
 .cat-card p{font-size:12px;color:var(--text-muted)}
-.category-arrow{
-  position:absolute;
-  top:44px;
-  transform:translateY(-50%);
-  width:38px;
-  height:38px;
-  border:1px solid var(--border);
-  border-radius:50%;
-  background:rgba(255,255,255,.96);
-  color:var(--forest);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 10px 26px rgba(29,55,43,.12);
-  z-index:2;
-}
-.category-arrow svg{width:18px;height:18px;stroke:currentColor}
-.category-arrow.left{left:0}
-.category-arrow.right{right:0}
 
 /* ── PRODUCTS ── */
 .products-grid{
@@ -1474,19 +1449,29 @@ input,select,textarea{font-size:16px}
         <p>প্রকৃতির সেরা উপহার থেকে বেছে নিন আপনার পছন্দের পণ্য</p>
       </div>
       <div class="category-carousel-shell">
-        <button class="category-arrow left" onclick="scrollCategories(-1)" aria-label="Previous categories">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
         <div class="category-carousel" id="categoryCarousel">
-          <div class="cat-card" onclick="goShop('seeds')"><div class="cat-thumb">🌿</div><h3>সিডস</h3><p>Seeds</p></div>
-          <div class="cat-card" onclick="goShop('powders')"><div class="cat-thumb">🌾</div><h3>পাউডার</h3><p>Powders</p></div>
-          <div class="cat-card" onclick="goShop('honey')"><div class="cat-thumb">🍯</div><h3>মধু</h3><p>Honey</p></div>
-          <div class="cat-card" onclick="navigate('combos')"><div class="cat-thumb">🎁</div><h3>কম্বো</h3><p>Combos</p></div>
-          <div class="cat-card" onclick="goShop('all','popular')"><div class="cat-thumb">⭐</div><h3>বেস্ট সেলার</h3><p>Best Sellers</p></div>
+          <div class="marquee-group">
+            <div class="cat-card" onclick="goShop('seeds')"><div class="cat-thumb">🌿</div><h3>সিডস</h3><p>Seeds</p></div>
+            <div class="cat-card" onclick="goShop('powders')"><div class="cat-thumb">🌾</div><h3>পাউডার</h3><p>Powders</p></div>
+            <div class="cat-card" onclick="goShop('honey')"><div class="cat-thumb">🍯</div><h3>মধু</h3><p>Honey</p></div>
+            <div class="cat-card" onclick="navigate('combos')"><div class="cat-thumb">🎁</div><h3>কম্বো</h3><p>Combos</p></div>
+            <div class="cat-card" onclick="goShop('all','popular')"><div class="cat-thumb">⭐</div><h3>বেস্ট সেলার</h3><p>Best Sellers</p></div>
+          </div>
+          <div class="marquee-group" aria-hidden="true">
+            <div class="cat-card" onclick="goShop('seeds')"><div class="cat-thumb">🌿</div><h3>সিডস</h3><p>Seeds</p></div>
+            <div class="cat-card" onclick="goShop('powders')"><div class="cat-thumb">🌾</div><h3>পাউডার</h3><p>Powders</p></div>
+            <div class="cat-card" onclick="goShop('honey')"><div class="cat-thumb">🍯</div><h3>মধু</h3><p>Honey</p></div>
+            <div class="cat-card" onclick="navigate('combos')"><div class="cat-thumb">🎁</div><h3>কম্বো</h3><p>Combos</p></div>
+            <div class="cat-card" onclick="goShop('all','popular')"><div class="cat-thumb">⭐</div><h3>বেস্ট সেলার</h3><p>Best Sellers</p></div>
+          </div>
+          <div class="marquee-group" aria-hidden="true">
+            <div class="cat-card" onclick="goShop('seeds')"><div class="cat-thumb">🌿</div><h3>সিডস</h3><p>Seeds</p></div>
+            <div class="cat-card" onclick="goShop('powders')"><div class="cat-thumb">🌾</div><h3>পাউডার</h3><p>Powders</p></div>
+            <div class="cat-card" onclick="goShop('honey')"><div class="cat-thumb">🍯</div><h3>মধু</h3><p>Honey</p></div>
+            <div class="cat-card" onclick="navigate('combos')"><div class="cat-thumb">🎁</div><h3>কম্বো</h3><p>Combos</p></div>
+            <div class="cat-card" onclick="goShop('all','popular')"><div class="cat-thumb">⭐</div><h3>বেস্ট সেলার</h3><p>Best Sellers</p></div>
+          </div>
         </div>
-        <button class="category-arrow right" onclick="scrollCategories(1)" aria-label="Next categories">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
       </div>
     </div>
   </section>
