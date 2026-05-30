@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set ROOT=C:\Users\Zillur\Documents\Codex\2026-05-20\files-mentioned-by-the-user-bijghor\pureorigins-fullstack
+set ROOT=%~dp0
 
 echo Starting PureOrigins backend...
 start "PureOrigins Backend" cmd /k "cd /d "%ROOT%\backend" && cmd /c npm run dev"

@@ -1,25 +1,35 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-// Example: POST /api/webhook
 export async function POST(request: Request) {
-  try {
-    // Expect JSON payload
-    const body = await request.json();
-    // Simple auth check – expects header "Authorization: Bearer <TOKEN>"
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Missing or invalid Authorization header' }, { status: 401 });
-    }
-    const token = authHeader.split(' ')[1];
-    // TODO: validate token against your Google Sheets secret / service account
-    // Placeholder: just log the payload
-    console.log('Google Sheets webhook payload:', body);
+  const secret = process.env.GOOGLE_SHEET_WEBHOOK_SECRET;
+  const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+  const authHeader = request.headers.get("authorization") || "";
+  const bearer = authHeader.replace(/^Bearer\s+/i, "");
 
-    // TODO: Use Google Sheets API (e.g., googleapis package) to append rows.
-    // For now we return success.
-    return NextResponse.json({ message: 'Webhook received' }, { status: 200 });
-  } catch (error) {
-    console.error('Webhook error:', error);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  if (secret && bearer !== secret && request.headers.get("x-webhook-secret") !== secret) {
+    return NextResponse.json({ error: "Unauthorized webhook request." }, { status: 401 });
   }
+
+  if (!webhookUrl) {
+    return NextResponse.json({ error: "GOOGLE_SHEET_WEBHOOK_URL is not configured." }, { status: 500 });
+  }
+
+  const payload = await request.json();
+  const url = new URL(webhookUrl);
+  if (secret) url.searchParams.set("secret", secret);
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(secret ? { Authorization: `Bearer ${secret}`, "X-Webhook-Secret": secret } : {})
+    },
+    body: JSON.stringify(secret ? { ...payload, secret } : payload)
+  });
+
+  const body = await response.text();
+  return new NextResponse(body, {
+    status: response.status,
+    headers: { "Content-Type": response.headers.get("content-type") || "application/json" }
+  });
 }

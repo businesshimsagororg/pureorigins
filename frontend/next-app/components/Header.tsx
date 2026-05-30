@@ -1,39 +1,81 @@
+"use client";
+
 import Link from "next/link";
-import React, { useState } from "react";
-import MobileNav from "./MobileNav";
+import { useState } from "react";
+import { BagIcon, MenuIcon, SearchIcon } from "@/components/Icons";
+import { useCart } from "@/components/CartProvider";
+import { site, topTicker } from "@/lib/content";
+
+const links = [
+  ["হোম", "/"],
+  ["শপ", "/shop"],
+  ["কম্বো", "/combos"],
+  ["সুন্নাহ", "/sunnah"],
+  ["রিভিউ", "/reviews"],
+  ["অ্যাকাউন্ট", "/account"],
+  ["ট্র্যাক", "/order-lookup"],
+  ["যোগাযোগ", "/contact"]
+];
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const toggleMobile = () => setMobileOpen(!mobileOpen);
+  const [open, setOpen] = useState(false);
+  const { count } = useCart();
 
   return (
-    <header className="header">
-      <div className="nav-inner">
-        <div className="logo">
-          <span className="logo-leaf">🌿</span>
-          <span>PureOrigins</span>
-          <span className="logo-gold">.</span>
-        </div>
-        <nav className="nav-links">
-          <Link href="/" className="active">হোম</Link>
-          <Link href="/shop">দোকান</Link>
-          <Link href="/about">আমাদের সম্পর্কে</Link>
-          <Link href="/faq">প্রশ্নোত্তর</Link>
-        </nav>
-        <div className="nav-right">
-          <button className="cart-btn" aria-label="Cart">
-            <svg className="svg-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-1.5 9h-13z"/></svg>
-            <span className="cart-count">0</span>
-          </button>
-          <button className="hamburger" onClick={toggleMobile} aria-label="Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+    <>
+      <div className="top-ticker">
+        <div className="ticker-track">
+          {[...topTicker, ...topTicker].map((line, index) => (
+            <span key={`${line}-${index}`}>{line}</span>
+          ))}
         </div>
       </div>
-      <MobileNav isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
-    </header>
+      <header className="site-header">
+        <div className="container header-row">
+          <button
+            className="icon-button"
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setOpen((value) => !value)}
+          >
+            <MenuIcon />
+          </button>
+
+          <Link className="brand-lockup" href="/" onClick={() => setOpen(false)}>
+            <span className="brand-mark">PO</span>
+            <span>
+              <span className="brand-name">{site.name}</span>
+              <span className="brand-tagline">{site.tagline}</span>
+            </span>
+          </Link>
+
+          <div className="header-actions">
+            <Link className="icon-button" href="/shop" aria-label="Search products">
+              <SearchIcon />
+            </Link>
+            <Link className="btn btn-primary" href="/cart" aria-label="Open cart">
+              <BagIcon />
+              {count ? <span className="cart-badge">{count}</span> : <span>Cart</span>}
+            </Link>
+          </div>
+        </div>
+        <nav className="desktop-nav container" aria-label="Primary">
+          {links.map(([label, href]) => (
+            <Link key={href} href={href}>
+              {label}
+            </Link>
+          ))}
+        </nav>
+        <div className={`mobile-menu ${open ? "open" : ""}`}>
+          <nav className="container" aria-label="Mobile primary">
+            {links.map(([label, href]) => (
+              <Link key={href} href={href} onClick={() => setOpen(false)}>
+                {label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </header>
+    </>
   );
 }

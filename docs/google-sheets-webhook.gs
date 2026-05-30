@@ -90,8 +90,11 @@ function doPost(e) {
   try {
     const data = JSON.parse((e.postData && e.postData.contents) || "{}");
     const expectedSecret = PropertiesService.getScriptProperties().getProperty("WEBHOOK_SECRET");
+    const authHeader = String((e.parameter && e.parameter.authorization) || "");
+    const bearerSecret = authHeader.replace(/^Bearer\s+/i, "");
+    const headerSecret = (e.parameter && e.parameter.secret) || "";
 
-    if (expectedSecret && data.secret !== expectedSecret) {
+    if (expectedSecret && data.secret !== expectedSecret && bearerSecret !== expectedSecret && headerSecret !== expectedSecret) {
       return jsonResponse({ ok: false, error: "Unauthorized Google Sheets webhook request." });
     }
 

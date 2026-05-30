@@ -2,6 +2,19 @@ import slugify from "slugify";
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 
+function serializeProduct(product) {
+  const value = product.toObject ? product.toObject() : product;
+  const variants = Array.isArray(value.variants) ? value.variants : [];
+  return {
+    ...value,
+    variantPrices: Object.fromEntries(
+      variants
+        .filter(variant => variant.weight && variant.unitPrice != null)
+        .map(variant => [variant.weight, Number(variant.unitPrice)])
+    )
+  };
+}
+
 export async function listProducts(req, res) {
   const { q, category, minPrice, maxPrice, inStock, sort } = req.query;
   const filter = { isActive: true };
@@ -25,7 +38,7 @@ export async function listProducts(req, res) {
   else query = query.sort({ createdAt: -1 });
 
   const products = await query;
-  res.json({ products });
+  res.json({ products: products.map(serializeProduct) });
 }
 
 export async function adminListProducts(req, res) {
@@ -41,13 +54,13 @@ export async function adminListProducts(req, res) {
   ];
 
   const products = await Product.find(filter).populate("category", "nameBn nameEn slug").sort({ createdAt: -1 });
-  res.json({ products });
+  res.json({ products: products.map(serializeProduct) });
 }
 
 export async function getProductBySlug(req, res) {
   const product = await Product.findOne({ slug: req.params.slug, isActive: true }).populate("category", "nameBn nameEn slug");
   if (!product) return res.status(404).json({ message: "Product not found" });
-  res.json({ product });
+  res.json({ product: serializeProduct(product) });
 }
 
 export async function createProduct(req, res) {

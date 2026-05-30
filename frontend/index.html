@@ -33,7 +33,7 @@
   --brown: #3D2B1F;
   --brown-light: #7A5C48;
   --text: #1A1A1A;
-  --text-muted: #6B6156;
+  --text-muted: #6B7280;
   --white: #FFFFFF;
   --border: #E8E0D0;
   --shadow: rgba(27,67,50,0.12);
@@ -288,7 +288,7 @@ nav{
   transition:all .25s;
   box-shadow:0 4px 20px rgba(196,151,47,.4);
 }
-.btn-primary:hover{background:#B8891F;transform:translateY(-2px);box-shadow:0 8px 28px rgba(196,151,47,.5)}
+.btn-primary:hover{background:var(--forest);transform:translateY(-2px);box-shadow:0 8px 28px rgba(196,151,47,.5)}
 .btn-outline{
   background:transparent;
   border:2px solid rgba(255,255,255,.5);
@@ -443,7 +443,7 @@ nav{
 .product-body .bn-name{font-size:16px;font-weight:600;color:#333;margin-bottom:6px}
 .product-body .benefit{font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5}
 .price-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.price-now{font-size:17px;font-weight:700;color:#e68a00}
+.price-now{font-size:17px;font-weight:700;color:#B8691A}
 .price-old{font-size:14px;color:#888;text-decoration:line-through}
 .price-save{
   background:#cddc39;color:#333;
@@ -453,19 +453,19 @@ nav{
 }
 .product-actions{display:grid;grid-template-columns:1fr;gap:8px}
 .btn-cart{
-  flex:1;background:transparent;color:#e68a00;
-  border:1.5px solid #e68a00;border-radius:8px;
+  flex:1;background:transparent;color:var(--price-now);
+  border:1.5px solid var(--price-now);border-radius:8px;
   padding:12px;font-size:14px;font-weight:600;
   transition:.2s;
 }
-.btn-cart:hover{background:#fffaf0;transform:translateY(-1px)}
+.btn-cart:hover{background:var(--cream);transform:translateY(-1px)}
 .btn-buy-card{
-  background:#e68a00;color:var(--white);
-  border:1.5px solid #e68a00;border-radius:8px;
+  background:var(--gold);color:var(--white);
+  border:1.5px solid var(--gold);border-radius:8px;
   padding:12px;font-size:14px;font-weight:600;
   box-shadow:0 10px 24px rgba(230,138,0,.2);
 }
-.btn-buy-card:hover{background:#cc7a00;border-color:#cc7a00;transform:translateY(-1px)}
+.btn-buy-card:hover{background:var(--forest);border-color:var(--forest);transform:translateY(-1px)}
 .product-actions .btn-cart,.product-actions .btn-buy-card{min-height:46px;display:inline-flex;align-items:center;justify-content:center}
 .card-weight-row{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
 .card-weight-pill{
@@ -593,7 +593,7 @@ button:disabled{opacity:.72;cursor:not-allowed}
 .sunnah-preview{
   background:
     radial-gradient(circle at 10% 20%,rgba(196,151,47,.16),transparent 28%),
-    linear-gradient(135deg,#fffaf0 0%,#f5efe0 100%);
+    linear-gradient(135deg,var(--cream) 0%,var(--cream-dark) 100%);
 }
 .sunnah-panel{
   display:grid;grid-template-columns:1.1fr .9fr;gap:20px;
@@ -870,7 +870,7 @@ footer ul a:hover{color:var(--white)}
   padding:13px;font-size:15px;font-weight:700;
   transition:.2s;
 }
-.btn-buy:hover{background:#B8891F;transform:translateY(-2px)}
+.btn-buy:hover{background:var(--forest);transform:translateY(-2px)}
 .btn-add{
   flex:1;background:var(--forest);color:#fff;
   border:none;border-radius:10px;
@@ -935,7 +935,7 @@ footer ul a:hover{color:var(--white)}
   padding:14px;font-size:15px;font-weight:700;
   margin-top:16px;transition:.2s;
 }
-.btn-checkout:hover{background:#B8891F;transform:translateY(-1px)}
+.btn-checkout:hover{background:var(--forest);transform:translateY(-1px)}
 
 /* ── CHECKOUT PAGE ── */
 #page-checkout .section-sm{padding:18px 20px 26px}
@@ -2366,21 +2366,15 @@ function freeDeliveryUpsell(subtotal=getCartTotal()){
   if(remaining<=0)return '<div class="free-delivery-note unlocked">✅ ফ্রি ডেলিভারি আনলক হয়েছে</div>';
   return `<div class="free-delivery-note">🚚 ৳${remaining.toLocaleString()} আরও যোগ করলে ফ্রি ডেলিভারি!</div>`;
 }
-function getWeightMultiplier(product, weight){
-  const weights = Array.isArray(product?.weight) ? product.weight : [];
-  const index = weights.findIndex(item => String(item) === String(weight));
-  if(index === 1)return 2;
-  if(index >= 2)return 4;
-  return 1;
-}
 function getProductUnitPrice(product, weight){
   if(!product)return 0;
   if(product.variantPrices && product.variantPrices[weight] != null)return Number(product.variantPrices[weight]);
-  return Number(product.price || 0) * getWeightMultiplier(product, weight);
+  return Number(product.price || 0);
 }
 function getProductOldPrice(product, weight){
   if(!product?.oldPrice)return 0;
-  return Number(product.oldPrice || 0) * getWeightMultiplier(product, weight);
+  if(product.oldVariantPrices && product.oldVariantPrices[weight] != null)return Number(product.oldVariantPrices[weight]);
+  return Number(product.oldPrice || 0);
 }
 
 // ═══════════════════════════════════════════

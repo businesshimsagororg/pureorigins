@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set ROOT=C:\Users\Zillur\Documents\Codex\2026-05-20\files-mentioned-by-the-user-bijghor\pureorigins-fullstack
+set ROOT=%~dp0
 
 echo [1/3] Installing backend dependencies...
 cd /d "%ROOT%\backend"

@@ -2,6 +2,8 @@ backend/node_modules/
 backend/.env
 backend/uploads/
 node_modules/
+frontend/next-app/.next/
+frontend/next-app/node_modules/
 .env
 uploads/
 .DS_Store

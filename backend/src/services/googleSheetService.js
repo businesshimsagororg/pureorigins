@@ -85,9 +85,18 @@ export async function exportOrderToGoogleSheet(order) {
   const timeout = setTimeout(() => controller.abort(), 6000);
 
   try {
-    const response = await fetch(env.googleSheetWebhookUrl, {
+    const headers = { "Content-Type": "application/json" };
+    if (env.googleSheetWebhookSecret) {
+      headers.Authorization = `Bearer ${env.googleSheetWebhookSecret}`;
+      headers["X-Webhook-Secret"] = env.googleSheetWebhookSecret;
+    }
+
+    const webhookUrl = new URL(env.googleSheetWebhookUrl);
+    if (env.googleSheetWebhookSecret) webhookUrl.searchParams.set("secret", env.googleSheetWebhookSecret);
+
+    const response = await fetch(webhookUrl.toString(), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify(orderPayload(order)),
       signal: controller.signal
     });
@@ -101,7 +110,9 @@ export async function exportOrderToGoogleSheet(order) {
         status: "failed",
         statusCode: response.status,
         responseBody: responseBody.slice(0, 500),
-        message: `Google Sheets webhook returned HTTP ${response.status}.`
+        message: response.status === 401
+          ? "Google Sheets webhook returned HTTP 401. Check WEBHOOK_SECRET, Authorization bearer token, X-Webhook-Secret, and Apps Script deployment access."
+          : `Google Sheets webhook returned HTTP ${response.status}.`
       };
       await recordExportResult(order, result);
       return result;

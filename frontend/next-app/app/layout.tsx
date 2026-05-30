@@ -1,14 +1,45 @@
+import type { Metadata } from "next";
+import { Hind_Siliguri } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/components/CartProvider";
+import { Footer } from "@/components/Footer";
+import Header from "@/components/Header";
 
-export const metadata = {
-  title: "PureOrigins",
-  description: "Premium health seeds & superfoods",
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-bangla-sans",
+  display: "swap"
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "PureOrigins - প্রিমিয়াম হেলথ সিড ও সুপারফুড | বাংলাদেশ",
+    template: "%s | PureOrigins"
+  },
+  description:
+    "বাংলাদেশের সেরা অর্গানিক সুপারফুড ও হেলথ সিড শপ। কালোজিরা, চিয়া সিড, মরিঙ্গা পাউডার ও আরও পণ্য হোম ডেলিভারিতে পান। COD সুবিধা।",
+  openGraph: {
+    title: "PureOrigins - প্রিমিয়াম হেলথ সিড ও সুপারফুড",
+    description:
+      "কালোজিরা, চিয়া সিড, মরিঙ্গা পাউডার ও খাঁটি মধু — সারাদেশে হোম ডেলিভারি ও COD সুবিধা।",
+    locale: "bn_BD",
+    type: "website"
+  }
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="bn">
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className={hindSiliguri.variable}>
+        <CartProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </CartProvider>
+      </body>
     </html>
   );
 }
