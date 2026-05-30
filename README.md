@@ -107,11 +107,23 @@ Copy `backend/.env.example` to `backend/.env` and fill secrets.
    - Serve `frontend/` using any static server (example: VSCode Live Server)
    - Open `frontend/index.html`
 
-## Admin Login
+## Admin dashboard
 
-Uses seeded admin credentials from `.env`:
-- email: `ADMIN_EMAIL`
-- password: `ADMIN_PASSWORD`
+Open `http://127.0.0.1:8080/admin/index.html` when using `start-all.bat` (static frontend on port 8080, API on port 5000).
+
+The admin UI is a modular vanilla ES app under `frontend/admin/` (`main.js`, `screens/`, `ui/`). Features: dashboard, products (drawer editor), orders (filters + detail drawer + Google Sheets retry), coupons, reviews, banners, reports, customers, contact messages.
+
+**Login:** seeded admin from `.env` — `ADMIN_EMAIL` / `ADMIN_PASSWORD`.
+
+**API URL (deploy):** set the backend base in `frontend/admin/index.html`:
+
+```html
+<meta name="pureorigins-api" content="https://your-api.example.com/api"/>
+```
+
+Leave empty for local dev (defaults to `http://localhost:5000/api`). Override once with `?api=https://...` (stored in `localStorage`), or set `pureorigins-api` meta for production.
+
+**Manual QA checklist:** login/logout; non-admin rejected; each screen loads; product save + image upload; order status + sheet export; mobile nav drawer; hash routes (`#orders`) survive refresh.
 
 ## Deployment Notes
 
@@ -156,6 +168,6 @@ The webhook updates an existing order row when you retry the same order, so retr
 - Replace upload fallback with Cloudinary signed uploads.
 - Complete SSLCommerz session + callback verification.
 - Add bKash/Nagad provider adapters.
-- Add full admin CRUD screens for products/customers/reviews/coupons/banners.
+- Admin Phase 2: category CRUD, payment status UI, Google Sheets integration hub, Cloudinary uploads.
 - Add product schema JSON-LD + breadcrumb schema per product page.
 - Add Facebook Pixel + GA4 events in frontend action points.
