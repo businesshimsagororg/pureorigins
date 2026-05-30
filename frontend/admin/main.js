@@ -8,7 +8,8 @@ import { closeModal } from "./ui/modal.js";
 
 import { mountDashboardScreen, renderDashboard } from "./screens/dashboard.js";
 import { loadProducts, mountProductsScreen } from "./screens/products.js";
-import { loadOrders, mountOrdersScreen } from "./screens/orders.js";
+import { loadOrders, mountOrdersScreen, setOrderSearchQuery } from "./screens/orders.js";
+import { renderProducts } from "./screens/products.js";
 import { loadCoupons, mountCouponsScreen } from "./screens/coupons.js";
 import { loadReviews, mountReviewsScreen } from "./screens/reviews.js";
 import { loadBanners, mountBannersScreen } from "./screens/banners.js";
@@ -213,6 +214,35 @@ function bindShell() {
   } catch {
     /* ignore */
   }
+
+  const globalSearch = $("#globalSearch");
+  document.addEventListener("keydown", e => {
+    if (e.key !== "/" || !state.user) return;
+    if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) return;
+    e.preventDefault();
+    globalSearch?.focus();
+  });
+
+  globalSearch?.addEventListener("keydown", e => {
+    if (e.key !== "Enter") return;
+    const q = globalSearch.value.trim();
+    if (!q) return;
+    const screen = q.replace(/\D/g, "").length >= 6 ? "orders" : "products";
+    switchScreen(screen);
+    setTimeout(() => {
+      if (screen === "orders") {
+        setOrderSearchQuery(q);
+        const input = $("#orderSearch");
+        if (input) input.value = q;
+        loadOrders().catch(err => toast.error(err.message));
+      } else {
+        const input = $("#productSearch");
+        if (input) input.value = q;
+        renderProducts();
+      }
+      globalSearch.value = "";
+    }, 120);
+  });
 }
 
 function initHashRouting() {

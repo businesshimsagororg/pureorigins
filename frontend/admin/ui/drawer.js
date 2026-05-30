@@ -1,6 +1,24 @@
 let activeDrawer = null;
 let previousFocus = null;
 
+function trapFocus(container) {
+  const focusable = container.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  container.addEventListener("keydown", e => {
+    if (e.key !== "Tab") return;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last?.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first?.focus();
+    }
+  });
+}
+
 export function closeDrawer() {
   activeDrawer?.remove();
   activeDrawer = null;
@@ -39,7 +57,10 @@ export function openDrawer({ title, content, footer = "" }) {
   document.body.appendChild(overlay);
   document.body.classList.add("drawer-open");
   activeDrawer = overlay;
-  overlay.querySelector(".drawer-panel")?.focus();
+  const panel = overlay.querySelector(".drawer-panel");
+  panel?.setAttribute("tabindex", "-1");
+  panel?.focus();
+  trapFocus(panel || overlay);
   return overlay;
 }
 

@@ -31,10 +31,6 @@ export function resolveApiBase() {
     return "http://localhost:5000/api";
   }
 
-  if (location.origin && !location.origin.startsWith("file:")) {
-    return `${location.origin}/api`;
-  }
-
   return "https://pureorigins.onrender.com/api";
 }
 

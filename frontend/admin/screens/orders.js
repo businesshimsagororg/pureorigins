@@ -8,6 +8,10 @@ import { toast } from "../ui/toast.js";
 const ORDER_STATUSES = ["Pending", "Confirmed", "Packed", "Shipped", "Delivered", "Cancelled", "Returned", "Refunded"];
 let orderFilters = { q: "", status: "", payment: "", sheet: "" };
 
+export function setOrderSearchQuery(q) {
+  orderFilters.q = q || "";
+}
+
 export function orderDetailHtml(order) {
   const items = (order.orderItems || [])
     .map(
@@ -89,6 +93,7 @@ function filteredOrders() {
       const st = order.integrations?.googleSheets?.status || "pending";
       if (st !== orderFilters.sheet) return false;
     }
+    if (orderFilters.payment && order.paymentStatus !== orderFilters.payment) return false;
     return true;
   });
 }
@@ -146,9 +151,11 @@ export function mountOrdersScreen(root) {
   `;
 
   const statusChips = root.querySelector("#orderStatusChips");
+  const paymentStatuses = [...new Set(state.orders.map(o => o.paymentStatus).filter(Boolean))];
   const chips = [
     { key: "status", value: "", label: "All status" },
     ...ORDER_STATUSES.map(s => ({ key: "status", value: s, label: s })),
+    ...paymentStatuses.map(p => ({ key: "payment", value: p, label: `Pay: ${p}` })),
     { key: "sheet", value: "failed", label: "Sheet failed" },
     { key: "sheet", value: "success", label: "Exported" }
   ];
@@ -156,8 +163,9 @@ export function mountOrdersScreen(root) {
   statusChips.innerHTML = chips
     .map(c => {
       const active =
-        (c.key === "status" && orderFilters.status === c.value && !orderFilters.sheet) ||
-        (c.key === "sheet" && orderFilters.sheet === c.value);
+        (c.key === "status" && orderFilters.status === c.value && !orderFilters.sheet && !orderFilters.payment) ||
+        (c.key === "sheet" && orderFilters.sheet === c.value && !orderFilters.status && !orderFilters.payment) ||
+        (c.key === "payment" && orderFilters.payment === c.value && !orderFilters.status && !orderFilters.sheet);
       return `<button type="button" class="chip ${active ? "active" : ""}" data-filter-key="${c.key}" data-filter-value="${escapeHtml(c.value)}">${escapeHtml(c.label)}</button>`;
     })
     .join("");
@@ -167,13 +175,12 @@ export function mountOrdersScreen(root) {
     if (!chip) return;
     const key = chip.dataset.filterKey;
     const value = chip.dataset.filterValue;
-    if (key === "status") {
-      orderFilters.status = value;
-      orderFilters.sheet = "";
-    } else {
-      orderFilters.sheet = value;
-      orderFilters.status = "";
-    }
+    orderFilters.status = "";
+    orderFilters.sheet = "";
+    orderFilters.payment = "";
+    if (key === "status") orderFilters.status = value;
+    else if (key === "sheet") orderFilters.sheet = value;
+    else if (key === "payment") orderFilters.payment = value;
     statusChips.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
     chip.classList.add("active");
     renderOrders();
