@@ -429,6 +429,14 @@ nav{
   height:200px;display:flex;align-items:center;justify-content:center;
   font-size:72px;position:relative;overflow:hidden;
 }
+.product-img.has-photo{font-size:0}
+.product-img .product-photo,.detail-img-main .product-photo,.cart-img .product-photo,.thumb .product-photo{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.detail-img-main .product-photo{object-fit:contain}
+.detail-img-main.has-photo{font-size:0}
+.cart-img.has-photo{font-size:0}
+.thumb .product-photo{border-radius:10px}
 .product-badge{
   position:absolute;top:0;right:16px;
   background:#f44336;color:#fff;
@@ -2180,13 +2188,39 @@ function applyProductContentOverrides(list = products) {
   });
 }
 
+function resolveProductImageUrl(url) {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url)) return url;
+  const apiOrigin = API_BASE.replace(/\/api\/?$/, "");
+  return `${apiOrigin}${url.startsWith("/") ? url : `/${url}`}`;
+}
+
+function productPrimaryImage(product) {
+  const fromApi = product.imageUrl || (Array.isArray(product.images) ? product.images[0] : "");
+  return fromApi ? resolveProductImageUrl(fromApi) : "";
+}
+
+function productMediaHtml(product, className = "product-photo") {
+  const imageUrl = productPrimaryImage(product);
+  if (imageUrl) {
+    return `<img src="${escapeAttr(imageUrl)}" alt="${escapeAttr(product.name || product.nameBn || "Product")}" class="${className}" loading="lazy"/>`;
+  }
+  return product.emoji || "\u{1F33F}";
+}
+
 function apiProductToUi(product) {
   const variants = Array.isArray(product.variants) ? product.variants : [];
+  const images = (Array.isArray(product.images) ? product.images : [])
+    .map(resolveProductImageUrl)
+    .filter(Boolean);
+  const imageUrl = images[0] || resolveProductImageUrl(product.imageUrl || "");
   return applyProductContentOverride({
     id: product._id,
     slug: product.slug,
     name: product.nameBn || product.nameEn,
     enName: product.nameEn || product.nameBn,
+    images,
+    imageUrl,
     emoji: productEmojiBySlug[product.slug] || "\u{1F33F}",
     category: product.category?.slug || product.category || "seeds",
     price: Number(product.price || 0),
@@ -2326,7 +2360,7 @@ function addToCart(product,weight,qty=1){
   const unitPrice = getProductUnitPrice(product, weight);
   const existing = cart.find(i=>i.key===key);
   if(existing){existing.qty+=qty;}
-  else{cart.push({key,id:product.id,productId:product.id,slug:product.slug,name:product.name,emoji:product.emoji,weight,price:unitPrice,qty});}
+  else{cart.push({key,id:product.id,productId:product.id,slug:product.slug,name:product.name,emoji:product.emoji,imageUrl:product.imageUrl||"",weight,price:unitPrice,qty});}
   saveCart();updateCartCount();
   showToast('✅ ' + product.name + ' কার্টে যোগ হয়েছে!');
 }
@@ -2431,8 +2465,9 @@ function productCard(p,showAdd=true){
   const badgeHtml = p.badge?`<div class="product-badge ${p.badge==='নতুন'||p.badge==='সুপারফুড'?'new':''}">${p.badge}</div>`:'';
   const discHtml = p.discount?`<div class="product-badge" style="top:32px;right:16px;left:auto;background:var(--red)">-${p.discount}%</div>`:'';
   const weightHtml = (p.weight || []).slice(0,3).map((weight,index)=>`<button class="card-weight-pill ${index===0?'active':''}" data-weight="${escapeAttr(weight)}" onclick="event.stopPropagation();selectCardWeight(this)">${weight}</button>`).join('');
+  const photoClass = p.imageUrl ? "product-img has-photo" : "product-img";
   return `<div class="product-card" data-product-id="${idAttr}" data-weight="${weightAttr}" onclick="openProductCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProductCard(this)}" role="button" tabindex="0" aria-label="${nameAttr} বিস্তারিত দেখুন">
-    <div class="product-img">${p.emoji}${badgeHtml}${discHtml}</div>
+    <div class="${photoClass}">${productMediaHtml(p)}${badgeHtml}${discHtml}</div>
     <div class="product-body">
       <div class="bn-name">${p.name}</div>
       <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">${p.enName}</div>
@@ -2588,7 +2623,7 @@ function renderCart(){
       const productId = escapeAttr(item.productId || item.id || '');
       return `
     <div class="cart-row">
-      <div class="cart-img">${item.emoji}</div>
+      <div class="cart-img ${item.imageUrl ? "has-photo" : ""}">${item.imageUrl ? `<img src="${escapeAttr(item.imageUrl)}" alt="" class="product-photo"/>` : item.emoji}</div>
       <div>
         <button type="button" class="cart-name" onclick="navigate('detail','${productId}')">${item.name}</button>
         <div class="cart-variant">${item.weight}</div>
@@ -3071,9 +3106,22 @@ function renderDetail(id){
   currentQty = 1;
   document.getElementById('detail-breadcrumb').innerHTML=
     `হোম → <span onclick="navigate('shop')" style="cursor:pointer">পণ্যসমূহ</span> → <span>${p.name}</span>`;
-  document.getElementById('detail-img').textContent=p.emoji;
-  document.getElementById('detail-thumbs').innerHTML=
-    [p.emoji,'🌿','📦','✨'].map((e,i)=>`<div class="thumb ${i===0?'active':''}" onclick="setThumb(this,'${e}')">${e}</div>`).join('');
+  const detailImg = document.getElementById('detail-img');
+  const gallery = (p.images && p.images.length) ? p.images : (p.imageUrl ? [p.imageUrl] : []);
+  if (gallery.length) {
+    detailImg.classList.add('has-photo');
+    detailImg.innerHTML = productMediaHtml(p);
+    document.getElementById('detail-thumbs').innerHTML = gallery.map((url, i) =>
+      `<div class="thumb ${i === 0 ? "active" : ""}" data-image="${escapeAttr(url)}" onclick="setThumb(this)"><img src="${escapeAttr(url)}" alt="" class="product-photo"/></div>`
+    ).join("");
+  } else {
+    detailImg.classList.remove('has-photo');
+    detailImg.textContent = p.emoji;
+    document.getElementById('detail-thumbs').innerHTML =
+      [p.emoji, "\u{1F33F}", "\u{1F4E6}", "\u2728"].map((e, i) =>
+        `<div class="thumb ${i === 0 ? "active" : ""}" data-emoji="${escapeAttr(e)}" onclick="setThumb(this)">${e}</div>`
+      ).join("");
+  }
 
   const stockHtml=p.stock==='in'?
     `<span class="stock-badge in-stock">✅ স্টকে আছে</span>`:
@@ -3150,7 +3198,19 @@ function selectWeight(btn){
   if(priceNow)priceNow.textContent = `৳${price}`;
   if(priceOld && oldPrice)priceOld.textContent = `৳${oldPrice}`;
 }
-function setThumb(el,emoji){document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('detail-img').textContent=emoji;}
+function setThumb(el){
+  document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const detailImg = document.getElementById('detail-img');
+  const imageUrl = el.dataset.image;
+  if (imageUrl) {
+    detailImg.classList.add('has-photo');
+    detailImg.innerHTML = `<img src="${escapeAttr(imageUrl)}" alt="" class="product-photo"/>`;
+    return;
+  }
+  detailImg.classList.remove('has-photo');
+  detailImg.textContent = el.dataset.emoji || el.textContent.trim();
+}
 function switchTab(el,id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));

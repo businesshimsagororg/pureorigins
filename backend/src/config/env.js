@@ -18,5 +18,6 @@ export const env = {
   fbPixelId: process.env.FACEBOOK_PIXEL_ID || "",
   googleSheetWebhookUrl: process.env.GOOGLE_SHEET_WEBHOOK_URL || process.env.GOOGLE_APPS_SCRIPT_WEBHOOK_URL || "",
   googleSheetWebhookSecret: process.env.GOOGLE_SHEET_WEBHOOK_SECRET || "",
-  adminPhone: process.env.ADMIN_PHONE || ""
+  adminPhone: process.env.ADMIN_PHONE || "",
+  backendPublicUrl: (process.env.BACKEND_PUBLIC_URL || "").replace(/\/+$/, "")
 };

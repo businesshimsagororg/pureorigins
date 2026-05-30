@@ -1,3 +1,5 @@
+import { API } from "./config.js";
+
 export const $ = selector => document.querySelector(selector);
 export const $$ = selector => [...document.querySelectorAll(selector)];
 
@@ -57,6 +59,14 @@ export function sheetStatus(order) {
   };
   const note = sheet.lastError || "";
   return `${statusPill(labelMap[status] || status, status === "success")}${note ? `<br/><small>${escapeHtml(note)}</small>` : ""}`;
+}
+
+export function resolveMediaUrl(url = "") {
+  const value = String(url || "").trim();
+  if (!value) return "";
+  if (/^https?:\/\//i.test(value)) return value;
+  const origin = API.replace(/\/api\/?$/, "");
+  return `${origin}${value.startsWith("/") ? value : `/${value}`}`;
 }
 
 export function couponSummary(coupon) {

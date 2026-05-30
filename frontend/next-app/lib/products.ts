@@ -20,6 +20,7 @@ export type Product = {
   oldPrice?: number;
   badge?: string;
   imageIcon: string;
+  imageUrl?: string;
   variantPrices: VariantPrices;
 };
 
@@ -249,6 +250,7 @@ function normalizeProduct(raw: any): Product {
     oldPrice: raw.oldPrice ? Number(raw.oldPrice) : undefined,
     badge: raw.badge,
     imageIcon: raw.imageIcon || "🌿",
+    imageUrl: raw.imageUrl || (Array.isArray(raw.images) ? raw.images[0] : undefined),
     variantPrices
   };
 

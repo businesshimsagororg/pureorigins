@@ -30,15 +30,19 @@ const SCREENS = {
 };
 
 const NAV = [
+  { type: "heading", label: "Overview" },
   { id: "dashboard", label: "Dashboard", icon: "◉" },
+  { type: "heading", label: "Catalog & sales" },
   { id: "products", label: "Products", icon: "🌿" },
   { id: "orders", label: "Orders", icon: "📦" },
   { id: "coupons", label: "Coupons", icon: "🏷" },
+  { type: "heading", label: "Content & customers" },
   { id: "reviews", label: "Reviews", icon: "★" },
   { id: "banners", label: "Banners", icon: "🖼" },
-  { id: "reports", label: "Reports", icon: "📊" },
   { id: "customers", label: "Customers", icon: "👤" },
-  { id: "messages", label: "Messages", icon: "✉" }
+  { id: "messages", label: "Messages", icon: "✉" },
+  { type: "heading", label: "Insights" },
+  { id: "reports", label: "Reports", icon: "📊" }
 ];
 
 function showLogin(message = "") {
@@ -163,9 +167,12 @@ export async function refreshAll({ silent = false } = {}) {
 
 function bindShell() {
   const nav = $("#adminNav");
-  nav.innerHTML = NAV.map(
-    item => `<button type="button" class="nav-tab" data-screen="${item.id}" title="${item.label}"><span class="nav-icon" aria-hidden="true">${item.icon}</span><span class="nav-label">${item.label}</span></button>`
-  ).join("");
+  nav.innerHTML = NAV.map(item => {
+    if (item.type === "heading") {
+      return `<p class="nav-heading">${item.label}</p>`;
+    }
+    return `<button type="button" class="nav-tab" data-screen="${item.id}" title="${item.label}"><span class="nav-icon" aria-hidden="true">${item.icon}</span><span class="nav-label">${item.label}</span></button>`;
+  }).join("");
 
   nav.addEventListener("click", e => {
     const tab = e.target.closest("[data-screen]");

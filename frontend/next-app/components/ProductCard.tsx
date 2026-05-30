@@ -26,7 +26,12 @@ export function ProductCard({
   return (
     <article className="product-card">
       <div className="product-media" aria-hidden="true">
-        {product.imageIcon}
+        {product.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={product.imageUrl} alt="" className="product-photo" />
+        ) : (
+          product.imageIcon
+        )}
       </div>
       <div className="product-body">
         <div>

@@ -61,13 +61,16 @@ export function openOrderDrawer(orderId) {
   overlay.querySelector("[data-drawer-save-order]")?.addEventListener("click", async () => {
     const status = overlay.querySelector("#drawerOrderStatus")?.value;
     const trackingNumber = overlay.querySelector("#drawerOrderTrack")?.value?.trim() || "";
-    await withToast(
-      req(`/orders/admin/orders/${orderId}/status`, {
-        method: "PUT",
-        body: { status, trackingNumber, note: "Updated from admin dashboard" }
-      }),
-      "Order updated."
-    );
+    const data = await req(`/orders/admin/orders/${orderId}/status`, {
+      method: "PUT",
+      body: { status, trackingNumber, note: "Updated from admin dashboard" }
+    });
+    if (data.sheetExport?.ok) toast.success("Order saved and synced to Google Sheets.");
+    else if (data.sheetExport?.skipped) toast.success("Order saved. Google Sheets webhook is not configured on the server.");
+    else toast.success("Order saved.");
+    if (data.sheetExport && !data.sheetExport.ok && !data.sheetExport.skipped) {
+      toast.error(data.sheetExport.message || "Google Sheets sync failed. Use Export Sheet to retry.");
+    }
     await loadOrders();
     closeDrawer();
   });

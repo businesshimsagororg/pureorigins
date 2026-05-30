@@ -1,12 +1,16 @@
 import slugify from "slugify";
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
+import { normalizeImageList } from "../utils/mediaUrl.js";
 
 function serializeProduct(product) {
   const value = product.toObject ? product.toObject() : product;
   const variants = Array.isArray(value.variants) ? value.variants : [];
+  const images = normalizeImageList(value.images);
   return {
     ...value,
+    images,
+    imageUrl: images[0] || "",
     variantPrices: Object.fromEntries(
       variants
         .filter(variant => variant.weight && variant.unitPrice != null)
@@ -63,17 +67,23 @@ export async function getProductBySlug(req, res) {
   res.json({ product: serializeProduct(product) });
 }
 
+function prepareProductBody(body = {}) {
+  const next = { ...body };
+  if (Array.isArray(next.images)) next.images = normalizeImageList(next.images);
+  return next;
+}
+
 export async function createProduct(req, res) {
-  const body = req.body;
+  const body = prepareProductBody(req.body);
   body.slug = body.slug || slugify(body.nameEn || body.nameBn, { lower: true, strict: true });
   const p = await Product.create(body);
-  res.status(201).json({ product: p });
+  res.status(201).json({ product: serializeProduct(p) });
 }
 
 export async function updateProduct(req, res) {
-  const p = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  const p = await Product.findByIdAndUpdate(req.params.id, prepareProductBody(req.body), { new: true });
   if (!p) return res.status(404).json({ message: "Product not found" });
-  res.json({ product: p });
+  res.json({ product: serializeProduct(p) });
 }
 
 export async function deleteProduct(req, res) {

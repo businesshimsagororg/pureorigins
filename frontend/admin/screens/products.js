@@ -1,6 +1,6 @@
 import { req, withToast } from "../api.js";
 import { state } from "../state.js";
-import { escapeHtml, money, statusPill, splitList, debounce, $ } from "../utils.js";
+import { escapeHtml, money, statusPill, splitList, debounce, $, resolveMediaUrl } from "../utils.js";
 import { dataTable, emptyState, skeletonTable } from "../ui/table.js";
 import { openDrawer, closeDrawer, getDrawerEl } from "../ui/drawer.js";
 import { confirmModal } from "../ui/modal.js";
@@ -67,30 +67,52 @@ function productFormHtml(product = null) {
   return `
     <form id="productDrawerForm" class="form-grid drawer-form">
       <input type="hidden" name="id" value="${escapeHtml(p._id || "")}"/>
-      <label>বাংলা নাম<input name="nameBn" value="${escapeHtml(p.nameBn || "")}" required/></label>
-      <label>English name<input name="nameEn" value="${escapeHtml(p.nameEn || "")}" required/></label>
-      <label>Slug<input name="slug" value="${escapeHtml(p.slug || "")}" placeholder="auto-if-empty"/></label>
-      <label>Category<select name="category" required>${renderCategoryOptions(p.category?._id || p.category || "")}</select></label>
-      <label>Price<input name="price" type="number" min="0" value="${p.price ?? ""}" required/></label>
-      <label>Old price<input name="oldPrice" type="number" min="0" value="${p.oldPrice ?? ""}"/></label>
-      <label>Badge<input name="badge" value="${escapeHtml(p.badge || "")}"/></label>
-      <label>Stock<input name="stockQuantity" type="number" min="0" value="${p.stockQuantity ?? 0}" required/></label>
-      <label>Low stock alert<input name="lowStockThreshold" type="number" min="0" value="${p.lowStockThreshold ?? 10}"/></label>
-      <label>Active<select name="isActive"><option value="true" ${p.isActive !== false ? "selected" : ""}>Active</option><option value="false" ${p.isActive === false ? "selected" : ""}>Inactive</option></select></label>
-      <label class="full">Short description<input name="shortDescription" value="${escapeHtml(p.shortDescription || "")}"/></label>
-      <label class="full">Description<textarea name="description" rows="3" required>${escapeHtml(p.description || "")}</textarea></label>
-      <label class="full">Benefits (comma)<input name="benefits" value="${escapeHtml((p.benefits || []).join(", "))}"/></label>
-      <label class="full">Ingredients (comma)<input name="ingredients" value="${escapeHtml((p.ingredients || []).join(", "))}"/></label>
-      <label class="full">Usage (comma)<input name="usageInstructions" value="${escapeHtml((p.usageInstructions || []).join(", "))}"/></label>
-      <label class="full">Tags (comma)<input name="tags" value="${escapeHtml((p.tags || []).join(", "))}"/></label>
-      <label class="full">Image URLs<textarea name="images" id="productImages" rows="3">${escapeHtml(images)}</textarea></label>
-      <div id="imagePreview" class="image-preview full"></div>
-      <div class="upload-row full">
-        <input id="productImageUpload" type="file" multiple accept="image/*"/>
-        <button type="button" class="secondary-btn" data-upload-images>Upload images</button>
+
+      <div class="form-section full">
+        <h3 class="form-section-title">Basic info</h3>
+        <div class="form-grid">
+          <label>বাংলা নাম<input name="nameBn" value="${escapeHtml(p.nameBn || "")}" required/></label>
+          <label>English name<input name="nameEn" value="${escapeHtml(p.nameEn || "")}" required/></label>
+          <label>Slug<input name="slug" value="${escapeHtml(p.slug || "")}" placeholder="auto-if-empty"/></label>
+          <label>Category<select name="category" required>${renderCategoryOptions(p.category?._id || p.category || "")}</select></label>
+          <label>Active<select name="isActive"><option value="true" ${p.isActive !== false ? "selected" : ""}>Active</option><option value="false" ${p.isActive === false ? "selected" : ""}>Inactive</option></select></label>
+        </div>
       </div>
-      <div class="full">
-        <div class="panel-head"><h3>Variants</h3><button type="button" class="mini-btn" data-add-variant>+ Row</button></div>
+
+      <div class="form-section full">
+        <h3 class="form-section-title">Pricing & stock</h3>
+        <div class="form-grid">
+          <label>Price<input name="price" type="number" min="0" value="${p.price ?? ""}" required/></label>
+          <label>Old price<input name="oldPrice" type="number" min="0" value="${p.oldPrice ?? ""}"/></label>
+          <label>Badge<input name="badge" value="${escapeHtml(p.badge || "")}"/></label>
+          <label>Stock<input name="stockQuantity" type="number" min="0" value="${p.stockQuantity ?? 0}" required/></label>
+          <label>Low stock alert<input name="lowStockThreshold" type="number" min="0" value="${p.lowStockThreshold ?? 10}"/></label>
+        </div>
+      </div>
+
+      <div class="form-section full">
+        <h3 class="form-section-title">Product copy</h3>
+        <label class="full">Short description<input name="shortDescription" value="${escapeHtml(p.shortDescription || "")}"/></label>
+        <label class="full">Description<textarea name="description" rows="3" required>${escapeHtml(p.description || "")}</textarea></label>
+        <label class="full">Benefits (comma)<input name="benefits" value="${escapeHtml((p.benefits || []).join(", "))}"/></label>
+        <label class="full">Ingredients (comma)<input name="ingredients" value="${escapeHtml((p.ingredients || []).join(", "))}"/></label>
+        <label class="full">Usage (comma)<input name="usageInstructions" value="${escapeHtml((p.usageInstructions || []).join(", "))}"/></label>
+        <label class="full">Tags (comma)<input name="tags" value="${escapeHtml((p.tags || []).join(", "))}"/></label>
+      </div>
+
+      <div class="form-section full">
+        <h3 class="form-section-title">Images</h3>
+        <p class="muted small">Upload photos, then click <strong>Save product</strong> so the storefront updates.</p>
+        <div class="upload-row">
+          <input id="productImageUpload" type="file" multiple accept="image/*"/>
+          <button type="button" class="secondary-btn" data-upload-images>Upload images</button>
+        </div>
+        <div id="imagePreview" class="image-preview"></div>
+        <label class="full">Image URLs (one per line)<textarea name="images" id="productImages" rows="3" placeholder="https://...">${escapeHtml(images)}</textarea></label>
+      </div>
+
+      <div class="form-section full">
+        <div class="panel-head"><h3 class="form-section-title">Variants</h3><button type="button" class="mini-btn" data-add-variant>+ Row</button></div>
         <div id="variantEditor"></div>
       </div>
       <input type="hidden" name="variantsFallback"/>
@@ -140,9 +162,25 @@ function renderImagePreview() {
   const preview = overlay?.querySelector("#imagePreview");
   if (preview) {
     preview.innerHTML = urls.length
-      ? urls.map(u => `<img src="${escapeHtml(u)}" alt="" loading="lazy"/>`).join("")
-      : "";
+      ? urls.map(u => `<img src="${escapeHtml(resolveMediaUrl(u))}" alt="" loading="lazy"/>`).join("")
+      : `<p class="muted small">No images yet. Upload files or paste URLs.</p>`;
   }
+}
+
+async function saveProductFromDrawer(overlay, { closeAfter = true } = {}) {
+  syncVariantsFromDom();
+  const form = overlay.querySelector("#productDrawerForm");
+  const pid = form.elements.id.value;
+  const payload = productPayloadFromForm(form);
+  await withToast(
+    req(pid ? `/products/admin/products/${pid}` : "/products/admin/products", {
+      method: pid ? "PUT" : "POST",
+      body: payload
+    }),
+    "Product saved."
+  );
+  await loadProducts();
+  if (closeAfter) closeDrawer();
 }
 
 export function openProductDrawer(id = null) {
@@ -178,30 +216,36 @@ export function openProductDrawer(id = null) {
   overlay.querySelector("[data-upload-images]")?.addEventListener("click", async () => {
     const input = overlay.querySelector("#productImageUpload");
     if (!input?.files?.length) return toast.error("Choose image files first.");
+    const form = overlay.querySelector("#productDrawerForm");
+    const pid = form.elements.id.value;
     const formData = new FormData();
     [...input.files].forEach(f => formData.append("images", f));
-    const { urls } = await req("/uploads/product-images", { method: "POST", body: formData });
-    const ta = overlay.querySelector("#productImages");
-    ta.value = [ta.value, ...urls].filter(Boolean).join("\n");
-    input.value = "";
-    renderImagePreview();
-    toast.success("Images uploaded.");
+    try {
+      const data = await req("/uploads/product-images", { method: "POST", body: formData });
+      const urls = data.urls || [];
+      if (data.storage === "local" && data.note) toast.error(data.note);
+      const ta = overlay.querySelector("#productImages");
+      const merged = [ta.value, ...urls].join("\n").split(/\n+/).map(u => u.trim()).filter(Boolean);
+      ta.value = merged.join("\n");
+      input.value = "";
+      renderImagePreview();
+      if (pid) {
+        await saveProductFromDrawer(overlay, { closeAfter: false });
+        toast.success("Images uploaded and saved. Refresh the main website to see them.");
+      } else {
+        toast.success("Images uploaded. Click Save product to publish on the website.");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   });
 
   overlay.querySelector("[data-save-product]")?.addEventListener("click", async () => {
-    syncVariantsFromDom();
-    const form = overlay.querySelector("#productDrawerForm");
-    const pid = form.elements.id.value;
-    const payload = productPayloadFromForm(form);
-    await withToast(
-      req(pid ? `/products/admin/products/${pid}` : "/products/admin/products", {
-        method: pid ? "PUT" : "POST",
-        body: payload
-      }),
-      "Product saved."
-    );
-    await loadProducts();
-    closeDrawer();
+    try {
+      await saveProductFromDrawer(overlay, { closeAfter: true });
+    } catch {
+      /* toast handled in withToast */
+    }
   });
 }
 
@@ -219,8 +263,12 @@ export function renderProducts() {
     return;
   }
 
-  const rows = products.map(product => `
+  const rows = products.map(product => {
+    const thumb = (product.images || [])[0];
+    const thumbUrl = thumb ? resolveMediaUrl(thumb) : "";
+    return `
     <tr>
+      <td class="product-thumb-cell">${thumbUrl ? `<img src="${escapeHtml(thumbUrl)}" alt="" class="table-thumb"/>` : `<span class="table-thumb-placeholder">🌿</span>`}</td>
       <td><strong>${escapeHtml(product.nameBn)}</strong><br/><small>${escapeHtml(product.slug)}</small></td>
       <td>${money(product.price)}</td>
       <td>${product.stockQuantity}</td>
@@ -230,8 +278,9 @@ export function renderProducts() {
         <button type="button" class="mini-btn danger" data-delete-product="${product._id}">Archive</button>
       </div></td>
     </tr>
-  `);
-  el.innerHTML = dataTable(["Product", "Price", "Stock", "Status", "Actions"], rows);
+  `;
+  });
+  el.innerHTML = dataTable(["", "Product", "Price", "Stock", "Status", "Actions"], rows);
 }
 
 export async function loadProducts() {

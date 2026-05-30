@@ -328,5 +328,17 @@ export async function updateOrderStatus(req, res) {
   const user = await User.findById(order.user).select("email");
   await notifyOrderStatus({ customerPhone: order.customerPhone, customerEmail: user?.email, orderId: order._id.toString(), status: order.status });
 
-  res.json({ order });
+  const sheetExport = await exportOrderToGoogleSheet(order);
+  if (!sheetExport.ok && !sheetExport.skipped) {
+    console.warn(`Order ${order._id} status saved but Google Sheets sync failed: ${sheetExport.message || sheetExport.error || "unknown error"}`);
+  }
+
+  res.json({
+    order: orderPayload(order),
+    sheetExport: {
+      ok: sheetExport.ok,
+      skipped: Boolean(sheetExport.skipped),
+      message: sheetExport.message || (sheetExport.ok ? "Order synced to Google Sheets." : "Google Sheets sync failed.")
+    }
+  });
 }
