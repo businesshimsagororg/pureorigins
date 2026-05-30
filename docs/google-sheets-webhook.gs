@@ -90,11 +90,12 @@ function doPost(e) {
   try {
     const data = JSON.parse((e.postData && e.postData.contents) || "{}");
     const expectedSecret = PropertiesService.getScriptProperties().getProperty("WEBHOOK_SECRET");
-    const authHeader = String((e.parameter && e.parameter.authorization) || "");
+    const authHeader = String((e.parameter && (e.parameter.authorization || e.parameter.auth)) || "");
     const bearerSecret = authHeader.replace(/^Bearer\s+/i, "");
-    const headerSecret = (e.parameter && e.parameter.secret) || "";
+    const querySecret = (e.parameter && e.parameter.secret) || "";
+    const bodySecret = data.secret || data.webhookSecret || "";
 
-    if (expectedSecret && data.secret !== expectedSecret && bearerSecret !== expectedSecret && headerSecret !== expectedSecret) {
+    if (expectedSecret && bodySecret !== expectedSecret && bearerSecret !== expectedSecret && querySecret !== expectedSecret) {
       return jsonResponse({ ok: false, error: "Unauthorized Google Sheets webhook request." });
     }
 

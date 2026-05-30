@@ -9,9 +9,10 @@ const districts = ["Dhaka", "Chattogram", "Sylhet", "Rajshahi", "Khulna", "Other
 export function CheckoutForm() {
   const { items, subtotal, clearCart } = useCart();
   const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const delivery = subtotal >= 800 ? 0 : 80;
   const total = subtotal + delivery;
-  const disabled = !items.length;
+  const disabled = !items.length || submitting;
 
   const itemsText = useMemo(
     () => items.map((item) => `${item.name} ${item.weight} x ${item.quantity}`).join(", "),
@@ -22,19 +23,62 @@ export function CheckoutForm() {
     <div className="checkout-layout">
       <form
         className="panel form-grid"
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault();
-          setMessage("Order captured locally. Connect NEXT_PUBLIC_API_BASE_URL to submit to backend.");
-          clearCart();
+          if (!items.length) return;
+
+          const form = new FormData(event.currentTarget);
+          const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
+          if (!apiBase) {
+            setMessage("Order captured locally. Connect NEXT_PUBLIC_API_BASE_URL to submit to backend.");
+            clearCart();
+            return;
+          }
+
+          setSubmitting(true);
+          setMessage("");
+          try {
+            const response = await fetch(`${apiBase.replace(/\/$/, "")}/api/orders`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                customerName: form.get("name"),
+                customerPhone: form.get("phone"),
+                customerEmail: form.get("email"),
+                shippingAddress: form.get("address"),
+                district: form.get("district"),
+                upazila: form.get("upazila"),
+                paymentMethod: "COD",
+                notes: form.get("note"),
+                items: items.map((item) => ({
+                  product: item.productId || item.slug,
+                  variantWeight: item.weight,
+                  quantity: item.quantity
+                }))
+              })
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(data.message || "Order submission failed.");
+            clearCart();
+            setMessage(`Order placed successfully. Order ID: ${data.orderAccess?.orderId || data.order?._id}`);
+          } catch (error) {
+            setMessage(error instanceof Error ? error.message : "Order submission failed.");
+          } finally {
+            setSubmitting(false);
+          }
         }}
       >
         <label htmlFor="co-name">
-          আপনার নাম *
+          Name *
           <input id="co-name" name="name" required />
         </label>
         <label htmlFor="co-phone">
-          মোবাইল নম্বর *
+          Mobile number *
           <input id="co-phone" name="phone" required pattern="01[3-9][0-9]{8}" />
+        </label>
+        <label htmlFor="co-email">
+          Email
+          <input id="co-email" name="email" type="email" />
         </label>
         <div className="form-grid full district-row">
           <label htmlFor="co-district">
@@ -52,7 +96,7 @@ export function CheckoutForm() {
           </label>
         </div>
         <label htmlFor="co-address" className="full">
-          ঠিকানা *
+          Address *
           <textarea id="co-address" name="address" required />
         </label>
         <label htmlFor="co-note" className="full">
@@ -61,7 +105,7 @@ export function CheckoutForm() {
         </label>
         <input type="hidden" name="items" value={itemsText} />
         <Button type="submit" disabled={disabled}>
-          Place Order
+          {submitting ? "Placing Order..." : "Place Order"}
         </Button>
         {message ? <p className="muted full">{message}</p> : null}
       </form>

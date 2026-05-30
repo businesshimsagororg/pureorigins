@@ -6,6 +6,7 @@ import { firstVariant, variantPrice } from "@/lib/products";
 
 export type CartItem = {
   id: string;
+  productId: string;
   slug: string;
   name: string;
   weight: string;
@@ -61,6 +62,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             ...current,
             {
               id,
+              productId: product.id,
               slug: product.slug,
               name: product.nameBn,
               weight,
