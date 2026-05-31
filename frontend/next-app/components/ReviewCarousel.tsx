@@ -18,6 +18,7 @@ export function ReviewCarousel() {
     let last = performance.now();
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
+      if (visible) last = performance.now();
     });
 
     observer.observe(shell);
@@ -26,7 +27,8 @@ export function ReviewCarousel() {
       const delta = now - last;
       last = now;
       if (visible && track) {
-        offset = (offset + delta * 0.025) % Math.max(track.scrollWidth / 2, 1);
+        const loopWidth = Math.max(track.scrollWidth / 2, shell.clientWidth, 1);
+        offset = (offset + delta * 0.025) % loopWidth;
         track.style.transform = `translateX(-${offset}px)`;
       }
       frame = requestAnimationFrame(tick);

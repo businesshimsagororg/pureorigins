@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { BagIcon, MenuIcon, SearchIcon } from "@/components/Icons";
+import { BagIcon, LogoMark, MenuIcon, SearchIcon } from "@/components/Icons";
 import { useCart } from "@/components/CartProvider";
 import { site, topTicker } from "@/lib/content";
 
@@ -42,10 +42,12 @@ export default function Header() {
           </button>
 
           <Link className="brand-lockup" href="/" onClick={() => setOpen(false)}>
-            <span className="brand-mark">PO</span>
+            <span className="brand-mark">
+              <LogoMark />
+            </span>
             <span>
               <span className="brand-name">{site.name}</span>
-              <span className="brand-tagline">{site.tagline}</span>
+              <span className="brand-tagline">healthy habit starts here</span>
             </span>
           </Link>
 

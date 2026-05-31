@@ -81,7 +81,10 @@ export default function HomePage() {
             <h2>{home.combo.title}</h2>
             <p>{home.combo.subtitle}</p>
           </div>
-          <Button href="/combos">কম্বো দেখুন</Button>
+          <div className="combo-actions">
+            <Button href="/combos">কম্বো দেখুন</Button>
+            <Button href="/checkout" variant="secondary">Buy Now</Button>
+          </div>
         </div>
       </section>
 

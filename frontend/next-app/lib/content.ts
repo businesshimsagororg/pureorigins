@@ -1,6 +1,6 @@
 export const site = {
   name: "PureOrigins",
-  tagline: "প্রকৃতির সেরা উপহার আপনার পরিবারের জন্য",
+  tagline: "healthy habit starts here",
   facebookUrl:
     "https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr",
   facebookLabel: "Facebook পেজে মেসেজ করুন",
@@ -38,10 +38,10 @@ export const hero = {
     ["সহজ সাপোর্ট", "অর্ডারের পর ফোনে কনফার্মেশন"]
   ] as const,
   features: [
-    ["সরাসরি উৎস", "বিশ্বস্ত কৃষক ও সরবরাহকারীর কাছ থেকে সংগ্রহ।"],
-    ["মান পরীক্ষিত", "প্রতিটি ব্যাচ মান নিয়ন্ত্রণের মধ্য দিয়ে যায়।"],
-    ["সহজ রুটিন", "স্মুদি, ওটস, দই ও নাশতায় সহজ ব্যবহার।"],
-    ["পরিবারের জন্য", "পরিষ্কার প্যাকেজিং ও রিপিট অর্ডার সাপোর্ট।"]
+    ["Directly Sourced", "Collected from trusted growers and suppliers."],
+    ["Quality Checked", "Every batch goes through a careful quality review."],
+    ["Easy Daily Routine", "Simple to use with smoothies, oats, yogurt, and breakfast."],
+    ["Made for Families", "Clean packaging and friendly repeat-order support."]
   ] as const
 };
 

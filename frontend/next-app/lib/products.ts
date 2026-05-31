@@ -223,15 +223,8 @@ function normalizeCategory(category: unknown): Product["category"] {
 }
 
 function normalizeProduct(raw: any): Product {
-  const variants = Array.isArray(raw.variants) ? raw.variants : [];
   const variantPrices =
-    raw.variantPrices && typeof raw.variantPrices === "object"
-      ? raw.variantPrices
-      : Object.fromEntries(
-          variants
-            .filter((variant: any) => variant?.weight && variant?.unitPrice != null)
-            .map((variant: any) => [String(variant.weight), Number(variant.unitPrice)])
-        );
+    raw.variantPrices && typeof raw.variantPrices === "object" ? raw.variantPrices : {};
 
   const product: Product = {
     id: String(raw._id || raw.id || raw.slug),
@@ -284,7 +277,7 @@ export function firstVariant(product: Product) {
 }
 
 export function variantPrice(product: Product, weight: string) {
-  return Number(product.variantPrices[weight] ?? 0);
+  return Number(product.variantPrices[weight]);
 }
 
 export const categories = [

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoMark } from "@/components/Icons";
 import { footer, site } from "@/lib/content";
 
 export function Footer() {
@@ -7,14 +8,14 @@ export function Footer() {
   return (
     <>
       <section className="pre-footer">
-        <div className="container pre-footer-inner">
-          <div>
-            <strong>{site.name}</strong>
-            <p>{footer.brandText}</p>
+        <div className="container brand-banner">
+          <LogoMark />
+          <div className="brand-banner-copy">
+            <strong>
+              <span>Pure</span>Origins
+            </strong>
+            <p><span />healthy habit starts here<span /></p>
           </div>
-          {footer.preFooter.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
         </div>
       </section>
       <footer className="site-footer">

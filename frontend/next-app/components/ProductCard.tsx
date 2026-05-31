@@ -19,7 +19,7 @@ export function ProductCard({
   const router = useRouter();
   const price = variantPrice(product, weight);
   const savings = useMemo(() => {
-    if (!product.oldPrice || product.oldPrice <= price) return 0;
+    if (!Number.isFinite(price) || !product.oldPrice || product.oldPrice <= price) return 0;
     return product.oldPrice - price;
   }, [price, product.oldPrice]);
 
@@ -51,7 +51,7 @@ export function ProductCard({
           ))}
         </select>
         <div className="price-row">
-          <span className="price-now">৳{price}</span>
+          <span className="price-now">৳{Number.isFinite(price) ? price : "—"}</span>
           {product.oldPrice ? <span className="price-old">৳{product.oldPrice}</span> : null}
         </div>
         {showSavings && savings ? <span className="save-tag">Save ৳{savings}</span> : null}

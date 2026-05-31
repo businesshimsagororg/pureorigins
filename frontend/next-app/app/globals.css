@@ -183,34 +183,43 @@ img {
   grid-template-columns: auto 1fr;
   align-items: center;
   justify-self: start;
-  gap: 10px;
+  gap: 12px;
 }
 
 .brand-mark {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
   place-items: center;
-  border-radius: 50%;
-  background: var(--forest);
-  color: var(--gold-light);
-  font-weight: 900;
+  color: var(--forest);
+}
+
+.brand-logo-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-logo-gold {
+  color: var(--gold);
+  stroke: currentColor;
 }
 
 .brand-name {
   display: block;
   color: var(--forest);
-  font-size: 28px;
-  font-weight: 900;
+  font-size: 34px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
   line-height: 1;
 }
 
 .brand-tagline {
   display: block;
-  margin-top: 3px;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 700;
+  margin-top: 5px;
+  color: var(--forest);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: lowercase;
 }
 
 .icon-button {
@@ -510,6 +519,13 @@ img {
   color: rgba(255,255,255,.78);
 }
 
+.combo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 .trust-section {
   background: var(--surface);
 }
@@ -533,6 +549,7 @@ img {
 
 .review-shell {
   overflow: hidden;
+  width: 100%;
 }
 
 .review-track {
@@ -543,6 +560,7 @@ img {
 
 .review-card {
   flex: 0 0 calc(33.333% - 11px);
+  min-width: 0;
 }
 
 .form-grid {
@@ -606,17 +624,54 @@ textarea {
   background: var(--surface);
 }
 
-.pre-footer-inner {
-  display: grid;
-  grid-template-columns: 1.1fr repeat(3, 1fr);
-  gap: 20px;
+.brand-banner {
+  display: flex;
   align-items: center;
-  padding: 26px 0;
+  justify-content: center;
+  gap: 28px;
+  min-height: 220px;
+  padding: 34px 0;
+  color: var(--forest);
 }
 
-.pre-footer strong {
+.brand-banner .brand-logo-svg {
+  width: clamp(116px, 16vw, 180px);
+  height: clamp(116px, 16vw, 180px);
+  flex: 0 0 auto;
+}
+
+.brand-banner-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.brand-banner-copy strong {
+  color: var(--gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(44px, 7vw, 82px);
+  font-weight: 700;
+  line-height: .95;
+}
+
+.brand-banner-copy strong span {
   color: var(--forest);
-  font-size: 20px;
+}
+
+.brand-banner-copy p {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  color: var(--forest);
+  font-size: clamp(18px, 2.8vw, 30px);
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.brand-banner-copy p span {
+  width: clamp(32px, 5vw, 72px);
+  height: 2px;
+  background: var(--gold);
 }
 
 .site-footer {
@@ -1105,4 +1160,192 @@ textarea {
   grid-template-columns: 1.2fr 1.8fr;
   gap: 24px;
   align-items: start;
+}
+
+@keyframes feature-mobile-loop {
+  0%,
+  14% {
+    opacity: 0;
+    transform: translateX(42px);
+  }
+  24%,
+  62% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  76%,
+  100% {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+}
+
+@media (max-width: 520px) {
+  .header-row {
+    min-height: 68px;
+    gap: 8px;
+  }
+
+  .brand-lockup {
+    gap: 8px;
+  }
+
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .brand-name {
+    font-size: 25px;
+  }
+
+  .brand-tagline {
+    font-size: 10px;
+    margin-top: 3px;
+  }
+
+  .hero-proof,
+  .trust-strip {
+    display: none;
+  }
+
+  .hero-inner {
+    gap: 28px;
+  }
+
+  .hero .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero .feature-card:nth-child(n) {
+    display: grid;
+    animation: feature-mobile-loop 6.4s ease-in-out infinite both;
+  }
+
+  .hero .feature-card:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .hero .feature-card:nth-child(2) {
+    animation-delay: .45s;
+  }
+
+  .hero .feature-card:nth-child(3) {
+    animation-delay: .9s;
+  }
+
+  .hero .feature-card:nth-child(4) {
+    animation-delay: 1.35s;
+  }
+
+  .category-pills {
+    isolation: isolate;
+    overflow: visible;
+  }
+
+  .category-pill {
+    position: relative;
+    z-index: 0;
+  }
+
+  .product-grid {
+    gap: 14px;
+  }
+
+  .product-body {
+    padding: 14px;
+  }
+
+  .product-title {
+    font-size: 17px;
+  }
+
+  .product-copy {
+    font-size: 13px;
+  }
+
+  .card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .sunnah-preview-card:not(.dark),
+  .trust-section {
+    display: none;
+  }
+
+  .combo-inner {
+    gap: 18px;
+  }
+
+  .combo-actions {
+    justify-content: stretch;
+  }
+
+  .combo-actions .btn {
+    width: 100%;
+  }
+
+  .review-shell {
+    margin-inline: -12px;
+    padding-inline: 12px;
+  }
+
+  .review-track {
+    gap: 12px;
+  }
+
+  .review-card {
+    flex-basis: calc(100vw - 48px);
+    padding: 18px;
+  }
+
+  .brand-banner {
+    min-height: 166px;
+    gap: 12px;
+    padding: 24px 0;
+  }
+
+  .brand-banner .brand-logo-svg {
+    width: 82px;
+    height: 82px;
+  }
+
+  .brand-banner-copy strong {
+    font-size: clamp(31px, 10vw, 44px);
+  }
+
+  .brand-banner-copy p {
+    gap: 8px;
+    font-size: clamp(12px, 4vw, 17px);
+  }
+
+  .brand-banner-copy p span {
+    width: 22px;
+  }
+
+  .footer-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .footer-grid > :first-child,
+  .footer-grid > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  .footer-links a,
+  .footer-contact-lines p {
+    overflow-wrap: anywhere;
+  }
+
+  .footer-bottom {
+    display: grid;
+    justify-items: start;
+  }
+}
+
+@media (max-width: 480px) {
+  .district-row {
+    grid-template-columns: 1fr !important;
+  }
 }
