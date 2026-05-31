@@ -1445,11 +1445,21 @@ input,select,textarea{font-size:16px}
       .hero-nav-pill:hover { opacity: 1 !important; }
       .hero-trust-badge { transition: all 0.2s ease; background: #ffffff08; border: 1px solid #ffffff15; border-radius: 99px; padding: 8px 16px; font-size: 12.5px; color: #ffffff80; font-weight: 500; }
       .hero-trust-badge:hover { transform: translateY(-1px); }
+      .hero-main-grid {
+        width: 100%; max-width: 1100px; display: grid; grid-template-columns: 1fr 420px; gap: 48px; align-items: center; position: relative; z-index: 1;
+      }
+      .hero-left-col {
+        display: block;
+      }
+      @media (max-width: 768px) {
+        .hero-main-grid { grid-template-columns: 1fr; gap: 20px; }
+        .hero-left-col { display: none !important; }
+      }
     </style>
 
-    <div style="width: 100%; max-width: 1100px; display: grid; grid-template-columns: 1fr 420px; gap: 48px; align-items: center; position: relative; z-index: 1;">
+    <div class="hero-main-grid">
       
-      <div>
+      <div class="hero-left-col">
         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 28px;">
           <div id="hero-brand-icon" style="width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.5s ease;">🌿</div>
           <span style="color: #ffffff99; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;">PureOrigins</span>
@@ -1645,6 +1655,17 @@ input,select,textarea{font-size:16px}
           </button>
         </div>
       `;
+      
+      activeCardWrap.onclick = (e) => {
+        if (!e.target.closest('#hero-add-btn') && !e.target.closest('.hero-nav-pill')) {
+           if (typeof navigateHeroProduct === 'function') {
+             navigateHeroProduct(current.code, current.id);
+           } else {
+             navigate('detail', current.id);
+           }
+        }
+      };
+      activeCardWrap.style.cursor = 'pointer';
 
       cardsContainer.appendChild(activeCardWrap);
       
@@ -1665,6 +1686,7 @@ input,select,textarea{font-size:16px}
       pillsWrap.style.borderRadius = '99px';
       pillsWrap.style.padding = '6px 10px';
       pillsWrap.style.border = '1px solid #ffffff10';
+      pillsWrap.style.zIndex = '20';
 
       products.forEach((p, i) => {
         const pill = document.createElement('div');
