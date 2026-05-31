@@ -1171,6 +1171,7 @@ button,a,.product-card,.cat-card,.combo-card{touch-action:manipulation}
 input,select,textarea{font-size:16px}
 
 @media(max-width:768px){
+  .trust-strip { display: none !important; }
   body{font-size:15px}
   .nav-links{display:none}
   .topbar{
@@ -1392,7 +1393,12 @@ input,select,textarea{font-size:16px}
       <li><a href="#account" onclick="navigate('account');return false;" id="nav-account">অ্যাকাউন্ট</a></li>
     </ul>
     <div class="nav-right">
-      <button class="search-btn" onclick="openShopSearch()" style="background:none;border:none;font-size:20px;margin-right:10px;cursor:pointer;" aria-label="Search">🔍</button>
+      <button class="search-btn" onclick="openShopSearch()" style="background:none;border:none;margin-right:10px;cursor:pointer;display:flex;align-items:center;color:var(--text);" aria-label="Search">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
       <button class="cart-btn" onclick="navigate('cart')">
         <span class="cart-label">কার্ট</span> <span class="cart-count" id="cartCount">0</span>
       </button>
@@ -1935,7 +1941,7 @@ input,select,textarea{font-size:16px}
   <section class="section-sm">
     <div class="container">
       <div class="filter-bar">
-        <input class="search-input" type="text" placeholder="🔍 পণ্য খুঁজুন..." id="searchInput" oninput="filterProducts()"/>
+        <input class="search-input" type="text" placeholder="পণ্য খুঁজুন..." id="searchInput" oninput="filterProducts()"/>
         <select class="filter-select" id="sortSelect" onchange="filterProducts()">
           <option value="">সাজান: ডিফল্ট</option>
           <option value="price-asc">দাম: কম থেকে বেশি</option>
@@ -2750,14 +2756,12 @@ function freeDeliveryUpsell(subtotal=getCartTotal()){
   return `<div class="free-delivery-note">🚚 ৳${remaining.toLocaleString()} আরও যোগ করলে ফ্রি ডেলিভারি!</div>`;
 }
 function getProductUnitPrice(product, weight){
-  if(!product)return 0;
-  if(product.variantPrices && product.variantPrices[weight] != null)return Number(product.variantPrices[weight]);
-  return Number(product.price || 0);
+  if(!product || !product.variantPrices) return 0;
+  return Number(product.variantPrices[weight] || 0);
 }
 function getProductOldPrice(product, weight){
-  if(!product?.oldPrice)return 0;
-  if(product.oldVariantPrices && product.oldVariantPrices[weight] != null)return Number(product.oldVariantPrices[weight]);
-  return Number(product.oldPrice || 0);
+  if(!product || !product.oldVariantPrices) return 0;
+  return Number(product.oldVariantPrices[weight] || 0);
 }
 
 // ═══════════════════════════════════════════
