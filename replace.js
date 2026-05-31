@@ -18,7 +18,7 @@ const heroHtml = `
       @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.18)} 100%{transform:scale(1)} }
       @keyframes shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
       @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
-      .hero-new-card { transition: all 0.32s cubic-bezier(0.34,1.56,0.64,1); position: absolute; width: 100%; height: 400px; border-radius: 28px; cursor: pointer; }
+      .hero-new-card { transition: all 0.32s cubic-bezier(0.34,1.56,0.64,1); position: absolute; width: 100%; height: 460px; border-radius: 28px; cursor: pointer; }
       .hero-new-card:hover { transform: translateY(-3px) scale(1.015); }
       .hero-add-btn { transition: all 0.2s ease; cursor: pointer; border: none; font-family: inherit; }
       .hero-add-btn:hover { transform: scale(1.05); }
@@ -28,17 +28,22 @@ const heroHtml = `
       .hero-nav-pill:hover { opacity: 1 !important; }
       .hero-trust-badge { transition: all 0.2s ease; background: #ffffff08; border: 1px solid #ffffff15; border-radius: 99px; padding: 8px 16px; font-size: 12.5px; color: #ffffff80; font-weight: 500; }
       .hero-trust-badge:hover { transform: translateY(-1px); }
+      @media (max-width: 768px) {
+        #new-hero-section { min-height: auto !important; padding-top: 20px !important; padding-bottom: 40px !important; align-items: flex-start !important; }
+        .hero-left-col { display: none !important; }
+        .hero-main-grid { grid-template-columns: 1fr; gap: 20px; }
+      }
     </style>
 
-    <div style="width: 100%; max-width: 1100px; display: grid; grid-template-columns: 1fr 420px; gap: 48px; align-items: center; position: relative; z-index: 1;">
+    <div class="hero-main-grid" style="width: 100%; max-width: 1100px; display: grid; grid-template-columns: 1fr 420px; gap: 48px; align-items: center; position: relative; z-index: 1;">
       
-      <div>
+      <div class="hero-left-col">
         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 28px;">
           <div id="hero-brand-icon" style="width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.5s ease;">🌿</div>
           <span style="color: #ffffff99; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;">PureOrigins</span>
           <div style="margin-left: auto; position: relative;">
-            <div id="hero-cart-indicator" style="background: #ffffff15; color: #ffffff60; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; border: 1px solid #ffffff10;">
-              🛒 কার্ট
+            <div id="hero-cart-indicator" style="display: none; background: #ffffff15; color: #ffffff60; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; align-items: center; gap: 6px; transition: all 0.3s ease; border: 1px solid #ffffff10;">
+              
             </div>
           </div>
         </div>
@@ -79,7 +84,7 @@ const heroHtml = `
         </div>
       </div>
 
-      <div style="position: relative; height: 520px;" id="hero-cards-container">
+      <div style="position: relative; height: 560px;" id="hero-cards-container">
         <!-- Cards rendered via JS -->
       </div>
 
@@ -169,6 +174,17 @@ const heroHtml = `
       activeCardWrap.style.zIndex = 10;
       activeCardWrap.style.animation = animating ? 'none' : 'fadeSlideIn 0.45s cubic-bezier(0.34,1.56,0.64,1)';
       activeCardWrap.style.opacity = animating ? 0 : 1;
+      activeCardWrap.style.cursor = 'pointer';
+      
+      activeCardWrap.onclick = (e) => {
+        if (!e.target.closest('#hero-add-btn') && !e.target.closest('.hero-nav-pill')) {
+           if (typeof navigateHeroProduct === 'function') {
+             navigateHeroProduct(current.code, current.id);
+           } else {
+             if (typeof navigate === 'function') navigate('detail', current.id);
+           }
+        }
+      };
       
       activeCardWrap.innerHTML = \`
         <div style="border-radius: 28px; background: linear-gradient(155deg, \${current.color}ee 0%, #0d1810 60%, #0a0f0c 100%); border: 1px solid \${current.accent}25; padding: 36px; box-shadow: 0 32px 80px \${current.glow}, 0 0 0 1px \${current.accent}10 inset; position: relative; overflow: hidden;">

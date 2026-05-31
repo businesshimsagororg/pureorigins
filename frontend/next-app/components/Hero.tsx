@@ -72,7 +72,7 @@ export default function PureOriginsHero() {
   }
 
   return (
-    <div style={{
+    <div className="hero-container" style={{
       minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
       background: "linear-gradient(135deg, #0a0f0c 0%, #0d1810 40%, #111a14 100%)",
       fontFamily: "'Noto Sans Bengali', 'Segoe UI', sans-serif",
@@ -115,7 +115,8 @@ export default function PureOriginsHero() {
         .hero-left { display: block; }
         @media (max-width: 768px) {
           .hero-left { display: none !important; }
-          .hero-grid { grid-template-columns: 1fr !important; padding-top: 40px; }
+          .hero-grid { grid-template-columns: 1fr !important; padding-top: 20px !important; padding-bottom: 40px !important; align-items: flex-start !important; }
+          .hero-container { min-height: auto !important; padding-top: 20px !important; padding-bottom: 40px !important; align-items: flex-start !important; }
         }
       `}</style>
 
@@ -192,7 +193,7 @@ export default function PureOriginsHero() {
           </div>
         </div>
 
-        <div style={{ position: "relative", height: "460px" }}>
+        <div style={{ position: "relative", height: "560px" }}>
           {products.map((p, i) => {
             const offset = (i - active + products.length) % products.length;
             if (offset === 0) return null;
@@ -201,7 +202,7 @@ export default function PureOriginsHero() {
                 position: "absolute", width: "100%",
                 top: `${offset === 1 ? 14 : offset === 2 ? 24 : 32}px`,
                 left: `${offset === 1 ? 10 : offset === 2 ? 18 : 24}px`,
-                height: "400px", borderRadius: "28px",
+                height: "460px", borderRadius: "28px",
                 background: `linear-gradient(145deg, ${p.color}88, #0a0f0c)`,
                 border: `1px solid ${p.accent}18`,
                 zIndex: 3 - offset,
@@ -213,7 +214,7 @@ export default function PureOriginsHero() {
 
           <div
             className="hero-active-card"
-            onClick={() => router.push(`/product/${current.slug}`)}
+            onClick={() => router.push(`/product/${current.slug || current.id}`)}
             style={{
               position: "absolute", width: "100%", zIndex: 10,
               animation: animating ? "none" : "heroFadeIn 0.45s cubic-bezier(0.34,1.56,0.64,1), heroCardFloat 5s ease-in-out infinite",
