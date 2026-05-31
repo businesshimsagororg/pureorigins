@@ -1514,7 +1514,7 @@ input,select,textarea{font-size:16px}
         </div>
       </div>
 
-      <div style="position: relative; height: 640px;" id="hero-cards-container">
+      <div style="position: relative; height: 710px;" id="hero-cards-container">
         <!-- Cards rendered via JS -->
       </div>
 
@@ -1691,6 +1691,42 @@ input,select,textarea{font-size:16px}
           if (btn) btn.onclick = (e) => handleAdd(e, current);
       }, 0);
 
+      // Product switcher pills — restored & improved for mobile
+      const pillsWrap = document.createElement('div');
+      pillsWrap.style.position = 'absolute';
+      pillsWrap.style.bottom = '-56px';
+      pillsWrap.style.left = '0';
+      pillsWrap.style.right = '0';
+      pillsWrap.style.display = 'flex';
+      pillsWrap.style.gap = '6px';
+      pillsWrap.style.justifyContent = 'center';
+      pillsWrap.style.zIndex = '20';
+      pillsWrap.style.flexWrap = 'nowrap';
+      pillsWrap.style.overflowX = 'auto';
+      pillsWrap.style.scrollbarWidth = 'none';
+
+      products.forEach((p, i) => {
+        const pill = document.createElement('button');
+        pill.style.display = 'flex';
+        pill.style.alignItems = 'center';
+        pill.style.gap = '5px';
+        pill.style.padding = '7px 12px';
+        pill.style.borderRadius = '99px';
+        pill.style.border = `1px solid ${i === active ? p.accent + '60' : '#ffffff25'}`;
+        pill.style.background = i === active ? `${p.accent}25` : '#ffffff0f';
+        pill.style.color = i === active ? p.accent : '#ffffffaa';
+        pill.style.fontWeight = i === active ? '700' : '500';
+        pill.style.fontSize = '12px';
+        pill.style.cursor = 'pointer';
+        pill.style.whiteSpace = 'nowrap';
+        pill.style.fontFamily = 'inherit';
+        pill.style.transition = 'all 0.25s ease';
+        pill.style.flexShrink = '0';
+        pill.innerHTML = `<span style="font-size:15px">${p.img || ''}</span><span>${p.name}</span>`;
+        pill.onclick = () => { handleSwitch(i); resetAutoPlay(); };
+        pillsWrap.appendChild(pill);
+      });
+      cardsContainer.appendChild(pillsWrap);
     }
 
     function updateStaticUI() {
