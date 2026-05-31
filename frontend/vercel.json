@@ -1,4 +1,8 @@
 {
+  "framework": "nextjs",
+  "installCommand": "npm install --prefix next-app",
+  "buildCommand": "npm run build --prefix next-app",
+  "outputDirectory": "next-app/.next",
   "cleanUrls": true,
   "trailingSlash": false
 }
