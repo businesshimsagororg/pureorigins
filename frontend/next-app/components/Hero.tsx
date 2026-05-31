@@ -113,7 +113,17 @@ export default function PureOriginsHero() {
         .hero-nav-pill { transition: all 0.25s ease; cursor: pointer; }
         .hero-nav-pill:hover { opacity: 1 !important; }
         .hero-left { display: block; }
+        .hero-nav-container {
+          position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+          display: flex; gap: 8px; background: #ffffff08; border-radius: 99px;
+          padding: 6px 10px; border: 1px solid #ffffff10; z-index: 20;
+          width: max-content; max-width: 100%;
+        }
         @media (max-width: 768px) {
+          .hero-nav-container {
+            width: 95%; max-width: 360px; flex-wrap: wrap; justify-content: center;
+            border-radius: 20px; bottom: 0px; gap: 6px; padding: 10px;
+          }
           .hero-left { display: none !important; }
           .hero-grid { grid-template-columns: 1fr !important; padding-top: 20px !important; padding-bottom: 40px !important; align-items: flex-start !important; }
           .hero-container { min-height: auto !important; padding-top: 20px !important; padding-bottom: 40px !important; align-items: flex-start !important; }
@@ -299,12 +309,7 @@ export default function PureOriginsHero() {
             </div>
           </div>
 
-          <div style={{
-            position: "absolute", bottom: "-52px", left: "50%",
-            transform: "translateX(-50%)", display: "flex", gap: "8px",
-            background: "#ffffff08", borderRadius: "99px", padding: "6px 10px",
-            border: "1px solid #ffffff10",
-          }}>
+          <div className="hero-nav-container">
             {products.map((p, i) => (
               <div key={p.id} className="hero-nav-pill" onClick={() => handleSwitch(i)} style={{
                 display: "flex", alignItems: "center", gap: "6px",
