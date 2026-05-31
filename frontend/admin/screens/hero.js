@@ -9,32 +9,33 @@ import { toast } from "../ui/toast.js";
 function heroFormHtml(item = null) {
   const h = item || {};
   return `
-    <div class="hero-preview" style="padding: 16px; border-radius: 12px; background: #0a0f0c; color: white; margin-bottom: 24px; border: 1px solid #ffffff15">
-      <div style="font-size: 24px; color: ${h.accent || '#C4972F'}">${escapeHtml(h.name || 'Product Name')}</div>
-      <div style="font-size: 14px; opacity: 0.6">${escapeHtml(h.sub || 'Sub Name')}</div>
-      <div style="font-size: 32px; margin-top: 8px">${h.img || '🌿'} ৳${escapeHtml(h.price || '0')}</div>
+    <div class="hero-preview" style="padding:16px;border-radius:12px;background:#0a0f0c;color:white;margin-bottom:24px;border:1px solid #ffffff15">
+      <div style="font-size:24px;color:${h.accent || '#C4972F'}">${escapeHtml(h.name || 'Product Name')}</div>
+      <div style="font-size:14px;opacity:0.6">${escapeHtml(h.sub || 'Sub Name')}</div>
+      <div style="font-size:32px;margin-top:8px">${h.img || '🌿'} ৳${escapeHtml(h.price || '0')}</div>
     </div>
     <form id="heroDrawerForm" class="form-grid drawer-form">
-      <input type="hidden" name="id" value="${escapeHtml(h._id || "")}"/>
-      <label>Name (Bengali)<input name="name" value="${escapeHtml(h.name || "")}" required/></label>
-      <label>Sub Name (English)<input name="sub" value="${escapeHtml(h.sub || "")}" required/></label>
-      <label>Slug<input name="slug" value="${escapeHtml(h.slug || "")}" required/></label>
-      <label>Price<input name="price" value="${escapeHtml(h.price || "")}" required/></label>
-      <label>Old Price<input name="oldPrice" value="${escapeHtml(h.oldPrice || "")}"/></label>
-      <label>Save Amount<input name="save" value="${escapeHtml(h.save || "")}"/></label>
-      <label>Unit<input name="unit" value="${escapeHtml(h.unit || "১০০গ্রাম")}"/></label>
-      <label>Badge<input name="badge" value="${escapeHtml(h.badge || "")}"/></label>
-      <label>Color (Hex)<input name="color" type="color" value="${escapeHtml(h.color || "#1B4332")}"/></label>
-      <label>Accent (Hex)<input name="accent" type="color" value="${escapeHtml(h.accent || "#C4972F")}"/></label>
-      <label>Emoji/Icon<input name="img" value="${escapeHtml(h.img || "🌿")}"/></label>
+      <input type="hidden" name="id" value="${escapeHtml(h._id || '')}"/>
+      <label>Name (Bengali)<input name="name" value="${escapeHtml(h.name || '')}" required/></label>
+      <label>Sub Name (English)<input name="sub" value="${escapeHtml(h.sub || '')}" required/></label>
+      <label>Slug<input name="slug" value="${escapeHtml(h.slug || '')}" required/></label>
+      <label>Price<input name="price" value="${escapeHtml(h.price || '')}" required/></label>
+      <label>Old Price<input name="oldPrice" value="${escapeHtml(h.oldPrice || '')}"/></label>
+      <label>Save Amount<input name="save" value="${escapeHtml(h.save || '')}"/></label>
+      <label>Unit<input name="unit" value="${escapeHtml(h.unit || '১০০গ্রাম')}"/></label>
+      <label>Badge<input name="badge" value="${escapeHtml(h.badge || '')}"/></label>
+      <label>Color<input name="color" type="color" value="${h.color || '#1B4332'}"/></label>
+      <label>Accent<input name="accent" type="color" value="${h.accent || '#C4972F'}"/></label>
+      <label>Emoji<input name="img" value="${escapeHtml(h.img || '🌿')}"/></label>
+      <label>Glow (rgba)<input name="glow" value="${escapeHtml(h.glow || 'rgba(27,67,50,0.35)')}"/></label>
       <label>Sort Order<input name="sortOrder" type="number" value="${h.sortOrder ?? 100}"/></label>
       <label class="full">
-        <input type="checkbox" name="isSunnah" value="true" ${h.isSunnah ? "checked" : ""}/>
+        <input type="checkbox" name="isSunnah" value="true" ${h.isSunnah ? 'checked' : ''}/>
         Is Sunnah Product
       </label>
       <label>Status<select name="isActive">
-        <option value="true" ${h.isActive !== false ? "selected" : ""}>Active</option>
-        <option value="false" ${h.isActive === false ? "selected" : ""}>Inactive</option>
+        <option value="true" ${h.isActive !== false ? 'selected' : ''}>Active</option>
+        <option value="false" ${h.isActive === false ? 'selected' : ''}>Inactive</option>
       </select></label>
     </form>`;
 }
@@ -53,21 +54,21 @@ function heroPayload(form) {
     color: data.color || "#1B4332",
     accent: data.accent || "#C4972F",
     img: data.img || "🌿",
+    glow: data.glow || "rgba(27,67,50,0.35)",
     isSunnah: data.isSunnah === "true",
     sortOrder: Number(data.sortOrder || 100),
-    isActive: data.isActive === "true"
+    isActive: data.isActive === "true",
   };
 }
 
 export function openHeroDrawer(id = null) {
-  const item = id ? state.heroItems.find(h => h._id === id) : null;
+  const item = id ? state.heroItems.find((h) => h._id === id) : null;
   openDrawer({
     title: item ? "Edit Hero Item" : "Create Hero Item",
     content: heroFormHtml(item),
-    footer: `<button type="button" class="primary-btn" data-save-hero>Save Hero Item</button>`
+    footer: `<button type="button" class="primary-btn" data-save-hero>Save Hero Item</button>`,
   });
   const overlay = getDrawerEl();
-  
   overlay.querySelector("[data-save-hero]")?.addEventListener("click", async () => {
     const form = overlay.querySelector("#heroDrawerForm");
     const hid = form.elements.id.value;
@@ -88,18 +89,18 @@ export function renderHeroItems() {
     el.querySelector("[data-new-hero]")?.addEventListener("click", () => openHeroDrawer());
     return;
   }
-  const rows = state.heroItems.map(h => `
+  const rows = state.heroItems.map((h) => `
     <tr>
       <td>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-size:20px">${h.img || ''}</span>
+          <span style="font-size:20px">${h.img || ""}</span>
           <div>
             <strong>${escapeHtml(h.name || "-")}</strong><br/>
             <small>${escapeHtml(h.sub || "")}</small>
           </div>
         </div>
       </td>
-      <td>৳${h.price}</td>
+      <td>৳${escapeHtml(h.price || "")}</td>
       <td>${h.sortOrder ?? 100}</td>
       <td>${statusPill(h.isActive ? "Active" : "Inactive", h.isActive)}</td>
       <td><div class="actions">
@@ -123,7 +124,7 @@ export function mountHeroScreen(root) {
     <div class="panel"><div id="heroTable"></div></div>
   `;
   root.querySelector("[data-new-hero]")?.addEventListener("click", () => openHeroDrawer());
-  root.querySelector("#heroTable")?.addEventListener("click", async e => {
+  root.querySelector("#heroTable")?.addEventListener("click", async (e) => {
     const edit = e.target.closest("[data-edit-hero]");
     const del = e.target.closest("[data-delete-hero]");
     if (edit) openHeroDrawer(edit.dataset.editHero);
@@ -136,6 +137,8 @@ export function mountHeroScreen(root) {
   });
   if (!state.heroItems.length) {
     root.querySelector("#heroTable").innerHTML = skeletonTable();
-    loadHeroItems().catch(e => toast.error(e.message));
-  } else renderHeroItems();
+    loadHeroItems().catch((e) => toast.error(e.message));
+  } else {
+    renderHeroItems();
+  }
 }
