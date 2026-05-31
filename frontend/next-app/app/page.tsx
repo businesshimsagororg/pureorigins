@@ -85,7 +85,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section sunnah-awareness-section">
         <div className="container">
           <div className="sunnah-preview-grid">
             <div className="panel sunnah-preview-card dark">
