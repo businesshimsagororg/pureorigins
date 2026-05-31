@@ -1457,7 +1457,6 @@ input,select,textarea{font-size:16px}
       @media (max-width: 768px) {
         #new-hero-section { min-height: auto !important; padding-top: 20px !important; padding-bottom: 40px !important; align-items: flex-start !important; }
         .hero-main-grid { grid-template-columns: 1fr; gap: 20px; }
-        .hero-left-col { display: none !important; }
       }
     </style>
 
@@ -1497,6 +1496,9 @@ input,select,textarea{font-size:16px}
           <div class="hero-trust-badge">✦ খাঁটি উৎস</div>
         </div>
 
+        <div style="display: flex; gap: 8px; margin-bottom: 24px; align-items: center; flex-wrap: wrap; width: 100%; max-width: 100%;" id="hero-dots-container">
+        </div>
+
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
           <button id="hero-order-now-btn" class="hero-add-btn" onclick="navigate('shop')" style="border-radius: 14px; padding: 15px 32px; font-size: 15px; font-weight: 700; color: #0a0f0c;">
             এখনই অর্ডার করুন →
@@ -1504,9 +1506,6 @@ input,select,textarea{font-size:16px}
           <button class="hero-add-btn" onclick="navigate('shop')" style="background: transparent; color: #ffffff80; border: 1px solid #ffffff20; border-radius: 14px; padding: 15px 28px; font-size: 15px; font-weight: 500;">
             সব পণ্য দেখুন
           </button>
-        </div>
-
-        <div style="display: flex; gap: 8px; margin-top: 40px; align-items: center;" id="hero-dots-container">
         </div>
       </div>
 
@@ -1579,14 +1578,23 @@ input,select,textarea{font-size:16px}
     }
 
     function renderDots() {
-      dotsContainer.innerHTML = '<span style="color: #ffffff40; font-size: 11px; margin-right: 4px;">বেছে নিন</span>';
+      dotsContainer.innerHTML = '';
       products.forEach((p, i) => {
-        const dot = document.createElement('div');
-        dot.className = 'hero-tab-dot';
-        dot.style.background = i === active ? products[active].accent : '#ffffff20';
-        dot.style.width = i === active ? '28px' : '6px';
-        dot.onclick = () => handleSwitch(i);
-        dotsContainer.appendChild(dot);
+        const btn = document.createElement('button');
+        btn.style.display = 'flex';
+        btn.style.alignItems = 'center';
+        btn.style.gap = '6px';
+        btn.style.background = i === active ? `${p.color}80` : '#ffffff10';
+        btn.style.border = `1px solid ${i === active ? p.accent : '#ffffff20'}`;
+        btn.style.borderRadius = '99px';
+        btn.style.padding = '8px 16px';
+        btn.style.cursor = 'pointer';
+        btn.style.transition = 'all 0.3s ease';
+        btn.style.color = i === active ? '#ffffff' : '#ffffffcc';
+        
+        btn.innerHTML = `<span style="font-size: 16px">${p.img}</span><span style="font-size: 13px; font-weight: ${i === active ? '700' : '500'}; letter-spacing: 0.02em;">${p.name}</span>`;
+        btn.onclick = () => handleSwitch(i);
+        dotsContainer.appendChild(btn);
       });
     }
 
