@@ -1505,17 +1505,18 @@ input,select,textarea{font-size:16px}
 
   <script>
   (function() {
-    const products = [
-      { id: 1, name: "কালোজিরা", sub: "Black Seeds", price: "১৮০", unit: "১০০গ্রাম", badge: "বেস্ট সেলার", color: "#1B4332", accent: "#C4972F", img: "🌿", glow: "rgba(27,67,50,0.35)", code: 'black-seeds-kalonjira' },
-      { id: 2, name: "চিয়া সিড", sub: "Chia Seeds", price: "২৮০", unit: "১০০গ্রাম", badge: "নতুন", color: "#2D6A4F", accent: "#E8C96B", img: "🌱", glow: "rgba(45,106,79,0.35)", code: 'chia-seeds' },
-      { id: 3, name: "মরিঙ্গা পাউডার", sub: "Moringa Powder", price: "৩৮০", unit: "১০০গ্রাম", badge: "সুপারফুড", color: "#1A3A28", accent: "#A8D5A2", img: "🍃", glow: "rgba(26,58,40,0.35)", code: 'moringa-powder' },
-      { id: 4, name: "খাঁটি মধু", sub: "Pure Honey", price: "৪৫০", unit: "২৫০গ্রাম", badge: "প্রিমিয়াম", color: "#4A3000", accent: "#F5C842", img: "🍯", glow: "rgba(74,48,0,0.35)", code: 'pure-honey' }
+    let products = [
+      { id: 1, name: "কালোজিরা", sub: "Black Seeds", price: "৩৮০", oldPrice: "৪৬০", save: "৮০", unit: "১০০গ্রাম", badge: "বেস্ট সেলার", color: "#1B4332", accent: "#C4972F", img: "🌿", glow: "rgba(27,67,50,0.35)", isSunnah: true, code: 'black-seeds-kalonjira' },
+      { id: 2, name: "চিয়া সিড", sub: "Chia Seeds", price: "২৮০", oldPrice: "৩৫০", save: "৭০", unit: "১০০গ্রাম", badge: "নতুন", color: "#2D6A4F", accent: "#E8C96B", img: "🌱", glow: "rgba(45,106,79,0.35)", isSunnah: false, code: 'chia-seeds' },
+      { id: 3, name: "মরিঙ্গা পাউডার", sub: "Moringa Powder", price: "৩৮০", oldPrice: "৪৫০", save: "৭০", unit: "১০০গ্রাম", badge: "সুপারফুড", color: "#1A3A28", accent: "#A8D5A2", img: "🍃", glow: "rgba(26,58,40,0.35)", isSunnah: false, code: 'moringa-powder' },
+      { id: 4, name: "খাঁটি মধু", sub: "Pure Honey", price: "৪৫০", oldPrice: "৫৫০", save: "১০০", unit: "২৫০গ্রাম", badge: "প্রিমিয়াম", color: "#4A3000", accent: "#F5C842", img: "🍯", glow: "rgba(74,48,0,0.35)", isSunnah: true, code: 'pure-honey' }
     ];
 
     let active = 0;
     let animating = false;
     let cartCount = 0;
     let added = null;
+    let autoPlayInterval = null;
 
     const ambientGlow = document.getElementById('hero-ambient-glow');
     const particlesContainer = document.getElementById('hero-particles-container');
@@ -1526,6 +1527,23 @@ input,select,textarea{font-size:16px}
     const dotsContainer = document.getElementById('hero-dots-container');
     const cardsContainer = document.getElementById('hero-cards-container');
     const headlineAnim = document.getElementById('hero-headline-anim');
+    
+    async function fetchHeroProducts() {
+      try {
+        const apiBase = typeof window.API_BASE !== 'undefined' ? window.API_BASE : '';
+        const res = await fetch(apiBase + "/api/hero");
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.items && data.items.length > 0) {
+            products = data.items.map(item => ({ ...item, id: item._id, code: item.slug }));
+          }
+        }
+      } catch(e) {
+        console.error("Hero API Error:", e);
+      }
+      renderAll();
+      startAutoPlay();
+    }
 
     function renderParticles() {
       particlesContainer.innerHTML = '';
@@ -1587,34 +1605,44 @@ input,select,textarea{font-size:16px}
       activeCardWrap.style.animation = animating ? 'none' : 'fadeSlideIn 0.45s cubic-bezier(0.34,1.56,0.64,1)';
       activeCardWrap.style.opacity = animating ? 0 : 1;
       
+      let badgesHtml = '';
+      if (current.save) {
+        badgesHtml += `<div style="background: linear-gradient(135deg, ${current.accent}, ${current.accent}cc); color: #0a0f0c; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 800; box-shadow: 0 4px 12px ${current.accent}40;">সাশ্রয় ৳${current.save}</div>`;
+      }
+      if (current.isSunnah) {
+        badgesHtml += `<div style="background: #ffffff10; border: 1px solid #ffffff20; color: #ffffff; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 4px;">🕌 সুন্নাহ প্রোডাক্ট</div>`;
+      }
+
+      let priceHtml = `<div style="font-size: 32px; font-weight: 800; color: ${current.accent}; line-height: 1;">৳${current.price}</div>`;
+      if (current.oldPrice) {
+        priceHtml += `<div style="font-size: 18px; color: #ffffff60; text-decoration: line-through; margin-bottom: 3px; font-weight: 500;">(৳${current.oldPrice})</div>`;
+      }
+      priceHtml += `<div style="font-size: 12px; color: #ffffff40; margin-bottom: 4px;">/ ${current.unit || '১০০গ্রাম'}</div>`;
+
       activeCardWrap.innerHTML = `
         <div style="border-radius: 28px; background: linear-gradient(155deg, ${current.color}ee 0%, #0d1810 60%, #0a0f0c 100%); border: 1px solid ${current.accent}25; padding: 36px; box-shadow: 0 32px 80px ${current.glow}, 0 0 0 1px ${current.accent}10 inset; position: relative; overflow: hidden;">
           <div style="position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, ${current.accent}25 0%, transparent 70%); pointer-events: none;"></div>
+          
+          <div style="position: absolute; top: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+            ${badgesHtml}
+          </div>
+
           <div style="display: inline-flex; align-items: center; gap: 6px; background: ${current.accent}22; border: 1px solid ${current.accent}40; border-radius: 99px; padding: 5px 14px; margin-bottom: 24px; color: ${current.accent}; font-size: 11px; font-weight: 700; letter-spacing: 0.06em;">
             <span style="width: 5px; height: 5px; border-radius: 50%; background: ${current.accent}; animation: pulse 2s infinite;"></span>
-            ${current.badge}
+            ${current.badge || ''}
           </div>
-          <div style="width: 100px; height: 100px; border-radius: 24px; margin-bottom: 24px; background: linear-gradient(135deg, ${current.accent}18, ${current.accent}08); display: flex; align-items: center; justify-content: center; font-size: 52px; border: 1px solid ${current.accent}20; box-shadow: 0 8px 24px ${current.glow};">${current.img}</div>
+          <div style="width: 100px; height: 100px; border-radius: 24px; margin-bottom: 24px; background: linear-gradient(135deg, ${current.accent}18, ${current.accent}08); display: flex; align-items: center; justify-content: center; font-size: 52px; border: 1px solid ${current.accent}20; box-shadow: 0 8px 24px ${current.glow};">${current.img || '🌿'}</div>
           <div style="margin-bottom: 6px;">
             <div style="font-size: 26px; font-weight: 800; color: #ffffff; line-height: 1.2;">${current.name}</div>
             <div style="font-size: 13px; color: ${current.accent}99; font-weight: 500; margin-top: 4px;">${current.sub}</div>
           </div>
           <div style="height: 1px; background: #ffffff10; margin: 20px 0;"></div>
           <div style="display: flex; align-items: flex-end; gap: 8px; margin-bottom: 24px;">
-            <div style="font-size: 32px; font-weight: 800; color: ${current.accent}; line-height: 1;">৳${current.price}</div>
-            <div style="font-size: 12px; color: #ffffff40; margin-bottom: 4px;">/ ${current.unit}</div>
-          </div>
-          <div style="display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap;">
-            ${["১০০গ্রাম", "২৫০গ্রাম", "৫০০গ্রাম"].map((w, i) => `
-              <div style="padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; background: ${i === 0 ? current.accent + '25' : '#ffffff0a'}; border: 1px solid ${i === 0 ? current.accent + '50' : '#ffffff15'}; color: ${i === 0 ? current.accent : '#ffffff50'}; transition: all 0.2s;">${w}</div>
-            `).join('')}
+            ${priceHtml}
           </div>
           <button id="hero-add-btn" class="hero-add-btn" style="width: 100%; padding: 16px; border-radius: 14px; font-size: 15px; font-weight: 700; background: linear-gradient(135deg, ${current.accent}, ${current.accent}cc); color: #0a0f0c; box-shadow: 0 8px 28px ${current.accent}40;">
             কার্টে যোগ করুন
           </button>
-          <div style="margin-top: 14px; text-align: center; font-size: 11.5px; color: #ffffff35; display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <span>💵</span> COD সুবিধায় পণ্য হাতে পেয়ে পেমেন্ট
-          </div>
         </div>
       `;
 
@@ -1646,8 +1674,11 @@ input,select,textarea{font-size:16px}
         pill.style.color = i === active ? p.accent : '#ffffff35';
         pill.style.fontWeight = i === active ? '700' : '400';
         pill.style.opacity = i === active ? '1' : '0.6';
-        pill.innerHTML = `<span style="font-size: 14px;">${p.img}</span><span style="white-space: nowrap;">${p.name}</span>`;
-        pill.onclick = () => handleSwitch(i);
+        pill.innerHTML = `<span style="font-size: 14px;">${p.img || ''}</span><span style="white-space: nowrap;">${p.name}</span>`;
+        pill.onclick = () => {
+           handleSwitch(i);
+           resetAutoPlay();
+        };
         pillsWrap.appendChild(pill);
       });
       cardsContainer.appendChild(pillsWrap);
@@ -1667,6 +1698,7 @@ input,select,textarea{font-size:16px}
     }
 
     function renderAll() {
+      if(!products.length) return;
       renderParticles();
       renderDots();
       renderCards();
@@ -1678,7 +1710,6 @@ input,select,textarea{font-size:16px}
       animating = true;
       renderAll();
       
-      // trigger animation restart
       headlineAnim.style.animation = 'none';
       void headlineAnim.offsetWidth;
       headlineAnim.style.animation = 'fadeSlideIn 0.5s ease';
@@ -1719,11 +1750,19 @@ input,select,textarea{font-size:16px}
       }, 1400);
     }
 
-    setInterval(() => {
-      handleSwitch((active + 1) % products.length);
-    }, 3800);
+    function startAutoPlay() {
+      if (autoPlayInterval) clearInterval(autoPlayInterval);
+      autoPlayInterval = setInterval(() => {
+        handleSwitch((active + 1) % products.length);
+      }, 3800);
+    }
+    
+    function resetAutoPlay() {
+      startAutoPlay();
+    }
 
-    renderAll();
+    // Initialize fetching and rendering
+    fetchHeroProducts();
   })();
   </script>
 
