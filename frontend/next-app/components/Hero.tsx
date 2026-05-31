@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const products = [
   { id: 1, name: "কালোজিরা", sub: "Black Seeds", price: "১৮০", unit: "১০০গ্রাম", badge: "বেস্ট সেলার", color: "#1B4332", accent: "#C4972F", img: "🌿", glow: "rgba(27,67,50,0.35)" },
@@ -10,7 +10,7 @@ const products = [
 
 const trustBadges = ["COD সুবিধা", "হোম ডেলিভারি", "খাঁটি উৎস"];
 
-function Particle({ style }) {
+function Particle({ style }: { style?: React.CSSProperties }) {
   return <div style={{ position: "absolute", borderRadius: "50%", pointerEvents: "none", ...style }} />;
 }
 
@@ -30,16 +30,16 @@ export default function PureOriginsHero() {
     return () => clearInterval(t);
   }, []);
 
-  function handleSwitch(i) {
+  function handleSwitch(i: number) {
     if (i === active || animating) return;
     setAnimating(true);
     setTimeout(() => { setActive(i); setAnimating(false); }, 280);
   }
 
-  function handleAdd(e, id) {
+  function handleAdd(e: React.MouseEvent, id: number) {
     e.stopPropagation();
     setCartCount(c => c + 1);
-    setAdded(id);
+    setAdded(id as any);
     setTimeout(() => setAdded(null), 1400);
   }
 

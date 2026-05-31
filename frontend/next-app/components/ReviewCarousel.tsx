@@ -26,7 +26,7 @@ export function ReviewCarousel() {
     function tick(now: number) {
       const delta = now - last;
       last = now;
-      if (visible && track) {
+      if (visible && track && shell) {
         const loopWidth = Math.max(track.scrollWidth / 2, shell.clientWidth, 1);
         offset = (offset + delta * 0.025) % loopWidth;
         track.style.transform = `translateX(-${offset}px)`;
