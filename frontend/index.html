@@ -552,13 +552,13 @@ button:disabled{opacity:.72;cursor:not-allowed}
 .reviews-slider{
   display:grid;
   grid-auto-flow:column;
-  grid-auto-columns:minmax(280px,1fr);
+  grid-auto-columns:minmax(320px, 1fr);
   gap:20px;
   overflow-x:auto;
-  scroll-behavior:smooth;
-  padding:2px 2px 8px;
+  padding:2px 2px 12px;
   scrollbar-width:none;
   overscroll-behavior-inline:contain;
+  /* Removed scroll-behavior: smooth to prevent jitter during requestAnimationFrame scrolling */
 }
 .reviews-slider::-webkit-scrollbar{display:none}
 .reviews-slider.rtl{direction:rtl}
@@ -1160,7 +1160,8 @@ footer ul a:hover{color:var(--white)}
   .nav-links{display:none}
   .hamburger{display:flex}
   .hero{min-height:70vh}
-  .footer-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-brand, .footer-contact{grid-column: 1 / -1}
   .trust-strip-inner{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}
   .form-row{grid-template-columns:1fr}
 }
@@ -1281,7 +1282,7 @@ input,select,textarea{font-size:16px}
   .reviews-toolbar{align-items:flex-start;flex-direction:column;margin-bottom:12px}
   .reviews-controls{width:100%;justify-content:flex-end}
   .slider-btn{width:44px;height:40px;padding:0;border-radius:10px}
-  .reviews-slider{grid-auto-columns:86%;gap:12px;padding-bottom:4px}
+  .reviews-slider{grid-auto-columns:85vw;gap:16px;padding-bottom:12px}
   .review-card{padding:20px 16px;min-height:250px}
   .review-text{font-size:14px;line-height:1.75}
   .faq-layout{grid-template-columns:1fr;gap:22px}
@@ -1336,7 +1337,8 @@ input,select,textarea{font-size:16px}
   .value-card{padding:18px;border-radius:12px}
   .cta-banner{padding:42px 16px}
   footer{padding:34px 16px 20px}
-  .footer-grid{grid-template-columns:1fr;gap:24px;margin-bottom:28px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px}
+  .footer-brand, .footer-contact{grid-column: 1 / -1}
   .toast{
     left:14px;right:14px;bottom:78px;width:auto;text-align:center;
     transform:translateY(20px);
@@ -1354,7 +1356,7 @@ input,select,textarea{font-size:16px}
   .hero-visual{grid-auto-columns:124px}
   .section-head h2{font-size:24px}
   .why-grid,.trust-strip-inner{grid-template-columns:1fr}
-  .reviews-slider{grid-auto-columns:88%}
+  .reviews-slider{grid-auto-columns:88vw}
   .cart-row{grid-template-columns:48px 1fr}
   .cart-img{width:48px;height:48px}
 }
@@ -2329,6 +2331,37 @@ input,select,textarea{font-size:16px}
   </section>
 </div>
 
+<!-- PRE-FOOTER BRAND BANNER -->
+<div class="brand-info-banner" style="background: linear-gradient(135deg, #1B4332 0%, #112A20 100%); padding: 48px 20px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);">
+  <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px;">
+    
+    <div style="text-align: center; color: white;">
+      <div style="font-size: 32px; margin-bottom: 16px; display: inline-flex; width: 64px; height: 64px; background: rgba(255,255,255,0.1); border-radius: 50%; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">🌱</div>
+      <h4 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">১০০% খাঁটি ও প্রাকৃতিক</h4>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5; margin: 0;">সরাসরি বিশ্বস্ত উৎস থেকে সতর্কতার সাথে সংগৃহীত সেরা মানের পণ্য।</p>
+    </div>
+    
+    <div style="text-align: center; color: white;">
+      <div style="font-size: 32px; margin-bottom: 16px; display: inline-flex; width: 64px; height: 64px; background: rgba(255,255,255,0.1); border-radius: 50%; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">🚚</div>
+      <h4 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">দ্রুত হোম ডেলিভারি</h4>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5; margin: 0;">সমগ্র বাংলাদেশে দ্রুততম সময়ে নিরাপদে আপনার দোরগোড়ায়।</p>
+    </div>
+    
+    <div style="text-align: center; color: white;">
+      <div style="font-size: 32px; margin-bottom: 16px; display: inline-flex; width: 64px; height: 64px; background: rgba(255,255,255,0.1); border-radius: 50%; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">💵</div>
+      <h4 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">ক্যাশ অন ডেলিভারি</h4>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5; margin: 0;">প্রথমে পণ্য হাতে বুঝে নিন, তারপর নিশ্চিন্তে পেমেন্ট করুন।</p>
+    </div>
+    
+    <div style="text-align: center; color: white;">
+      <div style="font-size: 32px; margin-bottom: 16px; display: inline-flex; width: 64px; height: 64px; background: rgba(255,255,255,0.1); border-radius: 50%; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">💬</div>
+      <h4 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">সার্বক্ষণিক সাপোর্ট</h4>
+      <p style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5; margin: 0;">যেকোনো প্রয়োজনে আমাদের অভিজ্ঞ টিম আছে আপনার পাশে।</p>
+    </div>
+    
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
@@ -2891,36 +2924,65 @@ function renderReviews(){
   setupReviewSlider();
 }
 
-let reviewsRtl = false;
+let reviewsAutoFrame = null;
+let reviewsObserver = null;
+let isReviewsSliderVisible = false;
+
 function setupReviewSlider(){
   const slider = document.getElementById('reviews-container');
   if(!slider)return;
   if(!slider.dataset.reviewSliderReady){
     slider.addEventListener('touchstart',stopReviewsAutoScroll,{passive:true});
     slider.addEventListener('touchend',startReviewsAutoScroll,{passive:true});
+    slider.addEventListener('mouseenter',stopReviewsAutoScroll,{passive:true});
+    slider.addEventListener('mouseleave',startReviewsAutoScroll,{passive:true});
+    
+    if('IntersectionObserver' in window) {
+      reviewsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          isReviewsSliderVisible = entry.isIntersecting;
+          if(isReviewsSliderVisible) startReviewsAutoScroll();
+          else stopReviewsAutoScroll();
+        });
+      }, { threshold: 0.1 });
+      reviewsObserver.observe(slider);
+    } else {
+      isReviewsSliderVisible = true;
+      startReviewsAutoScroll();
+    }
+    
     slider.dataset.reviewSliderReady='1';
   }
-  startReviewsAutoScroll();
 }
-let reviewsAutoTimer = null;
+
 function stopReviewsAutoScroll(){
-  if(reviewsAutoTimer)clearInterval(reviewsAutoTimer);
-  reviewsAutoTimer = null;
+  if(reviewsAutoFrame) cancelAnimationFrame(reviewsAutoFrame);
+  reviewsAutoFrame = null;
 }
+
 function startReviewsAutoScroll(){
   const slider = document.getElementById('reviews-container');
-  if(!slider)return;
+  if(!slider || !isReviewsSliderVisible) return;
   stopReviewsAutoScroll();
-  reviewsAutoTimer = setInterval(()=>{
-    if(!document.body.contains(slider)){stopReviewsAutoScroll();return;}
-    const maxScroll = slider.scrollWidth - slider.clientWidth;
-    if(maxScroll<=0)return;
-    if(slider.scrollLeft >= maxScroll-2){
-      slider.scrollTo({left:0,behavior:'smooth'});
-      return;
+  
+  let lastTime = performance.now();
+  
+  function scrollLoop(time){
+    const delta = time - lastTime;
+    if(delta > 16) { 
+      const maxScroll = slider.scrollWidth - slider.clientWidth;
+      if(maxScroll > 0) {
+        if(slider.scrollLeft >= maxScroll - 2){
+          slider.scrollTo({left:0,behavior:'smooth'});
+        } else {
+          slider.scrollLeft += 1;
+        }
+      }
+      lastTime = time;
     }
-    slider.scrollBy({left:1,behavior:'auto'});
-  },24);
+    reviewsAutoFrame = requestAnimationFrame(scrollLoop);
+  }
+  reviewsAutoFrame = requestAnimationFrame(scrollLoop);
 }
 function slideReviews(direction){
   const slider = document.getElementById('reviews-container');
