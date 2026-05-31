@@ -203,7 +203,7 @@ export default function PureOriginsHero() {
           </div>
         </div>
 
-        <div style={{ position: "relative", height: "560px" }}>
+        <div style={{ position: "relative", height: "640px" }}>
           {products.map((p, i) => {
             const offset = (i - active + products.length) % products.length;
             if (offset === 0) return null;
@@ -212,7 +212,7 @@ export default function PureOriginsHero() {
                 position: "absolute", width: "100%",
                 top: `${offset === 1 ? 14 : offset === 2 ? 24 : 32}px`,
                 left: `${offset === 1 ? 10 : offset === 2 ? 18 : 24}px`,
-                height: "460px", borderRadius: "28px",
+                height: "540px", borderRadius: "28px",
                 background: `linear-gradient(145deg, ${p.color}88, #0a0f0c)`,
                 border: `1px solid ${p.accent}18`,
                 zIndex: 3 - offset,
