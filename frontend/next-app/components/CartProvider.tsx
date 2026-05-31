@@ -25,11 +25,12 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [items, setItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
     const saved = window.localStorage.getItem("pureorigins-cart");
-    return saved ? JSON.parse(saved) : [];
-  });
+    if (saved) setItems(JSON.parse(saved));
+  }, []);
 
   useEffect(() => {
     window.localStorage.setItem("pureorigins-cart", JSON.stringify(items));

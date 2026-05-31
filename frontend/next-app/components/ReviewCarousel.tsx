@@ -54,7 +54,7 @@ export function ReviewCarousel() {
           <div className="review-track" ref={trackRef}>
             {[...reviews, ...reviews].map((review, index) => (
               <article className="review-card" key={`${review.name}-${index}`}>
-                <p>&ldquo;{review.text}&rdquo;</p>
+                <p>"{review.text}"</p>
                 <strong>{review.name}</strong>
                 <p className="muted">{review.location}</p>
               </article>

@@ -87,6 +87,7 @@ export async function exportOrderToGoogleSheet(order) {
   try {
     const headers = { "Content-Type": "application/json" };
     if (env.googleSheetWebhookSecret) {
+      headers.Authorization = `Bearer ${env.googleSheetWebhookSecret}`;
       headers["X-Webhook-Secret"] = env.googleSheetWebhookSecret;
     }
 
@@ -110,7 +111,7 @@ export async function exportOrderToGoogleSheet(order) {
         statusCode: response.status,
         responseBody: responseBody.slice(0, 500),
         message: response.status === 401
-          ? "Google Sheets webhook returned HTTP 401. Check the Apps Script deployment access is Anyone and that the URL is the /exec web app URL."
+          ? "Google Sheets webhook returned HTTP 401. Check WEBHOOK_SECRET, Authorization bearer token, X-Webhook-Secret, and Apps Script deployment access."
           : `Google Sheets webhook returned HTTP ${response.status}.`
       };
       await recordExportResult(order, result);

@@ -24,34 +24,6 @@ export type Product = {
   variantPrices: VariantPrices;
 };
 
-type RawVariant = {
-  weight?: unknown;
-  unitPrice?: unknown;
-};
-
-type RawProduct = {
-  _id?: unknown;
-  id?: unknown;
-  slug?: unknown;
-  nameBn?: unknown;
-  nameEn?: unknown;
-  name?: unknown;
-  category?: unknown;
-  description?: unknown;
-  shortDescription?: unknown;
-  benefits?: unknown;
-  usageInstructions?: unknown;
-  disclaimer?: unknown;
-  price?: unknown;
-  oldPrice?: unknown;
-  badge?: string;
-  imageIcon?: string;
-  imageUrl?: string;
-  images?: unknown;
-  variants?: unknown;
-  variantPrices?: unknown;
-};
-
 const fallbackCatalog = [
   {
     id: "black-seeds-kalonjira",
@@ -250,15 +222,15 @@ function normalizeCategory(category: unknown): Product["category"] {
   return "seeds";
 }
 
-function normalizeProduct(raw: RawProduct): Product {
+function normalizeProduct(raw: any): Product {
   const variants = Array.isArray(raw.variants) ? raw.variants : [];
   const variantPrices =
     raw.variantPrices && typeof raw.variantPrices === "object"
-      ? raw.variantPrices as VariantPrices
+      ? raw.variantPrices
       : Object.fromEntries(
           variants
-            .filter((variant: RawVariant) => variant?.weight && variant?.unitPrice != null)
-            .map((variant: RawVariant) => [String(variant.weight), Number(variant.unitPrice)])
+            .filter((variant: any) => variant?.weight && variant?.unitPrice != null)
+            .map((variant: any) => [String(variant.weight), Number(variant.unitPrice)])
         );
 
   const product: Product = {

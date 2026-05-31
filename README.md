@@ -5,9 +5,10 @@ This is a separate project from your previous work.
 ## Folder Structure
 
 - `backend/` Node.js + Express + MongoDB API
-- `frontend/next-app/` Bengali-first premium storefront UI using the Next.js App Router
+- `frontend/` Bengali-first premium storefront UI
 - `frontend/admin/` Admin dashboard page
-- `frontend/index.html` legacy SPA storefront preserved only for reference during migration
+- `legacy-bijghor-ecommerce.html` original file preserved
+- `frontend/legacy-template.html` copied legacy template for reference
 
 ## Implemented Core
 
@@ -103,10 +104,8 @@ Copy `backend/.env.example` to `backend/.env` and fill secrets.
    - `npm run seed`
    - `npm run dev`
 3. Frontend:
-   - `cd frontend/next-app`
-   - `npm install`
-   - `npm run dev`
-   - Open `http://localhost:3000`
+   - Serve `frontend/` using any static server (example: VSCode Live Server)
+   - Open `frontend/index.html`
 
 ## Admin dashboard
 
@@ -128,7 +127,7 @@ Leave empty for local dev (defaults to `http://localhost:5000/api`). Override on
 
 ## Deployment Notes
 
-- Frontend: Vercel Next.js hosting from `frontend/next-app`.
+- Frontend: Vercel static hosting.
 - Backend: Render/Railway with environment variables.
 - DB: MongoDB Atlas.
 - Google Sheets export: create a Google Apps Script web app and set its URL as `GOOGLE_SHEET_WEBHOOK_URL` in Render.
@@ -160,7 +159,7 @@ If an order still does not export, open the admin dashboard Orders screen. Each 
 
 - `Exported` means the row was sent to Google Sheets.
 - `No webhook` means `GOOGLE_SHEET_WEBHOOK_URL` is missing in Render or Render was not redeployed after saving it.
-- `Failed` means Google Apps Script returned an error, non-JSON HTML, or timed out. Check that the deployment access is `Anyone`, the URL is the `/exec` web app URL, and the optional secret matches exactly. The backend sends the secret in the JSON body and query string; do not add an `Authorization` header to Apps Script web app calls, because Google may reject it before your script runs.
+- `Failed` means Google Apps Script returned an error, non-JSON HTML, or timed out. Check that the deployment access is `Anyone`, the URL is the `/exec` web app URL, and the optional secret matches exactly.
 
 The webhook updates an existing order row when you retry the same order, so retries are safe and will not duplicate the order.
 
