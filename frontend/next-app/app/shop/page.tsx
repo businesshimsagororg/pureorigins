@@ -24,7 +24,7 @@ export default async function ShopPage({
           </div>
         </div>
         <CategoryPills active={category} />
-        <div className="category-spacer" />
+        <div style={{ height: 24 }} />
         <ProductGrid category={category} />
       </div>
     </section>

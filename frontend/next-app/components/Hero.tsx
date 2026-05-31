@@ -1,24 +1,5 @@
 import { Button } from "@/components/Button";
-
-const hero = {
-  badge: "Clean packs, trusted daily nutrition",
-  title: "Premium seeds and superfoods for a healthier routine",
-  subtitle:
-    "Black seed, chia, flax, moringa and honey sourced with care, packed neatly, and delivered across Bangladesh.",
-  primaryCta: "Shop products",
-  secondaryCta: "View combo offers",
-  proof: [
-    ["Trusted sourcing", "Selected from reliable suppliers"],
-    ["Clean packaging", "Packed for everyday family use"],
-    ["Simple support", "Order confirmation and after-sale help"]
-  ] as const,
-  features: [
-    ["Direct sourcing", "Collected from trusted farmers and suppliers."],
-    ["Quality checked", "Every batch is reviewed before packing."],
-    ["Easy routine", "Use with smoothies, oats, yogurt or breakfast."],
-    ["Family friendly", "Clean packs for simple repeat orders."]
-  ] as const
-};
+import { hero } from "@/lib/content";
 
 export default function Hero() {
   return (
@@ -44,7 +25,7 @@ export default function Hero() {
             ))}
           </div>
         </div>
-        <div className="feature-grid" aria-label="PureOrigiins features">
+        <div className="feature-grid" aria-label="PureOrigins features">
           {hero.features.map(([title, copy]) => (
             <div className="feature-card" key={title}>
               <strong>{title}</strong>

@@ -1,70 +1,82 @@
 import Link from "next/link";
+import { footer, site } from "@/lib/content";
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const brandText =
-    "PureOrigiins brings clean seeds, powders, honey and wellness bundles into simple daily routines.";
 
   return (
     <>
       <section className="pre-footer">
         <div className="container pre-footer-inner">
           <div>
-            <strong>PureOrigiins</strong>
-            <p>{brandText}</p>
+            <strong>{site.name}</strong>
+            <p>{footer.brandText}</p>
           </div>
-          <p>Carefully sourced products for everyday nutrition.</p>
-          <p>Clean packaging and simple order support.</p>
-          <p>Delivery across Bangladesh.</p>
+          {footer.preFooter.map((line) => (
+            <p key={line}>{line}</p>
+          ))}
         </div>
       </section>
       <footer className="site-footer">
         <div className="container footer-grid">
-          <div className="footer-brand">
-            <h3>PureOrigiins</h3>
-            <p>{brandText}</p>
+          <div>
+            <h3>{site.name}</h3>
+            <p>{footer.brandText}</p>
             <a
               className="footer-facebook"
-              href="https://www.facebook.com/share/1KgbM2LLo7/?mibextid=wwXIfr"
+              href={site.facebookUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Message us on Facebook
+              {site.facebookLabel}
             </a>
           </div>
-          <div className="footer-links-group">
-            <h3>Quick Links</h3>
+          <div>
+            <h3>{footer.quickLinks}</h3>
             <div className="footer-links">
-              <Link href="/">Home</Link>
-              <Link href="/shop">Shop</Link>
-              <Link href="/combos">Combo Offers</Link>
-              <Link href="/about">About</Link>
+              <Link href="/">হোম</Link>
+              <Link href="/shop">পণ্যসমূহ</Link>
+              <Link href="/combos">কম্বো অফার</Link>
+              <Link href="/about">আমাদের সম্পর্কে</Link>
               <Link href="/faq">FAQ</Link>
-              <Link href="/order-lookup">Track Order</Link>
+              <Link href="/order-lookup">অর্ডার ট্র্যাক</Link>
             </div>
           </div>
-          <div className="footer-links-group">
-            <h3>Policy Links</h3>
+          <div>
+            <h3>{footer.policyLinks}</h3>
             <div className="footer-links">
-              <Link href="/return-policy">Return Policy</Link>
-              <Link href="/privacy">Privacy Policy</Link>
-              <Link href="/delivery">Delivery Policy</Link>
-              <Link href="/terms">Terms</Link>
+              <Link href="/return-policy">রিটার্ন পলিসি</Link>
+              <Link href="/privacy">প্রাইভেসি পলিসি</Link>
+              <Link href="/delivery">ডেলিভারি পলিসি</Link>
+              <Link href="/terms">শর্তাবলী</Link>
             </div>
           </div>
-          <div className="footer-contact-group">
-            <h3>Contact</h3>
+          <div>
+            <h3>{footer.contactTitle}</h3>
             <div className="footer-contact-lines">
-              <p>Facebook support available</p>
-              <p>Email: support@pureorigins.com</p>
-              <p>Order confirmation by phone</p>
+              {footer.contactLines.map((line) =>
+                line.href ? (
+                  <p key={line.text}>
+                    <span aria-hidden="true">{line.icon}</span>{" "}
+                    <a href={line.href} target="_blank" rel="noopener noreferrer">
+                      {line.text}
+                    </a>
+                  </p>
+                ) : (
+                  <p key={line.text}>
+                    <span aria-hidden="true">{line.icon}</span> {line.text}
+                  </p>
+                )
+              )}
             </div>
           </div>
         </div>
         <div className="container footer-bottom">
-          <p>© {year} PureOrigiins. All rights reserved.</p>
+          <p>
+            © {year} {footer.copyright}
+          </p>
           <div className="footer-payments">
-            {["COD", "bKash", "Nagad", "Rocket"].map((payment) => (
+            {footer.payments.map((payment) => (
               <span className="payment-pill" key={payment}>
                 {payment}
               </span>

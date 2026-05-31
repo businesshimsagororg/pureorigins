@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/Button";
 import { useCart } from "@/components/CartProvider";
@@ -18,7 +18,10 @@ export function ProductCard({
   const { addItem } = useCart();
   const router = useRouter();
   const price = variantPrice(product, weight);
-  void showSavings;
+  const savings = useMemo(() => {
+    if (!product.oldPrice || product.oldPrice <= price) return 0;
+    return product.oldPrice - price;
+  }, [price, product.oldPrice]);
 
   return (
     <article className="product-card">
@@ -51,6 +54,7 @@ export function ProductCard({
           <span className="price-now">৳{price}</span>
           {product.oldPrice ? <span className="price-old">৳{product.oldPrice}</span> : null}
         </div>
+        {showSavings && savings ? <span className="save-tag">Save ৳{savings}</span> : null}
         <div className="card-actions">
           <Button type="button" variant="secondary" onClick={() => addItem(product, weight)}>
             Add to Cart

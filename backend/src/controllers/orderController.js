@@ -52,9 +52,7 @@ async function computeCartTotals(items) {
   for (const item of items) {
     const productId = item.product || item.productId;
     const quantity = Number(item.quantity || item.qty || 1);
-    const product = /^[a-f0-9]{24}$/i.test(String(productId || ""))
-      ? await Product.findById(productId)
-      : await Product.findOne({ slug: productId });
+    const product = await Product.findById(productId);
     if (!product || !product.isActive) throw new Error("Invalid product in cart");
     const variant = product.variants.find(v => v.weight === item.variantWeight) || null;
     const unitPrice = variant ? variant.unitPrice : product.price;

@@ -4,17 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { BagIcon, MenuIcon, SearchIcon } from "@/components/Icons";
 import { useCart } from "@/components/CartProvider";
-import { topTicker } from "@/lib/content";
+import { site, topTicker } from "@/lib/content";
 
 const links = [
-  ["Home", "/"],
-  ["Shop", "/shop"],
-  ["Combos", "/combos"],
-  ["Sunnah", "/sunnah"],
-  ["Reviews", "/reviews"],
-  ["Account", "/account"],
-  ["Track", "/order-lookup"],
-  ["Contact", "/contact"]
+  ["হোম", "/"],
+  ["শপ", "/shop"],
+  ["কম্বো", "/combos"],
+  ["সুন্নাহ", "/sunnah"],
+  ["রিভিউ", "/reviews"],
+  ["অ্যাকাউন্ট", "/account"],
+  ["ট্র্যাক", "/order-lookup"],
+  ["যোগাযোগ", "/contact"]
 ];
 
 export default function Header() {
@@ -43,9 +43,9 @@ export default function Header() {
 
           <Link className="brand-lockup" href="/" onClick={() => setOpen(false)}>
             <span className="brand-mark">PO</span>
-            <span className="brand-copy">
-              <span className="brand-name">PureOrigiins</span>
-              <span className="brand-tagline">healthy habit start here</span>
+            <span>
+              <span className="brand-name">{site.name}</span>
+              <span className="brand-tagline">{site.tagline}</span>
             </span>
           </Link>
 
