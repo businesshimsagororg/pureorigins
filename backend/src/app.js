@@ -16,6 +16,7 @@ import contactRoutes from "./routes/contactRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import heroRoutes from "./routes/heroRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -57,6 +58,7 @@ app.use("/api/contact", contactRoutes);
 app.use("/api", reportRoutes);
 app.use("/api/uploads", uploadRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api", heroRoutes);
 
 app.use(errorHandler);
 

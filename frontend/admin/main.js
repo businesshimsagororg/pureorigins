@@ -16,6 +16,7 @@ import { loadBanners, mountBannersScreen } from "./screens/banners.js";
 import { loadReports, mountReportsScreen } from "./screens/reports.js";
 import { mountCustomersScreen, renderCustomers } from "./screens/customers.js";
 import { loadMessages, mountMessagesScreen } from "./screens/messages.js";
+import { loadHeroItems, mountHeroScreen } from "./screens/hero.js";
 
 const SCREENS = {
   dashboard: { title: "Dashboard", mount: mountDashboardScreen },
@@ -24,6 +25,7 @@ const SCREENS = {
   coupons: { title: "Coupons", mount: mountCouponsScreen },
   reviews: { title: "Reviews", mount: mountReviewsScreen },
   banners: { title: "Banners", mount: mountBannersScreen },
+  hero: { title: "Hero Settings", mount: mountHeroScreen },
   reports: { title: "Reports", mount: mountReportsScreen },
   customers: { title: "Customers", mount: mountCustomersScreen },
   messages: { title: "Messages", mount: mountMessagesScreen }
@@ -37,6 +39,7 @@ const NAV = [
   { id: "orders", label: "Orders", icon: "📦" },
   { id: "coupons", label: "Coupons", icon: "🏷" },
   { type: "heading", label: "Content & customers" },
+  { id: "hero", label: "Hero Settings", icon: "✨" },
   { id: "reviews", label: "Reviews", icon: "★" },
   { id: "banners", label: "Banners", icon: "🖼" },
   { id: "customers", label: "Customers", icon: "👤" },
@@ -160,7 +163,7 @@ function toggleSidebarCollapse() {
 
 export async function refreshAll({ silent = false } = {}) {
   if (!silent) toast.info("Syncing data…");
-  await Promise.all([loadProducts(), loadOrders(), loadCoupons(), loadReviews(), loadBanners(), loadMessages()]);
+  await Promise.all([loadProducts(), loadOrders(), loadCoupons(), loadReviews(), loadBanners(), loadMessages(), loadHeroItems()]);
   await loadReports();
   if (!silent) toast.success("Dashboard updated.");
 }

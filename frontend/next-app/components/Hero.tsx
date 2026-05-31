@@ -1,11 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-const products = [
-  { id: 1, name: "কালোজিরা", sub: "Black Seeds", price: "১৮০", unit: "১০০গ্রাম", badge: "বেস্ট সেলার", color: "#1B4332", accent: "#C4972F", img: "🌿", glow: "rgba(27,67,50,0.35)" },
-  { id: 2, name: "চিয়া সিড", sub: "Chia Seeds", price: "২৮০", unit: "১০০গ্রাম", badge: "নতুন", color: "#2D6A4F", accent: "#E8C96B", img: "🌱", glow: "rgba(45,106,79,0.35)" },
-  { id: 3, name: "মরিঙ্গা পাউডার", sub: "Moringa Powder", price: "৩৮০", unit: "১০০গ্রাম", badge: "সুপারফুড", color: "#1A3A28", accent: "#A8D5A2", img: "🍃", glow: "rgba(26,58,40,0.35)" },
-  { id: 4, name: "খাঁটি মধু", sub: "Pure Honey", price: "৪৫০", unit: "২৫০গ্রাম", badge: "প্রিমিয়াম", color: "#4A3000", accent: "#F5C842", img: "🍯", glow: "rgba(74,48,0,0.35)" },
+const defaultProducts = [
+  { id: 1, name: "কালোজিরা", sub: "Black Seeds", slug: "kalojira", price: "৩৮০", oldPrice: "৪৬০", save: "৮০", unit: "১০০গ্রাম", badge: "বেস্ট সেলার", color: "#1B4332", accent: "#C4972F", img: "🌿", glow: "rgba(27,67,50,0.35)", isSunnah: true },
+  { id: 2, name: "চিয়া সিড", sub: "Chia Seeds", slug: "chia-seed", price: "২৮০", oldPrice: "৩৫০", save: "৭০", unit: "১০০গ্রাম", badge: "নতুন", color: "#2D6A4F", accent: "#E8C96B", img: "🌱", glow: "rgba(45,106,79,0.35)", isSunnah: false },
+  { id: 3, name: "মরিঙ্গা পাউডার", sub: "Moringa Powder", slug: "moringa-powder", price: "৩৮০", oldPrice: "৪৫০", save: "৭০", unit: "১০০গ্রাম", badge: "সুপারফুড", color: "#1A3A28", accent: "#A8D5A2", img: "🍃", glow: "rgba(26,58,40,0.35)", isSunnah: false },
+  { id: 4, name: "খাঁটি মধু", sub: "Pure Honey", slug: "pure-honey", price: "৪৫০", oldPrice: "৫৫০", save: "১০০", unit: "২৫০গ্রাম", badge: "প্রিমিয়াম", color: "#4A3000", accent: "#F5C842", img: "🍯", glow: "rgba(74,48,0,0.35)", isSunnah: true },
 ];
 
 const trustBadges = ["COD সুবিধা", "হোম ডেলিভারি", "খাঁটি উৎস"];
@@ -15,20 +16,38 @@ function Particle({ style }: { style?: React.CSSProperties }) {
 }
 
 export default function PureOriginsHero() {
+  const router = useRouter();
+  const [products, setProducts] = useState<any[]>(defaultProducts);
   const [active, setActive] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [added, setAdded] = useState(null);
   const [hover, setHover] = useState(null);
 
-  const current = products[active];
+  const current = products[active] || defaultProducts[0];
+
+  useEffect(() => {
+    const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+    fetch(`${apiBase.replace(/\/$/, "")}/api/hero`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.items && data.items.length > 0) {
+          const mapped = data.items.map((item: any) => ({
+            ...item,
+            id: item._id
+          }));
+          setProducts(mapped);
+        }
+      })
+      .catch(err => console.error("Failed to load hero items:", err));
+  }, []);
 
   useEffect(() => {
     const t = setInterval(() => {
       setActive(p => (p + 1) % products.length);
     }, 3800);
     return () => clearInterval(t);
-  }, []);
+  }, [products]);
 
   function handleSwitch(i: number) {
     if (i === active || animating) return;
@@ -84,8 +103,11 @@ export default function PureOriginsHero() {
         @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.18)} 100%{transform:scale(1)} }
         @keyframes shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        @keyframes floatActiveCard { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
         .hero-card { transition: all 0.32s cubic-bezier(0.34,1.56,0.64,1); }
         .hero-card:hover { transform: translateY(-3px) scale(1.015); }
+        .active-card-wrapper { cursor: pointer; transition: transform 0.3s ease; }
+        .active-card-wrapper:hover { transform: scale(1.015); }
         .add-btn { transition: all 0.2s ease; }
         .add-btn:hover { transform: scale(1.05); }
         .add-btn:active { transform: scale(0.95); }
@@ -94,13 +116,19 @@ export default function PureOriginsHero() {
         .nav-pill:hover { opacity: 1 !important; }
         .trust-badge { transition: all 0.2s ease; }
         .trust-badge:hover { transform: translateY(-1px); }
+
+        .hero-left { display: block; }
+        @media (max-width: 768px) {
+          .hero-left { display: none !important; }
+          .hero-grid { grid-template-columns: 1fr !important; padding-top: 40px; }
+        }
       `}</style>
 
       {/* Main container */}
-      <div style={{ width: "100%", maxWidth: "1100px", display: "grid", gridTemplateColumns: "1fr 420px", gap: "48px", alignItems: "center", position: "relative", zIndex: 1 }}>
+      <div className="hero-grid" style={{ width: "100%", maxWidth: "1100px", display: "grid", gridTemplateColumns: "1fr 420px", gap: "48px", alignItems: "center", position: "relative", zIndex: 1 }}>
 
         {/* LEFT — Text content */}
-        <div>
+        <div className="hero-left">
           {/* Brand line */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "28px" }}>
             <div style={{
@@ -198,7 +226,7 @@ export default function PureOriginsHero() {
         </div>
 
         {/* RIGHT — Product card stack */}
-        <div style={{ position: "relative", height: "520px" }}>
+        <div style={{ position: "relative", height: "460px" }}>
 
           {/* Background cards (depth effect) */}
           {products.map((p, i) => {
@@ -221,11 +249,15 @@ export default function PureOriginsHero() {
           })}
 
           {/* Active product card */}
-          <div style={{
-            position: "absolute", width: "100%", zIndex: 10,
-            animation: animating ? "none" : "fadeSlideIn 0.45s cubic-bezier(0.34,1.56,0.64,1)",
-            opacity: animating ? 0 : 1,
-          }}>
+          <div 
+            className="active-card-wrapper"
+            onClick={() => router.push(`/product/${current.slug}`)}
+            style={{
+              position: "absolute", width: "100%", zIndex: 10,
+              animation: animating ? "none" : "fadeSlideIn 0.45s cubic-bezier(0.34,1.56,0.64,1), floatActiveCard 5s ease-in-out infinite",
+              opacity: animating ? 0 : 1,
+            }}
+          >
             <div style={{
               borderRadius: "28px",
               background: `linear-gradient(155deg, ${current.color}ee 0%, #0d1810 60%, #0a0f0c 100%)`,
@@ -242,6 +274,26 @@ export default function PureOriginsHero() {
                 background: `radial-gradient(circle, ${current.accent}25 0%, transparent 70%)`,
                 pointerEvents: "none",
               }} />
+
+              {/* Top-Right Tags */}
+              <div style={{ position: "absolute", top: "24px", right: "24px", display: "flex", flexDirection: "column", gap: "8px", alignItems: "flex-end" }}>
+                <div style={{
+                  background: `linear-gradient(135deg, ${current.accent}, ${current.accent}cc)`,
+                  color: "#0a0f0c", padding: "4px 10px", borderRadius: "8px",
+                  fontSize: "12px", fontWeight: 800, boxShadow: `0 4px 12px ${current.accent}40`
+                }}>
+                  সাশ্রয় ৳{current.save}
+                </div>
+                {current.isSunnah && (
+                  <div style={{
+                    background: "#ffffff10", border: "1px solid #ffffff20",
+                    color: "#ffffff", padding: "4px 10px", borderRadius: "8px",
+                    fontSize: "11px", fontWeight: 600, display: "flex", alignItems: "center", gap: "4px"
+                  }}>
+                    🕌 সুন্নাহ প্রোডাক্ট
+                  </div>
+                )}
+              </div>
 
               {/* Badge */}
               <div style={{
@@ -279,11 +331,14 @@ export default function PureOriginsHero() {
               <div style={{ height: "1px", background: "#ffffff10", margin: "20px 0" }} />
 
               {/* Price + unit */}
-              <div style={{ display: "flex", alignItems: "flex-end", gap: "8px", marginBottom: "24px" }}>
-                <div style={{ fontSize: "32px", fontWeight: 800, color: current.accent, lineHeight: 1 }}>
+              <div style={{ display: "flex", alignItems: "flex-end", gap: "10px", marginBottom: "24px" }}>
+                <div style={{ fontSize: "34px", fontWeight: 800, color: current.accent, lineHeight: 1 }}>
                   ৳{current.price}
                 </div>
-                <div style={{ fontSize: "12px", color: "#ffffff40", marginBottom: "4px" }}>
+                <div style={{ fontSize: "18px", color: "#ffffff60", textDecoration: "line-through", marginBottom: "3px", fontWeight: 500 }}>
+                  (৳{current.oldPrice})
+                </div>
+                <div style={{ fontSize: "12px", color: "#ffffff40", marginBottom: "6px", marginLeft: "4px" }}>
                   / {current.unit}
                 </div>
               </div>
@@ -316,15 +371,6 @@ export default function PureOriginsHero() {
               }}>
                 {added === current.id ? "✓ কার্টে যোগ হয়েছে" : "কার্টে যোগ করুন"}
               </button>
-
-              {/* COD note */}
-              <div style={{
-                marginTop: "14px", textAlign: "center", fontSize: "11.5px",
-                color: "#ffffff35", display: "flex", alignItems: "center",
-                justifyContent: "center", gap: "6px",
-              }}>
-                <span>💵</span> COD সুবিধায় পণ্য হাতে পেয়ে পেমেন্ট
-              </div>
             </div>
           </div>
 

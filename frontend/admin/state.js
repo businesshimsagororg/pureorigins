@@ -8,6 +8,7 @@ export const state = {
   coupons: [],
   reviews: [],
   banners: [],
+  heroItems: [],
   messages: [],
   reports: { sales: null, stock: null, customers: null },
   currentScreen: "dashboard",
