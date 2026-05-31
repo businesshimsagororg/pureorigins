@@ -1691,36 +1691,6 @@ input,select,textarea{font-size:16px}
           if (btn) btn.onclick = (e) => handleAdd(e, current);
       }, 0);
 
-      // Mini product switcher pills
-      const pillsWrap = document.createElement('div');
-      pillsWrap.style.position = 'absolute';
-      pillsWrap.style.bottom = '0';
-      pillsWrap.style.left = '50%';
-      pillsWrap.style.transform = 'translateX(-50%)';
-      pillsWrap.style.display = 'flex';
-      pillsWrap.style.gap = '8px';
-      pillsWrap.style.background = '#ffffff08';
-      pillsWrap.style.borderRadius = '99px';
-      pillsWrap.style.padding = '6px 10px';
-      pillsWrap.style.border = '1px solid #ffffff10';
-      pillsWrap.style.zIndex = '20';
-
-      products.forEach((p, i) => {
-        const pill = document.createElement('div');
-        pill.className = 'hero-nav-pill';
-        pill.style.background = i === active ? `${p.accent}22` : 'transparent';
-        pill.style.border = `1px solid ${i === active ? p.accent + '40' : 'transparent'}`;
-        pill.style.color = i === active ? p.accent : '#ffffff35';
-        pill.style.fontWeight = i === active ? '700' : '400';
-        pill.style.opacity = i === active ? '1' : '0.6';
-        pill.innerHTML = `<span style="font-size: 14px;">${p.img || ''}</span><span style="white-space: nowrap;">${p.name}</span>`;
-        pill.onclick = () => {
-           handleSwitch(i);
-           resetAutoPlay();
-        };
-        pillsWrap.appendChild(pill);
-      });
-      cardsContainer.appendChild(pillsWrap);
     }
 
     function updateStaticUI() {
